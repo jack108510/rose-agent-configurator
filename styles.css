@@ -162,3 +162,36 @@ body.has-preview .shell{width:min(1180px,calc(100% - 48px));grid-template-column
 body.has-preview .site-footer{width:min(1180px,calc(100% - 48px))}
 @media(max-width:850px){.shell,body.has-preview .shell{width:calc(100% - 32px);grid-template-columns:1fr;gap:22px;margin-top:28px}.preview{position:static}.site-footer,body.has-preview .site-footer{width:calc(100% - 32px)}}
 @media(max-width:520px){.heading h1{font-size:33px}.heading p{font-size:14px}.progress{gap:11px}.progress span{font-size:10px;flex:1;white-space:nowrap}.progress span b{font-size:10px;display:block;margin:3px 0 0}.panel{padding:22px 18px}.step-title{font-size:21px}.shell,body.has-preview .shell{width:calc(100% - 28px)}}
+
+/* Rose palette: each colour has a job */
+body{background:#f8f7f5;color:#222235}
+.top{background:#fffdfb;border-bottom:1px solid #f0ddd2}
+.brand-text strong{color:#d94c27}
+.heading h1{color:#222235}
+.heading h1 span{color:#d94c27}
+.progress{gap:22px;border-bottom-color:#e1e2e8}
+.progress span{display:inline-flex;align-items:center;gap:7px}
+.progress span i{font-style:normal;display:inline-grid;place-items:center;width:25px;height:25px;border-radius:7px;font-size:10px;font-weight:850;flex:none}
+.progress span:nth-child(1) i{background:#ffeadf;color:#a83f20}
+.progress span:nth-child(2) i{background:#e2f3ee;color:#236f63}
+.progress span:nth-child(3) i{background:#e7ecfa;color:#405e93}
+.progress span b{margin:0}
+.panel{border-color:#e2dce0;border-top-width:4px}
+#businessStep{border-top-color:#e86843;background:#fff8f2}
+#agentStep{border-top-color:var(--accent);background:#f8fffb}
+#checkoutStep{border-top-color:#5474aa;background:#f8faff}
+#businessStep .section-kicker{color:#b94c2b}
+#checkoutStep .section-kicker{color:#45628e}
+.actions .primary{background:#d9542e;color:white}
+.actions .primary:hover{background:#b94222}
+.actions .back{color:#455579;border-color:#dfe3ed;background:#f8faff}
+.actions .back:hover{background:#edf2fc}
+.field input:focus,.field textarea:focus{border-color:#d9542e;box-shadow:0 0 0 3px #f9ddd0}
+.preview{border-color:#dce5ef;background:#f7f9fd}
+.preview-mark{background:#e86843}
+.preview-live{background:#eaf0fb;border-color:#cfdbef;color:#405e93}
+.summary,.checkout-next{background:#f5f8fd;border-color:#dce5f2}
+.summary-label{color:#48669a!important}
+.site-footer{border-color:#dce2e9}
+.site-footer a:hover,.top-links a:hover{color:#d9542e}
+@media(max-width:520px){.progress{gap:7px}.progress span{gap:4px;align-items:flex-start;flex-direction:column}.progress span b{margin:0}.progress span i{width:23px;height:23px}}
