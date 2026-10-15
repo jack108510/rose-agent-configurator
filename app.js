@@ -171,6 +171,7 @@ function mountRose() {
   script.onload = () => {
     widgetReady = true;
     document.getElementById('retryPreview').hidden = true;
+    document.getElementById('previewIntro').hidden = true;
     document.getElementById('previewLive').hidden = false;
     const title = document.querySelector('#rose-workground-widget .wr-title');
     if (title && !title.querySelector('.wr-mark')) {
@@ -327,7 +328,7 @@ form.addEventListener('submit', async event => {
   button.disabled = true; button.textContent = 'Reading website…';
   if (scannedWebsite !== website) scanPromise = scanWebsite(website);
   if (scanPromise) await scanPromise;
-  button.disabled = false; button.textContent = 'Continue →';
+  button.disabled = false; button.textContent = 'Scan website →';
   if (!scanReady()) { status.textContent='Rose needs a saved website scan before setup can continue. Try again.'; status.className='scan-status show warn'; return; }
   if (!businessName()) { status.textContent='Enter your business name to continue.'; status.className='scan-status show warn'; document.getElementById('businessName').focus(); return; }
   ensureDefaults(); mountRose(); applyRosePreview();
@@ -340,6 +341,7 @@ document.getElementById('toCheckout').addEventListener('click', () => {
   if (!setup.assistantName) { document.getElementById('agentName').focus(); return; }
   document.getElementById('summaryName').textContent = setup.assistantName;
   document.getElementById('summaryGoals').textContent = setup.goals.map(goal => goalLabels[goal]).join(' · ') || 'A helpful website assistant';
+  document.getElementById('summaryWebsite').textContent = new URL(currentWebsite()).hostname;
   rememberDraft();
   showStep(3);
 });
@@ -357,6 +359,6 @@ document.getElementById('checkoutForm').addEventListener('submit', async event =
     const target=result.nextUrl||result.checkoutUrl;
     if(!target||!/^https:\/\//i.test(target))throw new Error('Secure checkout is temporarily unavailable');
     location.assign(target);
-  } catch(cause) { error.textContent=cause.message||'Could not start checkout. Please try again.'; button.disabled=false; button.innerHTML='Continue <span aria-hidden="true">→</span>'; }
+  } catch(cause) { error.textContent=cause.message||'Could not start checkout. Please try again.'; button.disabled=false; button.innerHTML='Continue to Square <span aria-hidden="true">→</span>'; }
 });
 applyRosePreview();
