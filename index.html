@@ -7,8 +7,8 @@
   <title>Configure your Rose agent · Wildrose</title>
   <meta name="description" content="Build and try your Rose website assistant before checkout.">
   <link rel="icon" href="https://wildroseautomations.ca/logos/wildrose.png">
-  <link rel="stylesheet" href="styles.css?v=20261014-2">
-  <script defer src="app.js?v=20261014-2"></script>
+  <link rel="stylesheet" href="styles.css?v=20261014-3">
+  <script defer src="app.js?v=20261014-3"></script>
 </head>
 <body>
   <header class="top">
@@ -45,8 +45,10 @@
         <h2 class="step-title" id="agentHeading">Shape the conversation</h2>
         <p class="step-note">See each change in the Rose preview. You can edit more in Workground after checkout.</p>
         <div id="scanEvidence" class="scan-evidence" hidden>
-          <div class="scan-evidence-top"><span class="evidence-icon" aria-hidden="true">✓</span><div><strong>Website scanned</strong><small id="scanEvidenceSite"></small></div><button class="text-button" type="button" data-back="1">Change site</button></div>
+          <div class="scan-evidence-top"><span class="evidence-icon" aria-hidden="true">✓</span><div><strong>What Rose learned</strong><small id="scanEvidenceSite"></small></div><button class="text-button" type="button" data-back="1">Change site</button></div>
           <p id="scanEvidenceSummary"></p>
+          <div id="scanSources" class="scan-sources" aria-label="Pages Rose read"></div>
+          <details class="scan-correction"><summary>Correct a business fact</summary><label class="field" for="businessFactsCorrection">What should Rose know instead?<textarea id="businessFactsCorrection" maxlength="1200" placeholder="For example: We serve Halifax and Dartmouth only. We do not offer emergency service."></textarea><small>Your correction takes priority over the website scan in the preview and Workground.</small></label></details>
         </div>
         <div class="subhead">What should Rose help visitors do?</div>
         <div class="goals" role="group" aria-label="Agent goals">
@@ -73,19 +75,19 @@
           <button class="plan" type="button" data-plan="Rose Basic — CA$39/mo" aria-pressed="false"><span class="plan-top"><strong>Basic</strong><span class="plan-check" aria-hidden="true">✓</span></span><b>CA$39 <small>/ month</small></b><small>75 voice minutes each month</small></button>
           <button class="plan" type="button" data-plan="Rose Pro — CA$129/mo" aria-pressed="true"><span class="plan-top"><strong>Pro</strong><span class="plan-check" aria-hidden="true">✓</span></span><b>CA$129 <small>/ month</small></b><small>275 voice minutes each month</small></button>
         </div>
-        <p class="plan-note">Extra voice minutes are CA$0.29 each. Custom integrations are scoped separately.</p>
+        <p class="plan-note">Both plans include Rose chat and voice. Extra voice minutes are CA$0.29 each. Custom integrations are quoted separately. Review the final amount on Square before paying.</p>
         <div class="summary"><span class="summary-label">YOUR AGENT</span><b id="summaryName">Rose</b><span id="summaryGoals"></span></div>
         <form id="checkoutForm">
           <label class="field">Workground email<input id="email" type="email" autocomplete="email" inputmode="email" required placeholder="you@yourbusiness.com"><small>Use the address you want to sign in with.</small></label>
           <label class="field promo-field">Promo code <small>(optional)</small><input id="promoCode" autocomplete="off" autocapitalize="characters"></label>
           <p id="checkoutError" class="error" role="alert"></p>
           <div class="actions"><button class="back" type="button" data-back="2">← Your agent</button><button class="primary" type="submit" id="payButton">Continue <span aria-hidden="true">→</span></button></div>
-          <p class="fine">If payment is due, checkout opens on Square. Rose stays a draft until you review and publish it in Workground. Wildrose helps with installation.</p>
+          <p class="fine">Checkout opens on Square. Rose stays a draft until you review and publish it in Workground. Wildrose helps with installation. Read our <a href="https://wildroseautomations.ca/terms.html">terms</a> and <a href="https://wildroseautomations.ca/privacy.html">privacy policy</a>.</p>
         </form>
       </section>
     </div>
     <aside class="preview" aria-label="Try Rose">
-      <div class="preview-head"><div class="preview-mark" aria-hidden="true">✦</div><div><b>Rose preview</b><small id="previewSite">Scan a website to start</small></div><span class="preview-live" id="previewLive" hidden>LIVE</span></div>
+      <div class="preview-head"><div class="preview-mark" aria-hidden="true">✦</div><div><b>Rose preview</b><small id="previewSite">Scan a website to start</small></div><span class="preview-live" id="previewLive" hidden>READY</span></div>
       <p class="live-note" id="previewStatus" role="status">Rose will appear here after the website scan.</p>
       <button class="text-button" type="button" id="retryPreview" hidden>Retry preview</button>
       <div id="rose-workground-widget"></div>

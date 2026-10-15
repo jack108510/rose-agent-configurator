@@ -4,6 +4,6 @@ A standalone configurator for Rose. It scans a public business website, mounts t
 
 Demo links carry the website and scan into the configurator, so visitors start at agent setup. Direct visitors start with their website. A browser draft resumes only for the same website URL within one hour; a fresh visit starts clean.
 
-The widget runs in preview mode. Visitor test requests are not delivered to the business. A failed or unsaved scan blocks checkout so a customer does not pay for an empty agent draft.
+The widget runs in preview mode. Visitor test requests are not delivered to the business. A failed or unsaved multi-page scan blocks checkout so a customer does not pay for an empty agent draft. Owners can inspect the scanned page links and enter a correction; that correction is saved in the Workground draft and takes priority over scan text in the live agent context.
 
-The live page is published with GitHub Pages from this repository's `main` branch.
+This repository publishes a standalone copy from `main`. The customer-facing copy is published at `https://wildroseautomations.ca/configure/` from the `wildrose-automations` site's `gh-pages` branch.
