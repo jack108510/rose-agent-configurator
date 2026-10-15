@@ -139,3 +139,26 @@ body{background:#f8f6f3}
 .site-footer{border-color:#e5ded8}
 @media(max-width:850px){.shell{margin-top:27px}.heading h1{font-size:clamp(35px,7vw,45px)}.preview{padding:20px}}
 @media(max-width:520px){.top-links a:first-child{display:none}.brand-text strong{font-size:15px}.brand-text small{font-size:9px}.heading h1{font-size:37px}.heading p{font-size:14px}.setup-assurance{gap:7px 13px;margin-bottom:22px;font-size:11px}.progress span b{font-size:10px}.step-title{font-size:21px}.preview{padding:19px}}
+
+/* Focused setup layout */
+body{background:#faf9f7}
+.shell{width:min(730px,calc(100% - 48px));grid-template-columns:minmax(0,1fr);gap:0;margin:68px auto 70px}
+body.has-preview .shell{width:min(1180px,calc(100% - 48px));grid-template-columns:minmax(0,1fr) minmax(350px,420px);gap:32px;margin-top:38px}
+.heading h1{font-size:38px;line-height:1.1;margin:0 0 10px;letter-spacing:-.045em}
+.heading p{font-size:14px;max-width:580px;margin:0 0 27px;color:#685d56}
+.progress{display:flex;gap:28px;margin:0 0 23px;border-bottom:1px solid #e2dcd5}
+.progress span{padding:0 0 12px;border:0;border-bottom:2px solid transparent;border-radius:0;background:none;color:#93877d;font-size:12px;font-weight:700;letter-spacing:0}
+.progress span b{display:inline;font-size:12px;margin:0 0 0 4px}
+.progress span.current{border:0;border-bottom:2px solid #d6572e;border-radius:0;background:none;color:#9f4527}
+.progress span.done{border:0;border-bottom:2px solid #6c9479;border-radius:0;background:none;color:#557662}
+.panel{border:1px solid #e2dcd5;border-radius:12px;padding:29px 31px;box-shadow:none;background:#fff}
+.section-kicker{font-size:10px;margin-bottom:8px;color:#9b624b}
+.step-title{font-size:23px;margin-bottom:7px}
+.step-note{margin-bottom:22px}
+.actions{margin-top:26px}
+.preview{border-radius:12px;box-shadow:none;background:#fff;padding:21px;top:30px}
+.preview-head{padding-bottom:5px}
+.site-footer{width:min(730px,calc(100% - 48px))}
+body.has-preview .site-footer{width:min(1180px,calc(100% - 48px))}
+@media(max-width:850px){.shell,body.has-preview .shell{width:calc(100% - 32px);grid-template-columns:1fr;gap:22px;margin-top:28px}.preview{position:static}.site-footer,body.has-preview .site-footer{width:calc(100% - 32px)}}
+@media(max-width:520px){.heading h1{font-size:33px}.heading p{font-size:14px}.progress{gap:11px}.progress span{font-size:10px;flex:1;white-space:nowrap}.progress span b{font-size:10px;display:block;margin:3px 0 0}.panel{padding:22px 18px}.step-title{font-size:21px}.shell,body.has-preview .shell{width:calc(100% - 28px)}}

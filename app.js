@@ -148,6 +148,8 @@ function applyRosePreview() {
 }
 function mountRose() {
   if (!businessName() || !scanReady()) return;
+  document.getElementById('rosePreview').hidden = false;
+  document.body.classList.add('has-preview');
   if (document.getElementById('realRoseWidgetScript')) { applyRosePreview(); return; }
   document.getElementById('previewStatus').textContent = 'Starting Rose for ' + businessName() + '…';
   const script = document.createElement('script');
@@ -171,7 +173,6 @@ function mountRose() {
   script.onload = () => {
     widgetReady = true;
     document.getElementById('retryPreview').hidden = true;
-    document.getElementById('previewIntro').hidden = true;
     document.getElementById('previewLive').hidden = false;
     const title = document.querySelector('#rose-workground-widget .wr-title');
     if (title && !title.querySelector('.wr-mark')) {
@@ -194,7 +195,7 @@ function mountRose() {
   };
   document.body.appendChild(script);
 }
-function updatePreview() { applyRosePreview(); }
+function updatePreview() { if (scanReady() && businessName() && !widgetReady) mountRose(); applyRosePreview(); }
 function setChosenColor(color) {
   if (!/^#[0-9a-f]{6}$/i.test(String(color || ''))) return;
   selectedColor = color.toLowerCase();
@@ -214,7 +215,7 @@ function setChosenColor(color) {
   applyRosePreview();
 }
 function ensureDefaults() {
-  const name = businessName();
+  const name = businessName() || (currentWebsite() ? new URL(currentWebsite()).hostname : 'this business');
   if (!document.getElementById('agentName').value.trim()) document.getElementById('agentName').value = (name + ' Assistant').slice(0,80);
   if (!document.getElementById('greeting').value.trim()) document.getElementById('greeting').value = `Hi! I can help you explore ${name} and find what you need. What can I help with?`;
 }
@@ -311,7 +312,10 @@ for (const button of document.querySelectorAll('[data-plan]')) button.addEventLi
 document.querySelectorAll('[data-plan]').forEach(item => item.setAttribute('aria-pressed', String(item.dataset.plan === selectedPlan)));
 for (const button of document.querySelectorAll('[data-back]')) button.addEventListener('click', () => showStep(Number(button.dataset.back)));
 for (const id of ['agentName','greeting','businessName','businessFactsCorrection']) document.getElementById(id).addEventListener('input', updatePreview);
-document.getElementById('tryPreview').addEventListener('click', () => document.querySelector('.preview').scrollIntoView({behavior:'smooth',block:'start'}));
+document.getElementById('tryPreview').addEventListener('click', () => {
+  if (document.getElementById('rosePreview').hidden) { document.getElementById('businessName').focus(); document.getElementById('agentError').textContent = 'Add your business name to start the preview.'; return; }
+  document.getElementById('rosePreview').scrollIntoView({behavior:'smooth',block:'start'});
+});
 document.getElementById('retryPreview').addEventListener('click', () => { document.getElementById('retryPreview').hidden = true; mountRose(); });
 form.addEventListener('submit', async event => {
   event.preventDefault();
@@ -330,7 +334,6 @@ form.addEventListener('submit', async event => {
   if (scanPromise) await scanPromise;
   button.disabled = false; button.textContent = 'Scan website →';
   if (!scanReady()) { status.textContent='Rose needs a saved website scan before setup can continue. Try again.'; status.className='scan-status show warn'; return; }
-  if (!businessName()) { status.textContent='Enter your business name to continue.'; status.className='scan-status show warn'; document.getElementById('businessName').focus(); return; }
   ensureDefaults(); mountRose(); applyRosePreview();
   if (!fromDemo) { const next = new URL(location.href); next.searchParams.set('website', website); history.replaceState(null, '', next); }
   showStep(2);
@@ -338,6 +341,7 @@ form.addEventListener('submit', async event => {
 document.getElementById('toCheckout').addEventListener('click', () => {
   const setup = currentSetup();
   if (!scanReady()) { document.getElementById('agentError').textContent='The website scan has not finished saving. Try the scan again before checkout.'; return; }
+  if (!businessName()) { document.getElementById('agentError').textContent='Add your business name to continue.'; document.getElementById('businessName').focus(); return; }
   if (!setup.assistantName) { document.getElementById('agentName').focus(); return; }
   document.getElementById('summaryName').textContent = setup.assistantName;
   document.getElementById('summaryGoals').textContent = setup.goals.map(goal => goalLabels[goal]).join(' · ') || 'A helpful website assistant';
