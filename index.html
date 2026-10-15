@@ -3,279 +3,95 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#fffaf6">
   <title>Configure your Rose agent · Wildrose</title>
-  <meta name="description" content="Configure your Rose website assistant before checkout.">
-  <style>
-    :root{--orange:#f15a29;--ink:#211915;--muted:#756a62;--line:#eadfd6;--paper:#fffbf7;--accent:#f15a29}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 5%,#ffe6d6,transparent 33%),linear-gradient(135deg,#fffaf5,#f4eee7);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,textarea{font:inherit}button{cursor:pointer}a{color:inherit}.top{height:74px;border-bottom:1px solid var(--line);background:rgba(255,251,247,.86);backdrop-filter:blur(16px)}.top-inner{width:min(1120px,calc(100% - 36px));height:100%;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:15px}.brand{display:flex;align-items:center;gap:11px;text-decoration:none;font-weight:850;letter-spacing:-.03em}.brand img{width:34px;height:34px;border-radius:10px}.top small{color:var(--muted);font-weight:650}.shell{width:min(1120px,calc(100% - 36px));margin:42px auto 80px;display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:34px;align-items:start}.shell>div{min-width:0}.eyebrow{color:#c14d26;font-weight:850;font-size:11px;letter-spacing:.16em;text-transform:uppercase}.heading h1{font:700 clamp(36px,5vw,62px)/.98 ui-serif,Georgia,serif;letter-spacing:-.055em;margin:12px 0 12px}.heading p{color:var(--muted);font-size:16px;line-height:1.55;margin:0 0 26px}.progress{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 20px}.progress span{padding:8px 11px;border:1px solid var(--line);border-radius:999px;color:#8b7f75;background:#fff8f2;font-size:12px;font-weight:750}.progress span.current{border-color:#f5b39c;background:#fff0e8;color:#b8441c}.progress span.done{border-color:#cbe2d2;background:#f0f8f1;color:#2b7547}.panel{background:rgba(255,255,255,.94);border:1px solid #ecdfd4;border-radius:26px;padding:28px;box-shadow:0 20px 56px rgba(58,37,24,.08)}.step[hidden]{display:none}.step-title{font:700 28px/1.1 ui-serif,Georgia,serif;letter-spacing:-.035em;margin:0 0 8px}.step-note{color:var(--muted);line-height:1.5;font-size:14px;margin:0 0 22px}.fields{display:grid;gap:16px}.field{display:grid;gap:7px;font-size:13px;font-weight:750}.field small{color:var(--muted);font-size:12px;font-weight:500}.field input,.field textarea{width:100%;padding:13px 14px;border:1px solid #dfd2c7;background:#fffdfa;border-radius:13px;outline:0;color:var(--ink)}.field textarea{resize:vertical;min-height:82px}.field input:focus,.field textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px #ffded1}.hint{min-height:20px;color:#a65334;font-size:12px;margin:8px 0 0}.goals{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:9px 0 18px}.goal{border:1px solid #e8dcd1;background:#fffdfa;border-radius:14px;padding:13px;text-align:left;color:#4e4037;font-size:13px;font-weight:750}.goal[aria-pressed=true]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,white);color:var(--ink)}.tone-row,.colors,.plans{display:flex;flex-wrap:wrap;gap:9px}.tone,.color,.plan{border:1px solid #e4d7cd;background:#fffdfa;border-radius:13px;padding:11px 14px;font-size:13px;font-weight:750}.tone[aria-pressed=true],.plan[aria-pressed=true]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,white);color:var(--ink)}.color{width:39px;height:39px;padding:5px;display:grid;place-items:center}.color i{display:block;width:25px;height:25px;border-radius:9px;background:var(--choice)}.color[aria-pressed=true]{border-color:var(--choice);box-shadow:0 0 0 3px #fff,0 0 0 5px var(--choice)}.subhead{font-size:13px;font-weight:800;margin:18px 0 8px}.actions{display:flex;justify-content:space-between;gap:10px;margin-top:25px}.actions button{min-height:46px;border-radius:12px;padding:0 18px;font-weight:800}.primary{border:0;background:#241b16;color:#fff}.primary:hover{background:#493027}.back{border:1px solid #e6d9cf;background:#fffaf6;color:#5c4d43}.scan-status{display:none;border-radius:12px;background:#f4f8f3;color:#386147;padding:11px 13px;font-size:12px;line-height:1.4;margin:15px 0}.scan-status.show{display:block}.scan-status.warn{background:#fff5eb;color:#9d552e}.plan{flex:1;min-width:180px;text-align:left;padding:17px}.plan strong{display:block;font-size:17px}.plan b{display:block;font-size:26px;margin:8px 0 3px}.plan small{font-size:12px;color:var(--muted);font-weight:550}.summary{border:1px solid #e9ded3;border-radius:16px;background:#fbf7f2;padding:15px;margin:19px 0;display:grid;gap:5px}.summary b{font-size:14px}.summary span{font-size:12px;color:var(--muted);line-height:1.45}.preview{position:sticky;top:25px;border-radius:28px;overflow:hidden;background:linear-gradient(145deg,#fff,#ffebdf);border:1px solid #fff;box-shadow:0 24px 70px rgba(67,43,30,.13);padding:23px}.preview-head{display:flex;align-items:center;gap:11px}.preview-mark{width:42px;height:42px;border-radius:14px;background:var(--accent);display:grid;place-items:center;color:white;font-size:25px}.preview-head b{display:block;font-size:16px}.preview-head small{display:block;color:var(--muted);margin-top:3px}.preview-body{background:#fff;border:1px solid #eee1d8;border-radius:20px;padding:20px;margin:20px 0;min-height:180px}.preview-body p{font-size:15px;line-height:1.5;margin:0 0 16px}.preview-reply{display:inline-block;background:#fff0e8;color:#a64623;border-radius:14px;padding:11px 13px;font-size:13px;font-weight:650}.preview-foot{color:var(--muted);font-size:12px;line-height:1.5}.preview-site{display:block;margin-top:13px;color:#9f5b3d;overflow-wrap:anywhere}.fine{color:var(--muted);font-size:12px;line-height:1.5;margin:12px 0 0}.error{color:#a52323;font-size:13px;min-height:20px;margin:10px 0 0}@media(max-width:850px){.shell{grid-template-columns:1fr;margin-top:28px}.preview{position:static;grid-row:auto}.panel{padding:20px;min-width:0}.plan{min-width:0}.heading h1{overflow-wrap:break-word}.goals{grid-template-columns:1fr}.top small{display:none}}
-  </style>
-  <style>
-    .shell{grid-template-columns:minmax(0,1fr) minmax(350px,430px)}
-    .preview{padding:18px;background:linear-gradient(145deg,#fffaf7,#f8ebe2)}
-    .preview-head{padding:3px 4px 10px}
-    .live-note{margin:8px 4px 14px;color:var(--muted);font-size:13px;line-height:1.5}
-    #rose-workground-widget:empty{display:none}
-    .preview .wr-ai.inline{width:100%;margin:0}
-    .preview .wr-ai.inline .wr-panel{height:min(590px,calc(100vh - 190px));min-height:460px}
-    .preview-foot{margin:12px 5px 2px}
-    .try-preview{display:none;margin-top:18px;padding:11px 14px;border-radius:12px;font-weight:750}
-    @media(max-width:850px){.shell{grid-template-columns:1fr}.preview{grid-row:auto}.try-preview{display:inline-block}.preview .wr-ai.inline .wr-panel{height:560px}}
-    @media(max-width:520px){.preview .wr-ai.inline .wr-panel{height:520px;min-height:520px}}
-  </style>
+  <meta name="description" content="Build and try your Rose website assistant before checkout.">
+  <link rel="icon" href="https://wildroseautomations.ca/logos/wildrose.png">
+  <link rel="stylesheet" href="styles.css?v=20261014-2">
+  <script defer src="app.js?v=20261014-2"></script>
 </head>
 <body>
-  <header class="top"><div class="top-inner"><a class="brand" href="https://wildroseautomations.ca/"><img src="https://wildroseautomations.ca/logos/wildrose.png" alt="">Wildrose <span>· Rose</span></a><small>Build your agent first. Pay when it feels right.</small></div></header>
-  <main class="shell">
-    <div>
-      <div class="heading"><span class="eyebrow">Rose for your business</span><h1>Build your Rose agent.</h1><p>Rose reads your website, then you can talk to the actual agent your visitors will use. Shape it here and keep editing in Workground after checkout.</p></div>
-      <div class="progress" aria-label="Setup progress"><span data-progress="1" class="current">1 · Business</span><span data-progress="2">2 · Your agent</span><span data-progress="3">3 · Checkout</span><span>4 · Workground</span></div>
-      <section class="panel step" id="businessStep"><h2 class="step-title">Start with your website</h2><p class="step-note">We’ll use the public pages to pick up your name and visual style. You can correct anything before paying.</p><form id="businessForm" class="fields"><label class="field">Website<input id="website" type="text" inputmode="url" autocomplete="url" placeholder="https://yourbusiness.com" required><small>Enter your business website, not a social profile.</small></label><label class="field">Business name<input id="businessName" autocomplete="organization" placeholder="Your business"></label><div id="scanStatus" class="scan-status" role="status"></div><div class="actions"><a class="back" style="display:grid;place-items:center;text-decoration:none;padding:0 18px;border-radius:12px" href="https://wildroseautomations.ca/">Back to Rose</a><button class="primary" type="submit" id="scanButton">Continue →</button></div></form></section>
-      <section class="panel step" id="agentStep" hidden><h2 class="step-title">Make Rose yours</h2><p class="step-note">These choices shape the real Rose preview beside this form. Rose can collect requests now; connected tools and automations can be added in Workground.</p><div class="subhead">What should Rose help visitors do?</div><div class="goals" role="group" aria-label="Agent goals"><button class="goal" type="button" data-goal="answer_questions" aria-pressed="true">Answer questions about my business</button><button class="goal" type="button" data-goal="capture_leads" aria-pressed="true">Collect contact details</button><button class="goal" type="button" data-goal="quote_requests" aria-pressed="false">Help with quote requests</button><button class="goal" type="button" data-goal="booking_requests" aria-pressed="false">Help with booking requests</button><button class="goal" type="button" data-goal="product_guidance" aria-pressed="false">Guide visitors to products</button></div><div class="fields"><label class="field">Agent name<input id="agentName" maxlength="80"></label><label class="field">First message<textarea id="greeting" maxlength="600"></textarea></label></div><div class="subhead">How should Rose sound?</div><div class="tone-row" role="group" aria-label="Agent tone"><button class="tone" type="button" data-tone="friendly" aria-pressed="true">Friendly</button><button class="tone" type="button" data-tone="professional" aria-pressed="false">Professional</button><button class="tone" type="button" data-tone="concise" aria-pressed="false">Concise</button></div><div class="subhead">Accent color</div><div class="colors" role="group" aria-label="Agent accent color"><button class="color" type="button" data-color="#f15a29" style="--choice:#f15a29" aria-label="Orange" aria-pressed="true"><i></i></button><button class="color" type="button" data-color="#287d68" style="--choice:#287d68" aria-label="Green" aria-pressed="false"><i></i></button><button class="color" type="button" data-color="#355d9d" style="--choice:#355d9d" aria-label="Blue" aria-pressed="false"><i></i></button><button class="color" type="button" data-color="#7b4e9b" style="--choice:#7b4e9b" aria-label="Purple" aria-pressed="false"><i></i></button></div><button class="back try-preview" type="button" id="tryPreview">Try Rose ↓</button><div class="actions"><button class="back" type="button" data-back="1">← Business</button><button class="primary" type="button" id="toCheckout">Review plans →</button></div></section>
-      <section class="panel step" id="checkoutStep" hidden><h2 class="step-title">Your Rose is ready to save</h2><p class="step-note">Choose your plan. Square handles payment; your agent draft will be waiting in Workground afterward.</p><div class="plans" role="group" aria-label="Rose plan"><button class="plan" type="button" data-plan="Rose Basic — CA$39/mo" aria-pressed="false"><strong>Basic</strong><b>CA$39 <small>/mo</small></b><small>75 voice minutes each month</small></button><button class="plan" type="button" data-plan="Rose Pro — CA$129/mo" aria-pressed="true"><strong>Pro</strong><b>CA$129 <small>/mo</small></b><small>275 voice minutes each month</small></button></div><div class="summary"><b id="summaryName">Your agent</b><span id="summaryGoals"></span></div><form id="checkoutForm"><label class="field">Email for Workground and your receipt<input id="email" type="email" autocomplete="email" inputmode="email" required placeholder="you@yourbusiness.com"></label><label class="field" style="margin-top:14px">Promo code <small>(optional)</small><input id="promoCode" autocomplete="off" autocapitalize="characters"></label><p id="checkoutError" class="error" role="alert"></p><div class="actions"><button class="back" type="button" data-back="2">← Agent</button><button class="primary" type="submit" id="payButton">Continue to Square →</button></div><p class="fine">Nothing goes live from this screen. After payment, sign in to Workground to edit and test Rose. Wildrose helps install the widget on your website.</p></form></section>
+  <header class="top">
+    <div class="top-inner">
+      <a class="brand" href="https://wildroseautomations.ca/" aria-label="Wildrose home"><img src="https://wildroseautomations.ca/logos/wildrose.png" alt="">Wildrose <span>· Rose</span></a>
+      <div class="top-links"><span>Build now. Refine in Workground.</span><a href="mailto:jack@wildroseautomations.ca?subject=Rose%20setup%20help">Need help?</a></div>
     </div>
-    <aside class="preview" aria-label="Try Rose"><div class="preview-head"><div class="preview-mark">✦</div><div><b>Try the real Rose</b><small id="previewSite">Scan a website to start</small></div></div><p class="live-note" id="previewStatus">Rose will appear here after the website scan. You can chat or try voice before checkout.</p><div id="rose-workground-widget"></div><p class="preview-foot" id="previewFoot" hidden>Live preview · requests are not sent to the business</p></aside>
+  </header>
+  <main class="shell">
+    <div class="configuration">
+      <div class="heading">
+        <span class="eyebrow">Rose for your business</span>
+        <h1>Make Rose yours.</h1>
+        <p>Start with your website. Shape your agent, then talk to Rose before you choose a plan.</p>
+      </div>
+      <nav class="progress" aria-label="Setup progress">
+        <span data-progress="1" class="current">01 <b>Business</b></span>
+        <span data-progress="2">02 <b>Your agent</b></span>
+        <span data-progress="3">03 <b>Checkout</b></span>
+      </nav>
+      <section class="panel step" id="businessStep" aria-labelledby="businessHeading">
+        <div class="section-kicker">01 / Business</div>
+        <h2 class="step-title" id="businessHeading">Start with your website</h2>
+        <p class="step-note">Rose will use your public site to learn your business name, what you do, and your visual style.</p>
+        <form id="businessForm" class="fields">
+          <label class="field">Website<input id="website" type="text" inputmode="url" autocomplete="url" placeholder="https://yourbusiness.com" required><small>Use your business website.</small></label>
+          <label class="field">Business name<input id="businessName" autocomplete="organization" placeholder="We’ll look for this on your site"></label>
+          <div id="scanStatus" class="scan-status" role="status" aria-live="polite"></div>
+          <div class="actions"><a class="back" href="https://wildroseautomations.ca/">← Back to Rose</a><button class="primary" type="submit" id="scanButton">Continue <span aria-hidden="true">→</span></button></div>
+        </form>
+      </section>
+      <section class="panel step" id="agentStep" aria-labelledby="agentHeading" hidden>
+        <div class="section-kicker">02 / Your agent</div>
+        <h2 class="step-title" id="agentHeading">Shape the conversation</h2>
+        <p class="step-note">See each change in the Rose preview. You can edit more in Workground after checkout.</p>
+        <div id="scanEvidence" class="scan-evidence" hidden>
+          <div class="scan-evidence-top"><span class="evidence-icon" aria-hidden="true">✓</span><div><strong>Website scanned</strong><small id="scanEvidenceSite"></small></div><button class="text-button" type="button" data-back="1">Change site</button></div>
+          <p id="scanEvidenceSummary"></p>
+        </div>
+        <div class="subhead">What should Rose help visitors do?</div>
+        <div class="goals" role="group" aria-label="Agent goals">
+          <button class="goal" type="button" data-goal="answer_questions" aria-pressed="true">Answer questions</button>
+          <button class="goal" type="button" data-goal="capture_leads" aria-pressed="true">Collect contact details</button>
+          <button class="goal" type="button" data-goal="quote_requests" aria-pressed="false">Handle quote requests</button>
+          <button class="goal" type="button" data-goal="booking_requests" aria-pressed="false">Handle booking requests</button>
+          <button class="goal" type="button" data-goal="product_guidance" aria-pressed="false">Guide product choices</button>
+        </div>
+        <div class="fields"><label class="field">Agent name<input id="agentName" maxlength="80" autocomplete="off"></label><label class="field">First message<textarea id="greeting" maxlength="600"></textarea></label></div>
+        <div class="subhead">Voice and tone</div>
+        <div class="tone-row" role="group" aria-label="Agent tone"><button class="tone" type="button" data-tone="friendly" aria-pressed="true">Friendly</button><button class="tone" type="button" data-tone="professional" aria-pressed="false">Professional</button><button class="tone" type="button" data-tone="concise" aria-pressed="false">Concise</button></div>
+        <div class="subhead">Brand color</div>
+        <div class="colors" role="group" aria-label="Agent accent color"><button class="color" type="button" data-color="#f15a29" style="--choice:#f15a29" aria-label="Orange" aria-pressed="true"><i></i></button><button class="color" type="button" data-color="#287d68" style="--choice:#287d68" aria-label="Green" aria-pressed="false"><i></i></button><button class="color" type="button" data-color="#355d9d" style="--choice:#355d9d" aria-label="Blue" aria-pressed="false"><i></i></button><button class="color" type="button" data-color="#7b4e9b" style="--choice:#7b4e9b" aria-label="Purple" aria-pressed="false"><i></i></button></div>
+        <button class="back try-preview" type="button" id="tryPreview">Try Rose ↓</button>
+        <p id="agentError" class="error" role="alert"></p>
+        <div class="actions"><button class="back" type="button" data-back="1">← Business</button><button class="primary" type="button" id="toCheckout">Review plans <span aria-hidden="true">→</span></button></div>
+      </section>
+      <section class="panel step" id="checkoutStep" aria-labelledby="checkoutHeading" hidden>
+        <div class="section-kicker">03 / Checkout</div>
+        <h2 class="step-title" id="checkoutHeading">Choose your plan</h2>
+        <p class="step-note">Your choices and website scan will become a Workground draft when you continue through checkout.</p>
+        <div class="plans" role="group" aria-label="Rose plan">
+          <button class="plan" type="button" data-plan="Rose Basic — CA$39/mo" aria-pressed="false"><span class="plan-top"><strong>Basic</strong><span class="plan-check" aria-hidden="true">✓</span></span><b>CA$39 <small>/ month</small></b><small>75 voice minutes each month</small></button>
+          <button class="plan" type="button" data-plan="Rose Pro — CA$129/mo" aria-pressed="true"><span class="plan-top"><strong>Pro</strong><span class="plan-check" aria-hidden="true">✓</span></span><b>CA$129 <small>/ month</small></b><small>275 voice minutes each month</small></button>
+        </div>
+        <p class="plan-note">Extra voice minutes are CA$0.29 each. Custom integrations are scoped separately.</p>
+        <div class="summary"><span class="summary-label">YOUR AGENT</span><b id="summaryName">Rose</b><span id="summaryGoals"></span></div>
+        <form id="checkoutForm">
+          <label class="field">Workground email<input id="email" type="email" autocomplete="email" inputmode="email" required placeholder="you@yourbusiness.com"><small>Use the address you want to sign in with.</small></label>
+          <label class="field promo-field">Promo code <small>(optional)</small><input id="promoCode" autocomplete="off" autocapitalize="characters"></label>
+          <p id="checkoutError" class="error" role="alert"></p>
+          <div class="actions"><button class="back" type="button" data-back="2">← Your agent</button><button class="primary" type="submit" id="payButton">Continue <span aria-hidden="true">→</span></button></div>
+          <p class="fine">If payment is due, checkout opens on Square. Rose stays a draft until you review and publish it in Workground. Wildrose helps with installation.</p>
+        </form>
+      </section>
+    </div>
+    <aside class="preview" aria-label="Try Rose">
+      <div class="preview-head"><div class="preview-mark" aria-hidden="true">✦</div><div><b>Rose preview</b><small id="previewSite">Scan a website to start</small></div><span class="preview-live" id="previewLive" hidden>LIVE</span></div>
+      <p class="live-note" id="previewStatus" role="status">Rose will appear here after the website scan.</p>
+      <button class="text-button" type="button" id="retryPreview" hidden>Retry preview</button>
+      <div id="rose-workground-widget"></div>
+      <p class="preview-foot" id="previewFoot" hidden>Chat and voice preview. Test requests are not delivered to the business.</p>
+    </aside>
   </main>
-  <script>
-const API = 'https://wildrose-widget.wildeautomations.com';
-const WIDGET = 'https://wildroseautomations.ca/wildrose-widget-sandbox.js?v=voice-universal-3';
-const params = new URLSearchParams(location.search);
-const fromDemo = params.get('from') === 'demo';
-const form = document.getElementById('businessForm');
-const steps = {1: document.getElementById('businessStep'), 2: document.getElementById('agentStep'), 3: document.getElementById('checkoutStep')};
-const goalLabels = {answer_questions:'answer questions',capture_leads:'collect contact details',quote_requests:'help with quote requests',booking_requests:'help with booking requests',product_guidance:'guide visitors to products'};
-let selectedPlan = params.get('plan') === 'basic' ? 'Rose Basic — CA$39/mo' : 'Rose Pro — CA$129/mo';
-let selectedTone = 'friendly';
-let selectedColor = '#f15a29';
-let siteScanId = '';
-let lastScan = null;
-let scannedWebsite = '';
-let scanPromise = null;
-let widgetReady = false;
-
-function websiteUrl(raw) {
-  let value = String(raw || '').trim();
-  if (value && !/^https?:\/\//i.test(value)) value = 'https://' + value;
-  const url = new URL(value);
-  if (url.protocol !== 'https:' || !url.hostname.includes('.') || url.username || url.password) throw new Error('Enter a public HTTPS website.');
-  return url.href;
-}
-function showStep(number) {
-  Object.entries(steps).forEach(([key, element]) => element.hidden = Number(key) !== number);
-  document.querySelectorAll('[data-progress]').forEach(item => {
-    const n = Number(item.dataset.progress);
-    item.classList.toggle('current', n === number);
-    item.classList.toggle('done', n < number);
-  });
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-function selectedGoals() { return [...document.querySelectorAll('[data-goal][aria-pressed=true]')].map(button => button.dataset.goal); }
-function currentSetup() {
-  return {assistantName:document.getElementById('agentName').value.trim(),greetingMessage:document.getElementById('greeting').value.trim(),goals:selectedGoals(),tone:selectedTone,color:selectedColor};
-}
-function businessName() { return document.getElementById('businessName').value.trim(); }
-function currentWebsite() { try { return websiteUrl(document.getElementById('website').value); } catch { return ''; } }
-function websiteFacts() {
-  const source = lastScan || {};
-  return [source.description || source.summary || '', source.industry ? `Business type: ${source.industry}.` : ''].filter(Boolean).join(' ').slice(0,1800);
-}
-function liveContext() {
-  const goals = selectedGoals().map(goal => goalLabels[goal]).join(', ');
-  return [
-    `You are the visitor-facing Rose assistant for ${businessName() || 'this business'} at ${currentWebsite() || 'its website'}.`,
-    websiteFacts() ? `Verified public website facts: ${websiteFacts()}` : 'The website has not provided enough verified facts yet.',
-    goals ? `The owner wants you to ${goals}.` : '',
-    `Tone: ${selectedTone}. Answer from verified facts. If you do not know, say so and offer to collect a request for the owner. Do not claim a booking, quote, purchase, or connected automation is complete.`,
-  ].filter(Boolean).join('\n').slice(0,3600);
-}
-function rememberDraft() {
-  const website = currentWebsite();
-  if (!website) return;
-  try { sessionStorage.setItem('roseConfiguratorDraft', JSON.stringify({website,businessName:businessName(),siteScanId,scan:lastScan,agentSetup:currentSetup()})); } catch {}
-}
-function applyRosePreview() {
-  document.documentElement.style.setProperty('--accent', selectedColor);
-  if (!widgetReady || typeof window.__roseWorkgroundApplyConfig !== 'function') return;
-  const setup = currentSetup();
-  const website = currentWebsite();
-  window.__roseWorkgroundApplyConfig({
-    status:'draft',
-    appearance:{assistantName:setup.assistantName || 'Rose',greetingMessage:setup.greetingMessage || 'Hi! What can I help you find?',brandPrimary:selectedColor,brandAccent:selectedColor,buttonColor:selectedColor,avatarUrl:lastScan?.logo || lastScan?.logoUrl || ''},
-    settings:{businessName:businessName(),website,ownerEmail:'',configuredGoals:setup.goals,configuredTone:selectedTone},
-    context:[{text:liveContext(),source:'website scan',sourceUrl:website}],
-  });
-  document.getElementById('previewSite').textContent = website ? new URL(website).hostname : 'Your website assistant';
-  document.getElementById('previewFoot').hidden = false;
-  document.getElementById('previewStatus').textContent = 'This is Rose. Ask a question about the business, or switch to voice.';
-  rememberDraft();
-}
-function mountRose() {
-  if (!businessName() || !currentWebsite()) return;
-  if (document.getElementById('realRoseWidgetScript')) { applyRosePreview(); return; }
-  document.getElementById('previewStatus').textContent = 'Starting Rose for ' + businessName() + '…';
-  const script = document.createElement('script');
-  script.id = 'realRoseWidgetScript';
-  script.src = WIDGET;
-  script.dataset.apiBase = API;
-  script.dataset.title = currentSetup().assistantName || 'Rose';
-  script.dataset.businessName = businessName();
-  script.dataset.businessId = 'preview-' + new URL(currentWebsite()).hostname.replace(/[^a-z0-9]+/gi,'-').toLowerCase();
-  script.dataset.accent = selectedColor;
-  script.dataset.logo = lastScan?.logo || lastScan?.logoUrl || 'https://wildroseautomations.ca/logos/wildrose.png';
-  script.dataset.subtitle = 'AI front desk for ' + businessName();
-  script.dataset.greeting = currentSetup().greetingMessage || 'Hi! What can I help you find?';
-  script.dataset.placeholder = 'Ask Rose about ' + businessName() + '…';
-  script.dataset.website = currentWebsite();
-  script.dataset.businessContext = liveContext();
-  script.dataset.previewMode = 'true';
-  script.dataset.loadPublished = 'false';
-  script.dataset.mount = '#rose-workground-widget';
-  script.dataset.inline = 'true';
-  script.onload = () => {
-    widgetReady = true;
-    const title = document.querySelector('#rose-workground-widget .wr-title');
-    if (title && !title.querySelector('.wr-mark')) {
-      const mark = document.createElement('span');
-      mark.className = 'wr-mark';
-      const logo = document.createElement('img');
-      logo.src = script.dataset.logo;
-      logo.alt = '';
-      mark.appendChild(logo);
-      title.parentElement?.insertBefore(mark,title);
-    }
-    applyRosePreview();
-    document.querySelector('#rose-workground-widget .wr-tab[data-view="chat"]')?.click();
-  };
-  script.onerror = () => { document.getElementById('previewStatus').textContent = 'Rose could not load right now. Please retry this page.'; };
-  document.body.appendChild(script);
-}
-function updatePreview() { applyRosePreview(); }
-function setChosenColor(color) {
-  if (!/^#[0-9a-f]{6}$/i.test(String(color || ''))) return;
-  selectedColor = color.toLowerCase();
-  if (![...document.querySelectorAll('[data-color]')].some(item => item.dataset.color.toLowerCase() === selectedColor)) {
-    const choice = document.createElement('button');
-    choice.className = 'color';
-    choice.type = 'button';
-    choice.dataset.color = selectedColor;
-    choice.setAttribute('aria-label', 'Website color');
-    choice.style.setProperty('--choice', selectedColor);
-    choice.appendChild(document.createElement('i'));
-    document.querySelector('.colors').prepend(choice);
-  }
-  document.querySelectorAll('[data-color]').forEach(item => item.setAttribute('aria-pressed', String(item.dataset.color.toLowerCase() === selectedColor)));
-  applyRosePreview();
-}
-function ensureDefaults() {
-  const name = businessName();
-  if (!document.getElementById('agentName').value.trim()) document.getElementById('agentName').value = (name + ' Assistant').slice(0,80);
-  if (!document.getElementById('greeting').value.trim()) document.getElementById('greeting').value = `Hi! I can help you explore ${name} and find what you need. What can I help with?`;
-}
-async function scanWebsite(website) {
-  const status = document.getElementById('scanStatus');
-  scannedWebsite = website;
-  status.textContent = 'Rose is reading your website.';
-  status.className = 'scan-status show';
-  try {
-    const response = await fetch(API + '/api/site-mockup', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({website,sourcePage:location.href})});
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(data.error || 'Website scan unavailable');
-    siteScanId = data.scanId || '';
-    lastScan = data;
-    const name = String(data.brandName || data.businessName || data.title || '').trim();
-    if (name && !businessName()) document.getElementById('businessName').value = name;
-    setChosenColor((data.brandColors || data.colors || [])[0]);
-    status.textContent = 'Website read. Your real Rose preview is ready.';
-    status.className = 'scan-status show';
-    ensureDefaults();
-    mountRose();
-    applyRosePreview();
-  } catch {
-    siteScanId = '';
-    lastScan = null;
-    status.textContent = 'We could not read this website yet. Enter your business name to continue; Rose will say when it does not know an answer.';
-    status.className = 'scan-status show warn';
-  }
-}
-
-const siteInput = document.getElementById('website');
-siteInput.value = params.get('website') || '';
-document.getElementById('businessName').value = params.get('business') || '';
-document.getElementById('email').value = sessionStorage.getItem('roseConfiguratorEmail') || '';
-let remembered = null;
-try { remembered = JSON.parse(sessionStorage.getItem('roseConfiguratorDraft') || 'null'); } catch {}
-if (remembered && !fromDemo && (!params.get('website') || remembered.website === params.get('website'))) {
-  siteInput.value = remembered.website || siteInput.value;
-  document.getElementById('businessName').value = remembered.businessName || businessName();
-  document.getElementById('agentName').value = remembered.agentSetup?.assistantName || '';
-  document.getElementById('greeting').value = remembered.agentSetup?.greetingMessage || '';
-  siteScanId = remembered.siteScanId || '';
-  lastScan = remembered.scan || null;
-  if (Array.isArray(remembered.agentSetup?.goals)) document.querySelectorAll('[data-goal]').forEach(item => item.setAttribute('aria-pressed', String(remembered.agentSetup.goals.includes(item.dataset.goal))));
-  selectedTone = remembered.agentSetup?.tone || selectedTone;
-  setChosenColor(remembered.agentSetup?.color || selectedColor);
-  document.querySelectorAll('[data-tone]').forEach(item => item.setAttribute('aria-pressed', String(item.dataset.tone === selectedTone)));
-}
-if (fromDemo && params.get('website') && params.get('business') && params.get('summary') && params.get('scanId')) {
-  try {
-    scannedWebsite = websiteUrl(params.get('website'));
-    siteInput.value = scannedWebsite;
-    siteScanId = params.get('scanId');
-    lastScan = {description:params.get('summary').slice(0,1800),industry:(params.get('industry') || '').slice(0,120),logo:params.get('logo') || ''};
-    setChosenColor(params.get('accent'));
-    ensureDefaults();
-    mountRose();
-    document.getElementById('scanStatus').textContent = 'Website already read in your demo. Your Rose preview is ready.';
-    document.getElementById('scanStatus').className = 'scan-status show';
-    showStep(2);
-  } catch { scanPromise = scanWebsite(currentWebsite()); }
-} else if (siteInput.value) {
-  try { scanPromise = scanWebsite(websiteUrl(siteInput.value)); } catch {}
-}
-
-for (const button of document.querySelectorAll('[data-goal]')) button.addEventListener('click', () => { button.setAttribute('aria-pressed', String(button.getAttribute('aria-pressed') !== 'true')); updatePreview(); });
-for (const button of document.querySelectorAll('[data-tone]')) button.addEventListener('click', () => { selectedTone = button.dataset.tone; document.querySelectorAll('[data-tone]').forEach(item => item.setAttribute('aria-pressed', String(item === button))); updatePreview(); });
-document.querySelector('.colors').addEventListener('click', event => { const button = event.target.closest('[data-color]'); if (button) setChosenColor(button.dataset.color); });
-for (const button of document.querySelectorAll('[data-plan]')) button.addEventListener('click', () => { selectedPlan = button.dataset.plan; document.querySelectorAll('[data-plan]').forEach(item => item.setAttribute('aria-pressed', String(item === button))); });
-document.querySelectorAll('[data-plan]').forEach(item => item.setAttribute('aria-pressed', String(item.dataset.plan === selectedPlan)));
-for (const button of document.querySelectorAll('[data-back]')) button.addEventListener('click', () => showStep(Number(button.dataset.back)));
-for (const id of ['agentName','greeting','businessName']) document.getElementById(id).addEventListener('input', updatePreview);
-document.getElementById('tryPreview').addEventListener('click', () => document.querySelector('.preview').scrollIntoView({behavior:'smooth',block:'start'}));
-form.addEventListener('submit', async event => {
-  event.preventDefault();
-  const button = document.getElementById('scanButton');
-  const status = document.getElementById('scanStatus');
-  let website;
-  try { website = websiteUrl(siteInput.value); } catch (error) { status.textContent=error.message; status.className='scan-status show warn'; return; }
-  button.disabled = true; button.textContent = 'Reading website…';
-  if (scannedWebsite !== website) scanPromise = scanWebsite(website);
-  if (scanPromise) await scanPromise;
-  button.disabled = false; button.textContent = 'Continue →';
-  if (!businessName()) { status.textContent='Enter your business name to continue.'; status.className='scan-status show warn'; document.getElementById('businessName').focus(); return; }
-  ensureDefaults(); mountRose(); applyRosePreview(); showStep(2);
-});
-document.getElementById('toCheckout').addEventListener('click', () => {
-  const setup = currentSetup();
-  if (!setup.assistantName) { document.getElementById('agentName').focus(); return; }
-  document.getElementById('summaryName').textContent = setup.assistantName;
-  document.getElementById('summaryGoals').textContent = setup.goals.map(goal => goalLabels[goal]).join(' · ') || 'A helpful website assistant';
-  rememberDraft();
-  showStep(3);
-});
-document.getElementById('checkoutForm').addEventListener('submit', async event => {
-  event.preventDefault();
-  const button = document.getElementById('payButton'), error = document.getElementById('checkoutError');
-  error.textContent=''; button.disabled=true; button.textContent='Preparing checkout…';
-  try {
-    const payload={businessName:businessName(),website:websiteUrl(siteInput.value),email:document.getElementById('email').value.trim(),plan:selectedPlan,promoCode:document.getElementById('promoCode').value.trim(),source:fromDemo?'rose-configurator-demo':'rose-configurator',sourcePage:location.href,siteScanId,agentSetup:currentSetup()};
-    const response=await fetch(API+'/api/rose-checkout-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-    const result=await response.json().catch(()=>({}));
-    if(!response.ok||result.ok===false)throw new Error(result.error||'Could not prepare checkout');
-    if(payload.promoCode&&!result.promoApplied)throw new Error('That promo code is not valid. Check it or leave it blank.');
-    const target=result.nextUrl||result.checkoutUrl;
-    if(!target||!/^https:\/\//i.test(target))throw new Error('Secure checkout is temporarily unavailable');
-    location.assign(target);
-  } catch(cause) { error.textContent=cause.message||'Could not start checkout. Please try again.'; button.disabled=false; button.textContent='Continue to Square →'; }
-});
-applyRosePreview();
-  </script>
+  <footer class="site-footer"><span>Rose by Wildrose Automations</span><div><a href="https://wildroseautomations.ca/privacy.html">Privacy</a><a href="https://wildroseautomations.ca/terms.html">Terms</a><a href="mailto:jack@wildroseautomations.ca?subject=Rose%20setup%20help">Support</a></div></footer>
 </body>
 </html>
