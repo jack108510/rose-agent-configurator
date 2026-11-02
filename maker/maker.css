@@ -1,0 +1,23 @@
+/* Rose Maker additions on top of the configurator stylesheet (../styles.css). */
+.scan-evidence{border:1px solid #e9ded3;border-radius:16px;background:#fbf7f2;padding:15px;margin:15px 0}
+.scan-evidence-top{display:flex;align-items:center;gap:10px}
+.scan-evidence-top strong{display:block;font-size:14px}
+.scan-evidence-top small{color:var(--muted);font-size:12px}
+.evidence-icon{width:26px;height:26px;border-radius:50%;background:#e5f3e7;color:#2b7547;display:grid;place-items:center;font-weight:800;flex:none}
+.scan-evidence p{font-size:13px;line-height:1.5;color:#54453a;margin:10px 0}
+.scan-sources{display:flex;flex-wrap:wrap;gap:6px}
+.scan-sources span{font-size:11px;border:1px solid var(--line);border-radius:999px;padding:4px 8px;background:#fff;color:#7a6a5e;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.scan-correction{margin-top:16px}
+.scan-correction summary{cursor:pointer;font-size:13px;font-weight:750;color:#8a5636}
+.scan-correction .field{margin-top:10px}
+.maker-actions{flex-wrap:wrap}
+.maker-wa{display:inline-flex;align-items:center;min-height:46px;border-radius:12px;padding:0 18px;font-weight:800;text-decoration:none}
+.maker-list{margin-top:26px}
+.rose-list{display:grid;gap:10px}
+.rose-row{display:flex;align-items:center;gap:12px;border:1px solid #e9ded3;border-radius:14px;background:#fbf7f2;padding:12px 14px;flex-wrap:wrap}
+.rose-row .who{min-width:0;flex:1}
+.rose-row .who b{display:block;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rose-row .who span{display:block;font-size:12px;color:var(--muted)}
+.rose-chip{font-size:11px;font-weight:800;border-radius:999px;padding:5px 9px;border:1px solid var(--line);color:#7a6a5e;background:#fff}
+.rose-chip.sent{border-color:#cbe2d2;background:#f0f8f1;color:#2b7547}
+.rose-row button{min-height:36px;border-radius:10px;padding:0 12px;font-weight:750}

@@ -2,6 +2,10 @@ const API = 'https://wildrose-widget.wildeautomations.com';
 const WIDGET = 'https://wildroseautomations.ca/wildrose-widget-sandbox.js?v=voice-universal-3';
 const params = new URLSearchParams(location.search);
 const fromDemo = params.get('from') === 'demo';
+/* Partner attribution: Rose Maker preview links arrive with
+   ?source=partner-<agencyCode>. Honour it in the checkout lead so a claimed
+   Rose is credited to the designer who made it. Anything else is ignored. */
+const partnerSource = /^partner-[a-z0-9-]{1,40}$/i.test(params.get('source') || '') ? params.get('source') : '';
 const form = document.getElementById('businessForm');
 const steps = {1: document.getElementById('businessStep'), 2: document.getElementById('agentStep'), 3: document.getElementById('checkoutStep')};
 const goalLabels = {answer_questions:'answer questions',capture_leads:'collect contact details',quote_requests:'help with quote requests',booking_requests:'help with booking requests',product_guidance:'guide visitors to products'};
@@ -158,7 +162,10 @@ function mountRose() {
   script.dataset.apiBase = API;
   script.dataset.title = currentSetup().assistantName || 'Rose';
   script.dataset.businessName = businessName();
-  script.dataset.businessId = 'preview-' + new URL(currentWebsite()).hostname.replace(/[^a-z0-9]+/gi,'-').toLowerCase();
+  // No businessId for previews: the chat and voice APIs treat any businessId as
+  // a real client id and reject synthetic preview ids with 409 ("Business setup
+  // is incomplete"), which broke preview chat. Preview mode plus name, website
+  // and context is enough. Matches the wildrose-site-fixes package.
   script.dataset.accent = selectedColor;
   script.dataset.logo = safeSiteLogo(lastScan?.logo || lastScan?.logoUrl) || 'https://wildroseautomations.ca/logos/wildrose.png';
   script.dataset.subtitle = 'AI front desk for ' + businessName();
@@ -355,7 +362,7 @@ document.getElementById('checkoutForm').addEventListener('submit', async event =
   error.textContent=''; button.disabled=true; button.textContent='Preparing checkout…';
   try {
     if (!scanReady()) throw new Error('The website scan is not ready. Return to Business and retry.');
-    const payload={businessName:businessName(),website:websiteUrl(siteInput.value),email:document.getElementById('email').value.trim(),plan:selectedPlan,promoCode:document.getElementById('promoCode').value.trim(),source:fromDemo?'rose-configurator-demo':'rose-configurator',sourcePage:location.href,siteScanId,agentSetup:currentSetup()};
+    const payload={businessName:businessName(),website:websiteUrl(siteInput.value),email:document.getElementById('email').value.trim(),plan:selectedPlan,promoCode:document.getElementById('promoCode').value.trim(),source:partnerSource||(fromDemo?'rose-configurator-demo':'rose-configurator'),sourcePage:location.href,siteScanId,agentSetup:currentSetup()};
     const response=await fetch(API+'/api/rose-checkout-lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     const result=await response.json().catch(()=>({}));
     if(!response.ok||result.ok===false)throw new Error(result.error||'Could not prepare checkout');
