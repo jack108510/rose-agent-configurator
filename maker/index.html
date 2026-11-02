@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fffaf6">
+  <title>Rose Maker for Designers, Wildrose Automations</title>
+  <meta name="description" content="Build a Rose for a client website in minutes and send them one preview link.">
+  <link rel="icon" type="image/png" href="https://wildroseautomations.ca/logos/wildrose.png">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="./maker.css">
+</head>
+<body>
+  <header class="top"><div class="top-inner">
+    <a class="brand" href="https://wildroseautomations.ca/"><img src="https://wildroseautomations.ca/logos/wildrose.png" alt="">Wildrose <span style="color:var(--orange)">Automations</span></a>
+    <small>Rose Maker for Designers</small>
+  </div></header>
+
+  <main class="shell">
+    <div>
+      <p class="eyebrow">For web designers and agencies</p>
+      <div class="heading"><h1>Make a Rose for a client. Send one link.</h1>
+      <p>Paste your client's website. Rose reads it, builds herself, and you send the client a preview of Rose working on their own site. They claim their Workground from that link when they are ready.</p></div>
+
+      <div class="progress" aria-hidden="true">
+        <span id="prog1" class="current">1. Your agency</span>
+        <span id="prog2">2. Client website</span>
+        <span id="prog3">3. Their Rose</span>
+        <span id="prog4">4. Preview link</span>
+      </div>
+
+      <section class="panel step" id="agencyStep" aria-labelledby="agencyHeading">
+        <h2 class="step-title" id="agencyHeading">Your agency</h2>
+        <p class="step-note">This is how the preview is credited. Your agency code is the code from your Rose partner workspace, so claimed clients land with the right agency.</p>
+        <div class="fields">
+          <label class="field">Agency name<input id="agencyName" autocomplete="organization" placeholder="For example: Rana Technologies"></label>
+          <label class="field">Agency code<input id="agencyCode" autocomplete="off" placeholder="Your partner workspace code"><small>Find it in your partner console under your workspace. It travels with the claim link as attribution.</small></label>
+        </div>
+        <div class="actions"><span></span><button class="primary" type="button" id="toClient">Continue <span aria-hidden="true">→</span></button></div>
+      </section>
+
+      <section class="panel step" id="clientStep" aria-labelledby="clientHeading" hidden>
+        <h2 class="step-title" id="clientHeading">Client website</h2>
+        <p class="step-note">Rose scans public pages on this website and builds a first draft from what she finds. Nothing is installed and the client is not contacted.</p>
+        <form id="clientForm" class="fields">
+          <label class="field">Client website URL<input id="website" type="text" inputmode="url" autocomplete="url" placeholder="https://clientbusiness.com" required></label>
+          <label class="field">Client contact email <small>(optional, used when you send the link)</small><input id="clientEmail" type="email" autocomplete="off" placeholder="owner@clientbusiness.com"></label>
+          <div id="scanStatus" class="scan-status" role="status" aria-live="polite"></div>
+          <div id="scanEvidence" class="scan-evidence" hidden>
+            <div class="scan-evidence-top"><span class="evidence-icon" aria-hidden="true">✓</span><div><strong>What Rose learned</strong><small id="scanEvidenceSite"></small></div></div>
+            <p id="scanEvidenceSummary"></p>
+            <div id="scanSources" class="scan-sources" aria-label="Pages Rose read"></div>
+            <p class="fine" id="scanBrand"></p>
+          </div>
+          <div class="actions"><button class="back" type="button" data-back="agencyStep">← Agency</button><button class="primary" type="submit" id="scanButton">Scan and build Rose <span aria-hidden="true">→</span></button></div>
+        </form>
+      </section>
+
+      <section class="panel step" id="setupStep" aria-labelledby="setupHeading" hidden>
+        <h2 class="step-title" id="setupHeading">Their Rose</h2>
+        <p class="step-note">Defaults are taken from the client's own website. Change only what you know better than the scan does. Try the live preview on the right as you edit.</p>
+        <div class="fields">
+          <label class="field">Business name<input id="businessName" autocomplete="organization"></label>
+          <label class="field">Agent name<input id="agentName" maxlength="80" autocomplete="off"></label>
+          <label class="field">First message<textarea id="greeting" maxlength="600"></textarea></label>
+        </div>
+        <p class="subhead">What should Rose help with?</p>
+        <div class="goals" id="goals">
+          <button type="button" class="goal" data-goal="answer_questions" aria-pressed="true">Answer questions</button>
+          <button type="button" class="goal" data-goal="capture_leads" aria-pressed="true">Collect contact details</button>
+          <button type="button" class="goal" data-goal="quote_requests" aria-pressed="false">Help with quote requests</button>
+          <button type="button" class="goal" data-goal="booking_requests" aria-pressed="false">Help with booking requests</button>
+          <button type="button" class="goal" data-goal="product_guidance" aria-pressed="false">Guide visitors to products</button>
+        </div>
+        <p class="subhead">Tone</p>
+        <div class="tone-row" id="tones">
+          <button type="button" class="tone" data-tone="friendly" aria-pressed="true">Friendly</button>
+          <button type="button" class="tone" data-tone="professional" aria-pressed="false">Professional</button>
+          <button type="button" class="tone" data-tone="warm" aria-pressed="false">Warm</button>
+        </div>
+        <p class="subhead">Colour, from their website</p>
+        <div class="colors" id="colors"></div>
+        <details class="scan-correction">
+          <summary>Correct a business fact</summary>
+          <label class="field" for="businessFactsCorrection">What should Rose know instead?<textarea id="businessFactsCorrection" maxlength="1200" placeholder="For example: We serve Halifax and Dartmouth only."></textarea><small>Your correction takes priority over the website scan.</small></label>
+        </details>
+        <p id="setupError" class="error" role="alert"></p>
+        <div class="actions"><button class="back" type="button" data-back="clientStep">← Website</button><button class="primary" type="button" id="toLink">Create preview link <span aria-hidden="true">→</span></button></div>
+      </section>
+
+      <section class="panel step" id="linkStep" aria-labelledby="linkHeading" hidden>
+        <h2 class="step-title" id="linkHeading">Send this link</h2>
+        <p class="step-note">The client sees Rose working on their own website, under your agency name. The Make it yours button takes them to claim their Workground with your agency attached. Pilot terms on the page: 30 day preview, 75 voice minutes, no card.</p>
+        <label class="field">Preview link<input id="shareLink" readonly></label>
+        <div class="actions maker-actions">
+          <button class="back" type="button" id="copyLink">Copy link</button>
+          <a class="back maker-wa" id="whatsAppShare" href="#" target="_blank" rel="noopener">Send on WhatsApp</a>
+          <button class="primary" type="button" id="openPreview">Open preview <span aria-hidden="true">→</span></button>
+        </div>
+        <p class="fine">Saved below in My Roses on this device, so you can resend it any time.</p>
+        <div class="actions"><button class="back" type="button" id="makeAnother">Make another Rose</button><span></span></div>
+      </section>
+
+      <section class="panel maker-list" id="listPanel" aria-labelledby="listHeading">
+        <h2 class="step-title" id="listHeading">My Roses</h2>
+        <p class="step-note">Roses you have made on this device. Statuses past Sent are confirmed in your partner console once a client claims and publishes.</p>
+        <div id="roseList" class="rose-list"><p class="fine">None yet. Your first Rose will appear here.</p></div>
+      </section>
+    </div>
+
+    <aside class="preview" id="rosePreview" aria-label="Try their Rose" hidden>
+      <div class="preview-head"><div class="preview-mark" aria-hidden="true">✦</div><div><b>Meet their Rose</b><small id="previewSite">Built from the client's website</small></div><span class="preview-live" id="previewLive" hidden>PREVIEW</span></div>
+      <p class="live-note" id="previewStatus" role="status">Loading the preview…</p>
+      <button class="text-button" type="button" id="retryPreview" hidden>Retry preview</button>
+      <div id="rose-workground-widget"></div>
+      <p class="preview-foot" id="previewFoot" hidden>Chat and voice preview. Test requests are not delivered to the business.</p>
+    </aside>
+  </main>
+  <script src="./app.js"></script>
+</body>
+</html>

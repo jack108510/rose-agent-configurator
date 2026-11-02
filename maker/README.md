@@ -1,0 +1,66 @@
+# Rose Maker for Designers
+
+Spec: `~/workspace/goals/wildrose-designer-partner-test/files/designer-tool-map-and-spec.md`
+(in the Wildrose designer partner test goal). This is v1, built only from
+pieces that already exist live. No new backend was required.
+
+## What it does
+
+1. Designer enters their agency name and partner workspace code (kept in
+   localStorage on their device).
+2. Designer pastes a client website. The existing scan API
+   (POST /api/rose-site-scan on wildrose-widget.wildeautomations.com) reads
+   the site and returns brand name, brand colours, logo, pages, summary and
+   page knowledge.
+3. Setup defaults come from the scan (business name, first colour, logo).
+   The designer can change agent name, greeting, goals, tone, colour, and
+   add a fact correction, which outranks scan text in the agent context,
+   same rule as the configurator.
+4. A live preview of the real Rose widget (chat and voice, preview mode)
+   mounts beside the form.
+5. "Create preview link" produces a shareable `preview.html?d=...` link.
+   The link carries the whole setup (website, business, agent setup,
+   agency name and code, pilot trial terms) base64url-encoded. The
+   designer's made Roses are listed under My Roses (localStorage on their
+   device) with Copy link, Open, Mark sent, Delete.
+6. `preview.html` is what the client opens: their own website in a frame
+   with Rose layered on top, a header crediting the agency, the trial note
+   (30 days, 75 voice minutes, no card), and a "Make it yours" button.
+   Opening the page rescans the site for fresh knowledge, then mounts the
+   widget with the designer's setup.
+7. Claim goes to the existing configurator with `website` and `business`
+   prefilled (it rescans automatically) and `source=partner-<agencyCode>`.
+   The configurator now honours that source in the checkout lead (see the
+   patch note in ../app.js), so the claimed Rose is attributed to the
+   designer.
+
+## The preview businessId rule (do not regress)
+
+Never mount the widget with a synthetic businessId such as
+`preview-<hostname>`. The widget API treats any businessId as a real client
+id, and chat start returns "Business setup is incomplete". Both Maker pages
+mount with no businessId and pass name, website and businessContext with
+previewMode on. Verified live on 2026-11-02: chat start and a full message
+round trip succeed with no businessId and fail with a synthetic one.
+The same fix was applied to ../app.js, matching the wildrose-site-fixes
+package (which fixed the wildrose-automations copy of /configure/).
+
+## Known v1 limits, deliberate
+
+- No server-side draft or viewed tracking: links are self-contained, so
+  "Viewed" cannot be reported until the backend piece lands (agency
+  attributed draft creation with a preview token, specced in the map doc).
+  My Roses statuses are Created and Sent (manual) on the designer's device;
+  Claimed and Live are visible in the partner console stage engine.
+- Claim still ends at the existing configurator checkout. A no-card trial
+  claim needs the backend trial path; until then the preview page states
+  the pilot terms and the agency settles the trial with Wildrose as they
+  do today.
+- Agency code is carried as attribution, not authenticated in the Maker.
+  Authentication exists at the partner workspace and at claim time.
+
+## Files
+
+- `index.html`, `app.js`, `maker.css`: the Maker. Reuses `../styles.css`
+  and the configurator's widget mounting pattern.
+- `preview.html`: the client preview and claim page, self-contained.
