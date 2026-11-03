@@ -6,8 +6,10 @@ pieces that already exist live. No new backend was required.
 
 ## What it does
 
-1. Designer enters their agency name and partner workspace code (kept in
-   localStorage on their device).
+1. Designer logs in to their partner workspace (link on step one) and
+   enters their company name and website once (kept in localStorage on
+   their device). There is no agency code anywhere in the flow; Jack
+   removed it on 2026-11-02 in favour of login plus company info.
 2. Designer pastes a client website. The existing scan API
    (POST /api/rose-site-scan on wildrose-widget.wildeautomations.com) reads
    the site and returns brand name, brand colours, logo, pages, summary and
@@ -20,7 +22,7 @@ pieces that already exist live. No new backend was required.
    mounts beside the form.
 5. "Create preview link" produces a shareable `preview.html?d=...` link.
    The link carries the whole setup (website, business, agent setup,
-   agency name and code, pilot trial terms) base64url-encoded. The
+   agency name, pilot trial terms) base64url-encoded. The
    designer's made Roses are listed under My Roses (localStorage on their
    device) with Copy link, Open, Mark sent, Delete.
 6. `preview.html` is what the client opens: their own website in a frame
@@ -29,10 +31,10 @@ pieces that already exist live. No new backend was required.
    Opening the page rescans the site for fresh knowledge, then mounts the
    widget with the designer's setup.
 7. Claim goes to the existing configurator with `website` and `business`
-   prefilled (it rescans automatically) and `source=partner-<agencyCode>`.
-   The configurator now honours that source in the checkout lead (see the
-   patch note in ../app.js), so the claimed Rose is attributed to the
-   designer.
+   prefilled (it rescans automatically). Attribution will come from the
+   designer's logged-in partner workspace once the claim is wired to it;
+   the configurator's `source=partner-<code>` support from the first
+   build is now unused by the Maker.
 
 ## The preview businessId rule (do not regress)
 
@@ -56,8 +58,10 @@ package (which fixed the wildrose-automations copy of /configure/).
   claim needs the backend trial path; until then the preview page states
   the pilot terms and the agency settles the trial with Wildrose as they
   do today.
-- Agency code is carried as attribution, not authenticated in the Maker.
-  Authentication exists at the partner workspace and at claim time.
+- The Maker itself holds no session: the login button opens the partner
+  workspace, and company info is remembered on this device only. A real
+  in-Maker session arrives when the tools live on the Wildrose domain
+  beside the partner workspace.
 
 ## Files
 

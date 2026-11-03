@@ -27,7 +27,7 @@ function websiteUrl(value) {
 }
 function currentWebsite() { try { return websiteUrl($('website').value); } catch { return ''; } }
 function businessName() { return $('businessName').value.trim(); }
-function agency() { return { name: $('agencyName').value.trim(), code: $('agencyCode').value.trim() }; }
+function agency() { return { name: $('agencyName').value.trim(), website: $('agencyWebsite').value.trim() }; }
 function selectedGoals() { return [...document.querySelectorAll('[data-goal][aria-pressed="true"]')].map(b => b.dataset.goal); }
 function currentSetup() {
   return { assistantName: $('agentName').value.trim(), greetingMessage: $('greeting').value.trim(), goals: selectedGoals(), tone: selectedTone, color: selectedColor, businessFactsCorrection: $('businessFactsCorrection').value.trim() };
@@ -194,8 +194,8 @@ function renderList() {
 
 /* ---------- wiring ---------- */
 function persistAgency() { try { localStorage.setItem('roseMakerAgency:v1', JSON.stringify(agency())); } catch {} }
-for (const id of ['agencyName', 'agencyCode']) $(id).addEventListener('input', persistAgency);
-try { const saved = JSON.parse(localStorage.getItem('roseMakerAgency:v1') || 'null'); if (saved) { $('agencyName').value = saved.name || ''; $('agencyCode').value = saved.code || ''; } } catch {}
+for (const id of ['agencyName', 'agencyWebsite']) $(id).addEventListener('input', persistAgency);
+try { const saved = JSON.parse(localStorage.getItem('roseMakerAgency:v1') || 'null'); if (saved) { $('agencyName').value = saved.name || ''; $('agencyWebsite').value = saved.website || ''; } } catch {}
 
 $('toClient').addEventListener('click', () => { persistAgency(); showStep('clientStep'); });
 document.querySelectorAll('[data-back]').forEach(b => b.addEventListener('click', () => showStep(b.dataset.back)));
@@ -234,7 +234,7 @@ $('toLink').addEventListener('click', () => {
   const text = encodeURIComponent(`I built a Rose for ${payload.businessName}. See her working on your own website: ${currentLink}`);
   $('whatsAppShare').href = 'https://wa.me/?text=' + text;
   const list = loadList().filter(x => x.link !== currentLink);
-  list.unshift({ businessName: payload.businessName, website: payload.website, agencyCode: payload.agency.code, madeAt: payload.madeAt, link: currentLink, sent: false });
+  list.unshift({ businessName: payload.businessName, website: payload.website, madeAt: payload.madeAt, link: currentLink, sent: false });
   saveList(list.slice(0, 50)); renderList();
   showStep('linkStep');
 });

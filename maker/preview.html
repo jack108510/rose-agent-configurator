@@ -62,12 +62,12 @@
     if (payload.trial?.days) document.getElementById('trialNote').textContent = `${payload.trial.days} day preview · ${payload.trial.voiceMinutes} voice minutes · no card to claim`;
 
     /* Claim: the existing configurator reads website + business from the URL and
-       rescans automatically. source carries partner attribution once the
-       configurator honours the source parameter (patch included in this repo). */
+       rescans automatically. There is no agency code: attribution comes from
+       the designer's logged-in partner workspace once the claim is wired to
+       it (see the Designer Home plan). */
     const claim = new URL('https://wildroseautomations.ca/configure/');
     claim.searchParams.set('website', website);
     claim.searchParams.set('business', business);
-    if (payload.agency?.code) claim.searchParams.set('source', 'partner-' + String(payload.agency.code).replace(/[^a-z0-9-]/gi, '').slice(0, 40));
     document.getElementById('claimTop').href = claim.href;
 
     const stage = document.getElementById('stage');
