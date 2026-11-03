@@ -1,13 +1,16 @@
 # Designer Home
 
-The designer-facing home for reselling Rose: income, pipeline, proof.
+The design and install management home for Rose partner designers and
+their clients: create the design, deliver it, install it, verify it,
+publish it, then keep the proof flowing. Income and proof support that
+core job.
 Plan: `designer-home-plan.md` in the Wildrose designer partner test goal
 files. Builds on the Rose Maker in `../maker/`.
 
 ## What is on the screen
 
 - **Your Rose income.** Live clients times (your client price minus your
-  wholesale cost). Both prices are inputs the designer controls and are
+  Rose licensing fee). Both prices are inputs the designer controls and are
   stored on their device; the header says plainly that these are their
   numbers and an estimate, not a bill. A pipeline line shows what the
   number becomes if claimed and installing clients go live.
@@ -22,7 +25,10 @@ files. Builds on the Rose Maker in `../maker/`.
   Live. Each stage names the next move owner (AGENCY, CLIENT, or ROSE),
   following the partner console stage engine. Every card has its stage
   nudge written out, with Copy nudge, WhatsApp send, Copy link and Open
-  actions, stage move buttons, a private note field, and delete.
+  actions, stage move buttons, a private note field, and delete. Claimed,
+  Installing and Live cards carry an install checklist: install code
+  sent, code added to site, install verified, client published. Ticking
+  Client published moves the card to Live.
 - **Proof.** On Live cards the designer enters questions answered and
   leads captured for the week; the card renders one forwardable sentence
   with copy and WhatsApp actions. This is the retention loop.

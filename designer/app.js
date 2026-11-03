@@ -2,7 +2,10 @@
 /* Designer Home: income, pipeline, proof.
    One screen for a designer reselling Rose:
    - Income header from the designer's own prices (their client price minus
-     their wholesale cost, times live clients). Estimates only.
+     their Rose licensing fee, times live clients). Estimates only.
+   - The core job is managing design and install for partner designers and
+     their clients: every card tracks the design (scan, setup, preview link)
+     and the install (code sent, code added, verified, published).
    - A five-stage pipeline board. Stages and field names map to the partner
      console stage engine (claimed ~ deliveryApproved, installing ~
      installed/mapping, live ~ published) so a later sync with
@@ -45,6 +48,7 @@ function nudgeFor(card) {
     default: return '';
   }
 }
+function installState(card) { const base = { codeSent: false, codeAdded: false, verified: false, published: false }; return { ...base, ...(card.install || {}) }; }
 function proofSentence(card) {
   const p = card.proof || {};
   if (!p.questions && !p.leads) return '';
@@ -62,7 +66,7 @@ function importMakerList(cards) {
   let added = 0;
   for (const item of maker) {
     if (!item.link || seen.has(item.link)) continue;
-    cards.push({ id: 'c' + Date.now() + added, businessName: item.businessName || item.website, website: item.website, stage: item.sent ? 'sent' : 'draft', link: item.link, createdAt: item.madeAt || new Date().toISOString(), sentAt: item.sent ? item.madeAt : '', claimedAt: '', liveAt: '', note: '', proof: { questions: 0, leads: 0 } });
+    cards.push({ id: 'c' + Date.now() + added, businessName: item.businessName || item.website, website: item.website, stage: item.sent ? 'sent' : 'draft', link: item.link, createdAt: item.madeAt || new Date().toISOString(), sentAt: item.sent ? item.madeAt : '', claimedAt: '', liveAt: '', note: '', proof: { questions: 0, leads: 0 }, install: { codeSent: false, codeAdded: false, verified: false, published: false } });
     added++;
   }
   return added;
@@ -100,6 +104,7 @@ function renderCard(card, stage) {
   node.append(el('b', '', card.businessName || card.website));
   node.append(el('span', 'site', card.website));
   node.append(el('span', 'owner ' + stage.ownerClass, 'Next move: ' + stage.owner));
+  node.append(el('span', 'site', card.link ? 'Design ready · preview link created' : 'Design not created yet'));
   node.append(el('p', 'nudge', nudgeFor(card)));
   const row = el('div', 'row');
   if (card.link) {
@@ -116,15 +121,29 @@ function renderCard(card, stage) {
   const del = button('Delete', 'back', () => {
     if (del.dataset.armed) { save(load().filter(c => c.id !== card.id)); renderBoard(); return; }
     del.dataset.armed = '1'; del.textContent = 'Confirm delete?';
-    setTimeout(() => { if (del.isConnected) { delete del.dataset.armed; del.textContent = 'Delete'; } }, 3000);
+    setTimeout(() => { if (del.isConnected) { delete del.dataset.armed; del.textContent = 'Delete'; } }, 10000);
   });
   move.append(del);
   node.append(move);
   const note = document.createElement('input'); note.className = 'note'; note.placeholder = 'Note for you…'; note.value = card.note || '';
   note.addEventListener('change', () => { const all = load(); const found = all.find(c => c.id === card.id); if (found) { found.note = note.value; save(all); } });
   node.append(note);
+  if (['claimed', 'installing', 'live'].includes(card.stage)) node.append(renderInstall(card));
   if (card.stage === 'live') node.append(renderProof(card));
   return node;
+}
+function renderInstall(card) {
+  const wrap = el('div', 'install');
+  wrap.append(el('b', '', 'Install checklist'));
+  const state = installState(card);
+  for (const [key, label] of [['codeSent', 'Install code sent'], ['codeAdded', 'Code added to site'], ['verified', 'Install verified'], ['published', 'Client published']]) {
+    const lab = el('label', '', label);
+    const input = document.createElement('input'); input.type = 'checkbox'; input.checked = key === 'published' && card.stage === 'live' ? true : !!state[key];
+    if (card.stage === 'live' && key === 'published') input.disabled = true;
+    input.addEventListener('change', () => { const all = load(); const found = all.find(c => c.id === card.id); if (found) { found.install = { ...installState(found), [key]: input.checked }; if (key === 'published' && input.checked && found.stage !== 'live') { found.stage = 'live'; found.liveAt = found.liveAt || new Date().toISOString(); } save(all); renderBoard(); } });
+    lab.prepend(input); wrap.append(lab);
+  }
+  return wrap;
 }
 function renderProof(card) {
   const wrap = el('div', 'proof');
@@ -150,7 +169,7 @@ function moveCard(id, stageId) {
   card.stage = stageId;
   if (stageId === 'sent' && !card.sentAt) card.sentAt = new Date().toISOString();
   if (stageId === 'claimed' && !card.claimedAt) card.claimedAt = new Date().toISOString();
-  if (stageId === 'live' && !card.liveAt) card.liveAt = new Date().toISOString();
+  if (stageId === 'live') { if (!card.liveAt) card.liveAt = new Date().toISOString(); card.install = { ...installState(card), published: true }; }
   save(all); renderBoard();
 }
 
@@ -189,7 +208,7 @@ $('portfolioForm').addEventListener('submit', async event => {
       const color = (scan.brandColors || []).find(c => /^#[0-9a-f]{6}$/i.test(c)) || '#f15a29';
       const payload = { v: 1, website, businessName: name, clientEmail: '', agentName: 'Rose', greeting: `Hi! I can help you explore ${name} and find what you need. What can I help with?`, goals: ['answer_questions', 'capture_leads'], tone: 'friendly', color, correction: '', agency: { name: ag.name || '', code: ag.code || '' }, trial: TRIAL, madeAt: new Date().toISOString() };
       const link = new URL('../maker/preview.html?d=' + encodePayload(payload), location.href).href;
-      cards.unshift({ id: 'c' + Date.now() + i, businessName: name, website, stage: 'draft', link, createdAt: payload.madeAt, sentAt: '', claimedAt: '', liveAt: '', note: 'From portfolio mode', proof: { questions: 0, leads: 0 } });
+      cards.unshift({ id: 'c' + Date.now() + i, businessName: name, website, stage: 'draft', link, createdAt: payload.madeAt, sentAt: '', claimedAt: '', liveAt: '', note: 'From portfolio mode', proof: { questions: 0, leads: 0 }, install: { codeSent: false, codeAdded: false, verified: false, published: false } });
       ok++;
     } catch { failures.push(website + ' (Rose could not read enough of it)'); }
   }
