@@ -113,7 +113,12 @@ function renderCard(card, stage) {
   const idx = STAGES.findIndex(s => s.id === card.stage);
   if (idx > 0) move.append(button('← ' + STAGES[idx - 1].label, 'back', () => moveCard(card.id, STAGES[idx - 1].id)));
   if (idx < STAGES.length - 1) move.append(button(STAGES[idx + 1].label + ' →', 'primary', () => moveCard(card.id, STAGES[idx + 1].id)));
-  move.append(button('Delete', 'back', () => { if (confirm('Remove ' + (card.businessName || card.website) + ' from this board?')) { save(load().filter(c => c.id !== card.id)); renderBoard(); } }));
+  const del = button('Delete', 'back', () => {
+    if (del.dataset.armed) { save(load().filter(c => c.id !== card.id)); renderBoard(); return; }
+    del.dataset.armed = '1'; del.textContent = 'Confirm delete?';
+    setTimeout(() => { if (del.isConnected) { delete del.dataset.armed; del.textContent = 'Delete'; } }, 3000);
+  });
+  move.append(del);
   node.append(move);
   const note = document.createElement('input'); note.className = 'note'; note.placeholder = 'Note for you…'; note.value = card.note || '';
   note.addEventListener('change', () => { const all = load(); const found = all.find(c => c.id === card.id); if (found) { found.note = note.value; save(all); } });
@@ -173,6 +178,7 @@ $('portfolioForm').addEventListener('submit', async event => {
   for (let i = 0; i < lines.length; i++) {
     let website;
     try { website = websiteUrl(lines[i]); } catch { failures.push(lines[i] + ' (not a valid address)'); continue; }
+    if (cards.some(c => { try { return websiteUrl(c.website) === website; } catch { return false; } })) { failures.push(website + ' (already on your board)'); continue; }
     status.textContent = `Scanning ${i + 1} of ${lines.length}: ${website}…`;
     try {
       const r = await fetch(API + '/api/rose-site-scan', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ website, sourcePage: location.href }) });

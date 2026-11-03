@@ -14,15 +14,15 @@
 .quick-card textarea{width:100%;padding:11px 12px;border:1px solid #dfd2c7;border-radius:12px;background:#fffdfa;color:var(--ink);resize:vertical}
 .board-head{margin:6px 0 14px}
 .board{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;align-items:start}
-.stage-col{display:grid;gap:10px;background:rgba(255,255,255,.55);border:1px solid #ecdfd4;border-radius:18px;padding:12px;min-height:120px}
+.stage-col{display:grid;gap:10px;background:rgba(255,255,255,.55);border:1px solid #ecdfd4;border-radius:18px;padding:12px;min-height:120px;min-width:0}
 .stage-col h3{margin:2px 2px 0;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#8a7462}
 .stage-col h3 span{color:var(--orange)}
-.card{border:1px solid #e9ded3;border-radius:14px;background:#fff;padding:13px;display:grid;gap:8px;box-shadow:0 8px 24px rgba(58,37,24,.06)}
+.card{border:1px solid #e9ded3;border-radius:14px;background:#fff;padding:13px;display:grid;gap:8px;box-shadow:0 8px 24px rgba(58,37,24,.06);min-width:0}
 .card b{font-size:14px;overflow-wrap:anywhere}
 .card .site{font-size:12px;color:var(--muted);overflow-wrap:anywhere}
 .card .owner{font-size:11px;font-weight:800;letter-spacing:.06em}
 .card .owner.client{color:#a65334}.card .owner.agency{color:#315a65}.card .owner.rose{color:#2b7547}
-.card .nudge{font-size:12px;line-height:1.45;color:#54453a;background:#fbf7f2;border:1px solid #eee1d8;border-radius:10px;padding:9px}
+.card .nudge{font-size:12px;line-height:1.45;color:#54453a;background:#fbf7f2;border:1px solid #eee1d8;border-radius:10px;padding:9px;overflow-wrap:anywhere;margin:0}
 .card .row{display:flex;flex-wrap:wrap;gap:6px}
 .card button,.card a.mini{min-height:32px;border-radius:9px;padding:0 10px;font-size:12px;font-weight:750;display:inline-flex;align-items:center;text-decoration:none}
 .card .note{width:100%;border:1px solid #eee1d8;border-radius:9px;padding:7px 9px;font-size:12px;color:var(--ink);background:#fffdfa}
