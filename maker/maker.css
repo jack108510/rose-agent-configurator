@@ -21,3 +21,65 @@
 .rose-chip{font-size:11px;font-weight:800;border-radius:999px;padding:5px 9px;border:1px solid var(--line);color:#7a6a5e;background:#fff}
 .rose-chip.sent{border-color:#cbe2d2;background:#f0f8f1;color:#2b7547}
 .rose-row button{min-height:36px;border-radius:10px;padding:0 12px;font-weight:750}
+
+/* Workground design language override. Same system as Designer Home:
+   flat paper #f6f0e8, ink #19130f, hairline lines, Georgia serif weight
+   400 display type, white-at-62% cards at 20px radius, pill chips and
+   controls, dark ink primary buttons, 49px inputs with the soft orange
+   focus ring, accent #ff5722 sparingly. Loads after ../styles.css. */
+body{background:#f6f0e8;color:#19130f}
+.top{height:auto;background:transparent;border-bottom:1px solid #ebddd1;backdrop-filter:none}
+.top-inner{width:min(1300px,calc(100% - 48px));height:auto;margin:auto;padding:20px 0}
+.brand{font-size:15px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#19130f}
+.brand span{color:#ff5722 !important}
+.brand img{width:34px;height:34px;border-radius:10px}
+.top small{color:#746a61;font-weight:600;font-size:13px}
+.wg-nav{display:flex;align-items:center;gap:8px}
+.wg-nav a{display:inline-flex;align-items:center;height:34px;padding:0 14px;border:1px solid rgba(25,19,15,.12);border-radius:999px;background:#fffaf3;color:#594f47;font-size:13px;font-weight:600;text-decoration:none}
+.wg-nav a.current{background:#231812;border-color:#231812;color:#fff}
+.shell{width:min(1300px,calc(100% - 48px));margin:30px auto 90px;gap:26px}
+.eyebrow{color:#746a61;font-size:11px;font-weight:800;letter-spacing:.16em}
+.heading h1{font:400 clamp(38px,4.4vw,56px)/1.02 ui-serif,Georgia,serif;letter-spacing:-.055em;color:#19130f}
+.heading p{color:#746a61}
+.progress span{background:#fffaf3;border:1px solid rgba(25,19,15,.12);border-radius:999px;color:#594f47;font-weight:600}
+.progress span.current{background:#231812;border-color:#231812;color:#fff}
+.progress span.done{background:#f0f8f1;border-color:#cbe2d2;color:#2b7547}
+.panel{background:#fbf7f0;border:1px solid rgba(25,19,15,.1);border-radius:24px;padding:clamp(24px,3vw,34px);box-shadow:none}
+.step-title{font:400 30px/1.1 ui-serif,Georgia,serif;letter-spacing:-.04em;color:#19130f}
+.step-note{color:#746a61}
+.field{color:#302a25;font-weight:720}
+.field input,.field textarea{border:1px solid #dfd0c3;border-radius:9px;background:#fffaf6;color:#19130f}
+.field input{height:49px;padding:0 15px}
+.field textarea{padding:12px 15px}
+.field input:focus,.field textarea:focus{border-color:#f07840;box-shadow:0 0 0 3px rgba(255,103,44,.12)}
+.actions button{min-height:40px;border-radius:999px;padding:0 18px;font-weight:650;font-size:13.5px}
+.primary{background:#231812;border:1px solid #231812;color:#fff;box-shadow:none}
+.primary:hover{background:#3a2a1e}
+.back{background:#fffaf3;border:1px solid rgba(25,19,15,.12);color:#594f47;font-weight:600;box-shadow:none}
+.goal,.tone{border:1px solid rgba(25,19,15,.12);background:rgba(255,255,255,.62);border-radius:16px;color:#4e463f;font-weight:600}
+.goal[aria-pressed="true"],.tone[aria-pressed="true"]{border-color:rgba(255,87,34,.5);background:rgba(255,87,34,.08);color:#19130f}
+.color{border:1px solid rgba(25,19,15,.12);background:rgba(255,255,255,.62);border-radius:13px}
+.scan-evidence{border:1px solid rgba(25,19,15,.1);border-radius:20px;background:rgba(255,255,255,.62);padding:16px}
+.scan-sources span{border-color:rgba(25,19,15,.12);background:#fffaf3;color:#594f47}
+.scan-correction summary{color:#a65334}
+.preview{background:#fbf7f0;border:1px solid rgba(25,19,15,.1);border-radius:24px;box-shadow:0 28px 85px rgba(62,32,17,.10);padding:22px}
+.preview-mark{background:rgba(255,107,43,.10);color:#ff742e;border-radius:13px}
+.preview-body{border-color:rgba(25,19,15,.08);border-radius:20px}
+.text-button{color:#cf4e22}
+.maker-wa{min-height:40px;border-radius:999px;padding:0 18px;font-weight:650}
+.rose-row{border:1px solid rgba(25,19,15,.1);border-radius:20px;background:rgba(255,255,255,.62);padding:14px 16px}
+.rose-row button{min-height:34px;border-radius:999px;padding:0 12px;font-weight:600}
+.rose-chip{background:#fffaf3;border-color:rgba(25,19,15,.12);color:#594f47;font-weight:700}
+.rose-chip.sent{background:#f0f8f1;border-color:#cbe2d2;color:#2b7547}
+@media(max-width:850px){.top-inner,.shell{width:calc(100% - 32px)}}
+
+/* Specificity fixes: ../styles.css carries later tab-style progress rules
+   and an orange .actions .primary that outrank the plain overrides above. */
+.progress{display:flex;gap:8px;flex-wrap:wrap;border-bottom:0;margin:0 0 20px}
+.progress span{display:inline-flex;align-items:center;padding:8px 12px;border:1px solid rgba(25,19,15,.12);border-radius:999px;background:#fffaf3;color:#594f47;font-size:12.5px;font-weight:600;line-height:1.2;letter-spacing:0}
+.progress span.current{background:#231812;border-color:#231812;color:#fff}
+.progress span.done{background:#f0f8f1;border-color:#cbe2d2;color:#2b7547}
+.actions .primary{background:#231812;border:1px solid #231812;color:#fff;box-shadow:none;border-radius:999px}
+.actions .primary:hover{background:#3a2a1e;transform:none}
+.actions .back{background:#fffaf3;border:1px solid rgba(25,19,15,.12);color:#594f47;border-radius:999px;box-shadow:none}
+.actions .back:hover{background:#fffaf3}

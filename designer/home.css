@@ -16,6 +16,9 @@ body{background:var(--wg-paper);color:var(--wg-ink)}
 .brand span{color:var(--wg-accent) !important}
 .brand img{width:34px;height:34px;border-radius:10px}
 .top small{color:var(--wg-muted);font-weight:600;font-size:13px}
+.wg-nav{display:flex;align-items:center;gap:8px}
+.wg-nav a{display:inline-flex;align-items:center;height:34px;padding:0 14px;border:1px solid var(--wg-line);border-radius:999px;background:#fffaf3;color:#594f47;font-size:13px;font-weight:600;text-decoration:none}
+.wg-nav a.current{background:#231812;border-color:#231812;color:#fff}
 .home-shell{width:min(1300px,calc(100% - 48px));margin:30px auto 90px;display:grid;gap:22px}
 .panel{background:var(--wg-surface);border:1px solid rgba(25,19,15,.1);border-radius:24px;padding:clamp(24px,3vw,38px);box-shadow:none}
 .eyebrow{color:var(--wg-muted);font-size:11px;font-weight:800;letter-spacing:.16em}
