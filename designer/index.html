@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fffaf6">
+  <title>Designer Home · Rose by Wildrose</title>
+  <meta name="description" content="Your Rose income, your client pipeline, and proof your clients can see.">
+  <link rel="icon" type="image/png" href="https://wildroseautomations.ca/logos/wildrose.png">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="./home.css">
+</head>
+<body>
+  <header class="top"><div class="top-inner">
+    <a class="brand" href="https://wildroseautomations.ca/"><img src="https://wildroseautomations.ca/logos/wildrose.png" alt="">Wildrose <span style="color:var(--orange)">Automations</span></a>
+    <small id="agencyLabel">Designer Home</small>
+  </div></header>
+
+  <main class="home-shell">
+    <section class="income panel" aria-labelledby="incomeHeading">
+      <div class="income-main">
+        <p class="eyebrow">Your Rose income</p>
+        <h1 id="incomeHeading"><span id="incomeNow">CA$0</span><small> / month</small></h1>
+        <p class="income-sub" id="incomeSub">From 0 live clients. Add your first Rose below.</p>
+        <p class="income-pipeline" id="incomePipeline"></p>
+      </div>
+      <div class="income-settings">
+        <label class="field">You charge each client / month<input id="clientPrice" type="number" min="0" step="1" value="129"></label>
+        <label class="field">Your Rose licensing fee / client / month<input id="wholesaleCost" type="number" min="0" step="1" value="49"></label>
+        <p class="fine">How it works: your clients pay you, never Wildrose. You pay a licensing fee per live client, and keep everything above it. These are your numbers, an estimate, not a bill; your fee is confirmed in your partner workspace.</p>
+        <label class="field">Agency name<input id="agencyName" autocomplete="organization" placeholder="Your agency"></label>
+        <label class="field">Agency code<input id="agencyCode" autocomplete="off" placeholder="Partner workspace code"></label>
+      </div>
+    </section>
+
+    <section class="quick panel" aria-labelledby="quickHeading">
+      <h2 class="step-title" id="quickHeading">Add a client</h2>
+      <div class="quick-grid">
+        <div class="quick-card">
+          <b>Make a Rose, with full control</b>
+          <p>Scan their site, set the name, greeting, goals and colour, try the live preview, then send the link.</p>
+          <a class="primary quick-btn" href="../maker/">Open the Maker <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="quick-card">
+          <b>Start with your own site</b>
+          <p>Hear Rose on your own business first. Designers sell Rose best after she has answered for them.</p>
+          <a class="back quick-btn" href="../maker/">Make my own Rose</a>
+        </div>
+        <div class="quick-card">
+          <b>Portfolio mode</b>
+          <p>Paste past client websites, one per line. Rose builds a preview link for each while you watch.</p>
+          <form id="portfolioForm">
+            <label class="field">Client websites<textarea id="portfolioUrls" rows="4" placeholder="https://clientone.com&#10;https://clienttwo.com"></textarea></label>
+            <button class="primary quick-btn" type="submit" id="portfolioButton">Build their Roses</button>
+            <p class="hint" id="portfolioStatus" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="boardHeading">
+      <div class="board-head">
+        <h2 class="step-title" id="boardHeading">Your client pipeline</h2>
+        <p class="fine">Move a card when something changes. Stages match your partner console, so this board and the console read the same way. In this version the board lives on this device; claimed and live clients are confirmed in your partner console.</p>
+      </div>
+      <div class="board" id="board"></div>
+      <p class="fine" id="boardEmpty">No clients yet. Make a Rose above and it lands here as a Draft.</p>
+    </section>
+  </main>
+  <script src="./app.js"></script>
+</body>
+</html>
