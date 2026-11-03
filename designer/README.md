@@ -32,7 +32,7 @@ files. Builds on the Rose Maker in `../maker/`.
 - **Proof.** On Live cards the designer enters questions answered and
   leads captured for the week; the card renders one forwardable sentence
   with copy and WhatsApp actions. This is the retention loop.
-- **Continuity with the Maker.** Agency name and code are shared with
+- **Continuity with the Maker.** Company name and website are shared with
   the Maker (same localStorage), and the Maker's My Roses list is
   imported into Draft or Sent on first load, so nothing made in the
   Maker is lost.

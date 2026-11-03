@@ -23,20 +23,21 @@
       <p>Paste your client's website. Rose reads it, builds herself, and you send the client a preview of Rose working on their own site. They claim their Workground from that link when they are ready.</p></div>
 
       <div class="progress" aria-hidden="true">
-        <span id="prog1" class="current">1. Your agency</span>
+        <span id="prog1" class="current">1. Your company</span>
         <span id="prog2">2. Client website</span>
         <span id="prog3">3. Their Rose</span>
         <span id="prog4">4. Preview link</span>
       </div>
 
       <section class="panel step" id="agencyStep" aria-labelledby="agencyHeading">
-        <h2 class="step-title" id="agencyHeading">Your agency</h2>
-        <p class="step-note">This is how the preview is credited. Your agency code is the code from your Rose partner workspace, so claimed clients land with the right agency.</p>
+        <h2 class="step-title" id="agencyHeading">Your company</h2>
+        <p class="step-note">Log in with your Rose partner account, tell us your company once, then start. Your company name is how every preview you send is credited.</p>
         <div class="fields">
-          <label class="field">Agency name<input id="agencyName" autocomplete="organization" placeholder="For example: Rana Technologies"></label>
-          <label class="field">Agency code<input id="agencyCode" autocomplete="off" placeholder="Your partner workspace code"><small>Find it in your partner console under your workspace. It travels with the claim link as attribution.</small></label>
+          <p style="margin:0"><a class="back maker-wa" href="https://partners-pilot.wildroseautomations.ca/partner/" target="_blank" rel="noopener">Log in to your partner workspace</a></p>
+          <label class="field">Company name<input id="agencyName" autocomplete="organization" placeholder="For example: Rana Technologies"></label>
+          <label class="field">Company website <small>(optional)</small><input id="agencyWebsite" type="text" inputmode="url" autocomplete="url" placeholder="https://youragency.com"><small>Used to credit your previews, and the fastest way to hear Rose is to make one for your own site first.</small></label>
         </div>
-        <div class="actions"><span></span><button class="primary" type="button" id="toClient">Continue <span aria-hidden="true">→</span></button></div>
+        <div class="actions"><span></span><button class="primary" type="button" id="toClient">Start making Roses <span aria-hidden="true">→</span></button></div>
       </section>
 
       <section class="panel step" id="clientStep" aria-labelledby="clientHeading" hidden>
@@ -52,7 +53,7 @@
             <div id="scanSources" class="scan-sources" aria-label="Pages Rose read"></div>
             <p class="fine" id="scanBrand"></p>
           </div>
-          <div class="actions"><button class="back" type="button" data-back="agencyStep">← Agency</button><button class="primary" type="submit" id="scanButton">Scan and build Rose <span aria-hidden="true">→</span></button></div>
+          <div class="actions"><button class="back" type="button" data-back="agencyStep">← Company</button><button class="primary" type="submit" id="scanButton">Scan and build Rose <span aria-hidden="true">→</span></button></div>
         </form>
       </section>
 

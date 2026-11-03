@@ -206,7 +206,7 @@ $('portfolioForm').addEventListener('submit', async event => {
       const scan = data.scraped;
       const name = (scan.brandName || scan.businessName || new URL(website).hostname).slice(0, 90);
       const color = (scan.brandColors || []).find(c => /^#[0-9a-f]{6}$/i.test(c)) || '#f15a29';
-      const payload = { v: 1, website, businessName: name, clientEmail: '', agentName: 'Rose', greeting: `Hi! I can help you explore ${name} and find what you need. What can I help with?`, goals: ['answer_questions', 'capture_leads'], tone: 'friendly', color, correction: '', agency: { name: ag.name || '', code: ag.code || '' }, trial: TRIAL, madeAt: new Date().toISOString() };
+      const payload = { v: 1, website, businessName: name, clientEmail: '', agentName: 'Rose', greeting: `Hi! I can help you explore ${name} and find what you need. What can I help with?`, goals: ['answer_questions', 'capture_leads'], tone: 'friendly', color, correction: '', agency: { name: ag.name || '' }, trial: TRIAL, madeAt: new Date().toISOString() };
       const link = new URL('../maker/preview.html?d=' + encodePayload(payload), location.href).href;
       cards.unshift({ id: 'c' + Date.now() + i, businessName: name, website, stage: 'draft', link, createdAt: payload.madeAt, sentAt: '', claimedAt: '', liveAt: '', note: 'From portfolio mode', proof: { questions: 0, leads: 0 }, install: { codeSent: false, codeAdded: false, verified: false, published: false } });
       ok++;
@@ -222,9 +222,9 @@ $('portfolioForm').addEventListener('submit', async event => {
 function syncAgencyInputs() {
   const ag = agency();
   if (ag.name && !$('agencyName').value) $('agencyName').value = ag.name;
-  if (ag.code && !$('agencyCode').value) $('agencyCode').value = ag.code;
+  if (ag.website && !$('agencyWebsite').value) $('agencyWebsite').value = ag.website;
 }
-for (const id of ['agencyName', 'agencyCode']) $(id).addEventListener('input', () => { try { localStorage.setItem('roseMakerAgency:v1', JSON.stringify({ name: $('agencyName').value.trim(), code: $('agencyCode').value.trim() })); } catch {} renderIncome(load()); });
+for (const id of ['agencyName', 'agencyWebsite']) $(id).addEventListener('input', () => { try { localStorage.setItem('roseMakerAgency:v1', JSON.stringify({ name: $('agencyName').value.trim(), website: $('agencyWebsite').value.trim() })); } catch {} renderIncome(load()); });
 for (const id of ['clientPrice', 'wholesaleCost']) $(id).addEventListener('input', () => { try { localStorage.setItem('roseDesignerPrices:v1', JSON.stringify(prices())); } catch {} renderIncome(load()); });
 try { const p = JSON.parse(localStorage.getItem('roseDesignerPrices:v1') || 'null'); if (p) { $('clientPrice').value = p.client; $('wholesaleCost').value = p.wholesale; } } catch {}
 
