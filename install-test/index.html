@@ -1,40 +1,80 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Harbourlight Test Bakery</title>
-<style>
-  body { font-family: Georgia, serif; margin: 0; color: #221a14; background: #faf5ec; }
-  header { background: #315a65; color: #fff; padding: 28px 24px; }
-  header h1 { margin: 0; font-size: 30px; }
-  header p { margin: 6px 0 0; }
-  main { max-width: 760px; margin: 0 auto; padding: 28px 24px 64px; }
-  h2 { margin-top: 32px; }
-  ul { line-height: 1.7; }
-  footer { padding: 20px 24px; background: #efe6d8; font-size: 14px; }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f2e9">
+  <meta name="description" content="A fictional Halifax bakery website built to demonstrate Rose.">
+  <title>Harbourlight Test Bakery | Baked with the morning</title>
+  <link rel="preload" href="./assets/bakery-hero.jpg" as="image">
+  <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-<header>
-  <h1>Harbourlight Test Bakery</h1>
-  <p>Fresh bread and pastries, baked every morning in Halifax.</p>
-</header>
-<main>
-  <h2>What we bake</h2>
-  <ul>
-    <li>Sourdough loaves and baguettes</li>
-    <li>Croissants, danishes and morning buns</li>
-    <li>Custom cakes for birthdays and weddings</li>
-    <li>Wholesale bread for cafes and restaurants</li>
-  </ul>
-  <h2>Hours</h2>
-  <p>Monday to Friday, 7am to 6pm. Saturday, 8am to 4pm. Closed Sundays.</p>
-  <h2>Find us</h2>
-  <p>1234 Harbour Street, Halifax, Nova Scotia. Call us at (902) 555-0134 or email hello@example.com.</p>
-  <p>This is a test business website created by Wildrose Automations to test the Rose install code end to end.</p>
-</main>
-<footer>Harbourlight Test Bakery, a fictional test business.</footer>
-<script src="https://rose-pilot.wildroseautomations.ca/rose-widget.js?partner=ptn_zG5LCTaMH5PRA8qAfSlbYRK-&amp;client=trial_9d95e0a4e821c9c89c9f2281" data-api-base="https://rose-pilot.wildroseautomations.ca" data-business-id="trial_9d95e0a4e821c9c89c9f2281" data-business-name="Harbourlight Test Bakery" data-website="https://jack108510.github.io/rose-agent-configurator/install-test" data-title="Rose" data-logo="https://rose-pilot.wildroseautomations.ca/rose-mark.svg" data-accent="#315a65" data-subtitle="Connected to this site" data-partner-delivery="true" async></script>
+  <div class="demo-ribbon">A fictional bakery website for testing Rose</div>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Harbourlight Test Bakery, back to top">
+      <span class="brand-mark" aria-hidden="true">H<span>✳</span></span>
+      <span class="brand-name">Harbourlight <small>TEST BAKERY</small></span>
+    </a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="#bakes">What we bake</a><a href="#story">Our story</a><a href="#visit">Visit us</a>
+    </nav>
+    <a class="header-cta" href="#visit">Plan a visit <span aria-hidden="true">↗</span></a>
+  </header>
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-image" role="img" aria-label="Fresh sourdough bread and pastries on a bakery counter"></div>
+      <div class="hero-shade"></div>
+      <div class="hero-content">
+        <span class="eyebrow light">Your morning, made fresh</span>
+        <h1 id="hero-title">A little light<br>in every loaf.</h1>
+        <p>Slow-fermented bread, buttery pastries, and something good to look forward to each morning in Halifax.</p>
+        <div class="hero-actions">
+          <a class="button button-light" href="#bakes">See what we bake <span aria-hidden="true">↗</span></a>
+          <a class="text-link" href="#visit">Hours &amp; location <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      <div class="hero-side-note">Baked early · Served warm · Halifax, NS</div>
+    </section>
+    <div class="intro-strip" aria-label="Bakery highlights">
+      <span>Made fresh every morning</span><i aria-hidden="true">✳</i>
+      <span>From the first loaf to the last crumb</span><i aria-hidden="true">✳</i>
+      <span>Rooted in Halifax</span>
+    </div>
+    <section class="bakes section-wrap" id="bakes" aria-labelledby="bakes-title">
+      <div class="section-heading">
+        <div><span class="eyebrow">From our ovens</span><h2 id="bakes-title">Good things take time.</h2></div>
+        <p>A few favourites from our sample bakery menu. Come by early for the best selection.</p>
+      </div>
+      <div class="bake-grid">
+        <article class="bake-card"><div class="bake-number">01 / THE EVERYDAY</div><div class="bake-illustration bread" aria-hidden="true">✳</div><h3>Bread worth sharing</h3><p>Crackly sourdough loaves and baguettes with the kind of crust you can hear.</p></article>
+        <article class="bake-card"><div class="bake-number">02 / THE MORNING</div><div class="bake-illustration pastry" aria-hidden="true">☼</div><h3>A sweeter start</h3><p>Flaky croissants, fruit danishes, and cinnamon-swirled morning buns.</p></article>
+        <article class="bake-card"><div class="bake-number">03 / THE OCCASION</div><div class="bake-illustration cake" aria-hidden="true">✦</div><h3>Made to celebrate</h3><p>Custom cakes for birthdays and weddings, plus wholesale bread for local cafés and restaurants.</p></article>
+      </div>
+    </section>
+    <section class="story" id="story" aria-labelledby="story-title">
+      <div class="story-image"><img src="./assets/bakery-interior.jpg" alt="Warm bakery interior with fresh bread and pastries by a harbour-facing window" loading="lazy"></div>
+      <div class="story-copy">
+        <span class="eyebrow">A neighbourhood kind of place</span>
+        <h2 id="story-title">Come in for the bread.<br><em>Stay for the moment.</em></h2>
+        <p>Harbourlight is imagined as the little bakery you make part of your routine: a loaf for the table, a pastry for the walk home, and a warm hello across the counter.</p>
+        <p>This is a fictional business created to demonstrate how Rose helps visitors find answers on a real-looking website.</p>
+        <a class="underlined-link" href="#visit">Find the sample location <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+    <section class="visit section-wrap" id="visit" aria-labelledby="visit-title">
+      <div class="visit-heading"><span class="eyebrow">The good part of your day</span><h2 id="visit-title">See you soon.</h2><p>Find a fresh loaf, a favourite pastry, and a good reason to linger.</p></div>
+      <div class="visit-cards">
+        <div class="visit-card"><span class="visit-icon" aria-hidden="true">◷</span><h3>Opening hours</h3><p>Monday–Friday <strong>7am–6pm</strong><br>Saturday <strong>8am–4pm</strong><br>Sunday <strong>Closed</strong></p></div>
+        <div class="visit-card"><span class="visit-icon" aria-hidden="true">⌖</span><h3>Find us</h3><p>1234 Harbour Street<br>Halifax, Nova Scotia</p><small>Fictional demonstration address</small></div>
+        <div class="visit-card"><span class="visit-icon" aria-hidden="true">✉</span><h3>Say hello</h3><p>(902) 555-0134<br>hello@example.com</p><small>Fictional demonstration contacts</small></div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="footer-main"><div><span class="footer-brand">Harbourlight <small>TEST BAKERY</small></span><p>Good mornings start here.</p></div><a href="#top">Back to top ↑</a></div>
+    <div class="footer-bottom"><span>© 2026 Harbourlight Test Bakery</span><span>Fictional test website by Wildrose Automations for the Rose install demo.</span></div>
+  </footer>
+  <script src="https://rose-pilot.wildroseautomations.ca/rose-widget.js?partner=ptn_zG5LCTaMH5PRA8qAfSlbYRK-&amp;client=trial_9d95e0a4e821c9c89c9f2281" data-api-base="https://rose-pilot.wildroseautomations.ca" data-business-id="trial_9d95e0a4e821c9c89c9f2281" data-business-name="Harbourlight Test Bakery" data-website="https://jack108510.github.io/rose-agent-configurator/install-test" data-title="Rose" data-logo="https://rose-pilot.wildroseautomations.ca/rose-mark.svg" data-accent="#315a65" data-subtitle="Connected to this site" data-partner-delivery="true" async></script>
 </body>
 </html>

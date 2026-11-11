@@ -1,0 +1,100 @@
+:root{--ink:#202a29;--muted:#66716e;--cream:#f7f2e9;--paper:#fffdf8;--teal:#315a65;--copper:#b9764b}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.demo-ribbon{padding:8px 20px;background:#294750;color:#f5f0e7;text-align:center;font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+.site-header{min-height:86px;display:flex;align-items:center;justify-content:space-between;gap:28px;padding:0 clamp(24px,5vw,88px);background:var(--paper)}
+.brand{display:flex;align-items:center;gap:13px;white-space:nowrap}
+.brand-mark{display:grid;place-items:center;position:relative;width:42px;height:42px;border:1.6px solid var(--teal);border-radius:50%;color:var(--teal);font:italic 29px Georgia,serif}
+.brand-mark span{position:absolute;right:-7px;top:-6px;font:13px Georgia,serif;color:var(--copper)}
+.brand-name,.footer-brand{font:26px/.9 Georgia,serif;letter-spacing:-.055em}
+.brand-name small,.footer-brand small{display:block;margin-top:7px;font:700 9px Arial,sans-serif;letter-spacing:.29em}
+.main-nav{display:flex;align-items:center;gap:clamp(20px,3vw,46px)}
+.main-nav a,.header-cta{font-size:12px;font-weight:700;letter-spacing:.04em}
+.main-nav a:hover,.underlined-link:hover{color:var(--teal)}
+.header-cta{padding:14px 18px;border:1px solid var(--ink);border-radius:2px;white-space:nowrap}
+.header-cta span{margin-left:13px}
+.header-cta:hover{background:var(--ink);color:white}
+.hero{position:relative;min-height:min(720px,70vw);height:calc(100svh - 116px);max-height:780px;overflow:hidden;background:#263330;color:white;display:flex;align-items:center}
+.hero-image,.hero-shade{position:absolute;inset:0}
+.hero-image{background:url('./assets/bakery-hero.jpg') center 54%/cover no-repeat}
+.hero-shade{background:linear-gradient(90deg,rgba(16,24,26,.78) 0%,rgba(19,27,28,.57) 34%,rgba(19,27,28,.1) 70%),linear-gradient(0deg,rgba(13,21,20,.23),transparent 45%)}
+.hero-content{position:relative;z-index:1;width:min(660px,70%);margin-left:clamp(28px,8vw,136px);padding:60px 0}
+.eyebrow{display:block;color:var(--copper);font-size:10px;font-weight:800;letter-spacing:.24em;text-transform:uppercase}
+.eyebrow.light{color:#f8d1a9}
+.hero h1,.section-heading h2,.story h2,.visit h2{font-family:Georgia,'Times New Roman',serif;font-weight:400;letter-spacing:-.065em}
+.hero h1{margin:24px 0 23px;font-size:clamp(62px,7.5vw,118px);line-height:.93}
+.hero-content p{max-width:450px;margin:0;font-size:16px;line-height:1.75;color:#f0eee9}
+.hero-actions{display:flex;align-items:center;gap:28px;margin-top:36px}
+.button{display:inline-flex;align-items:center;justify-content:space-between;gap:25px;min-height:51px;padding:0 22px;font-size:12px;font-weight:800;letter-spacing:.04em}
+.button-light{background:#fffaf1;color:var(--ink)}
+.button-light:hover{background:#f2dfc5}
+.text-link{font-size:12px;font-weight:700;border-bottom:1px solid rgba(255,255,255,.65);padding:0 0 7px}
+.text-link span{margin-left:9px}
+.hero-side-note{position:absolute;z-index:1;right:32px;bottom:34px;font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;writing-mode:vertical-rl}
+.intro-strip{display:flex;align-items:center;justify-content:center;gap:clamp(22px,4vw,70px);min-height:74px;padding:14px 25px;background:#d8e0dc;color:#32514f;text-align:center;font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+.intro-strip i{color:#a66d49;font-size:18px;font-style:normal}
+.section-wrap{max-width:1340px;margin:auto;padding:108px clamp(24px,5vw,80px)}
+.section-heading{display:flex;align-items:end;justify-content:space-between;gap:45px;margin-bottom:42px}
+.section-heading h2,.visit h2{margin:17px 0 0;font-size:clamp(43px,5vw,70px);line-height:1.04}
+.section-heading p{width:310px;margin:0 0 5px;color:var(--muted);font-size:14px;line-height:1.7}
+.bake-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.bake-card{min-height:348px;padding:27px 29px 30px;background:var(--paper);border:1px solid #e8e3d8;display:flex;flex-direction:column;overflow:hidden}
+.bake-number{font-size:10px;font-weight:800;letter-spacing:.18em;color:#8a8174}
+.bake-illustration{height:165px;display:grid;place-items:center;font:98px Georgia,serif;color:#b97e50;opacity:.75}
+.bake-illustration.bread{transform:rotate(-14deg)}
+.bake-illustration.pastry{color:#d39c56}
+.bake-illustration.cake{color:#859da0}
+.bake-card h3{margin:auto 0 8px;font:29px Georgia,serif;letter-spacing:-.04em}
+.bake-card p{max-width:300px;margin:0;color:var(--muted);font-size:13px;line-height:1.65}
+.story{display:grid;grid-template-columns:1fr 1fr;min-height:650px;background:#e8ebe5}
+.story-image{min-height:550px;overflow:hidden}
+.story-image img{width:100%;height:100%;object-fit:cover}
+.story-copy{align-self:center;max-width:580px;padding:75px clamp(28px,7vw,110px)}
+.story h2{font-size:clamp(44px,4.6vw,70px);line-height:1.08;margin:24px 0}
+.story h2 em{font-weight:400;color:var(--teal)}
+.story-copy p{color:#5e6b68;font-size:14px;line-height:1.85}
+.underlined-link{display:inline-block;margin-top:21px;padding-bottom:8px;border-bottom:1px solid var(--ink);font-size:12px;font-weight:800}
+.underlined-link span{margin-left:30px}
+.visit{text-align:center}
+.visit-heading p{color:var(--muted);font-size:14px}
+.visit-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:49px;text-align:left}
+.visit-card{min-height:231px;padding:29px 32px;border-top:2px solid var(--teal);background:var(--paper)}
+.visit-icon{color:var(--copper);font:28px Georgia,serif}
+.visit-card h3{margin:19px 0 13px;font:25px Georgia,serif}
+.visit-card p{margin:0;color:#4f5b57;font-size:13px;line-height:1.9}
+.visit-card strong{float:right;color:var(--ink);font-weight:700}
+.visit-card small{display:block;margin-top:14px;color:#8a8174;font-size:11px}
+.site-footer{background:#223c41;color:#f9f3e9;padding:62px clamp(24px,5vw,88px) 24px}
+.footer-main{display:flex;justify-content:space-between;align-items:start;gap:30px;max-width:1220px;margin:auto;padding-bottom:70px}
+.footer-brand{display:block;font-size:33px}
+.footer-main p{color:#c5d0ca;font-size:13px}
+.footer-main a{font-size:12px;font-weight:700;border-bottom:1px solid #aebcb5;padding-bottom:7px}
+.footer-bottom{max-width:1220px;margin:auto;padding-top:22px;border-top:1px solid #597072;display:flex;justify-content:space-between;gap:18px;color:#b8c7c1;font-size:11px}
+@media(max-width:850px){
+  .site-header{min-height:78px}.main-nav{display:none}.hero{min-height:620px;height:72svh}
+  .hero-image{background-position:58% center}.hero-content{width:min(580px,85%)}
+  .hero-shade{background:linear-gradient(90deg,rgba(16,24,26,.83),rgba(16,24,26,.38) 75%)}
+  .intro-strip span:nth-of-type(2),.intro-strip i:nth-of-type(2){display:none}
+  .section-wrap{padding-top:75px;padding-bottom:75px}.story{grid-template-columns:1fr}
+  .story-image{max-height:500px}.story-copy{max-width:750px;padding:65px clamp(24px,7vw,80px)}
+}
+@media(max-width:620px){
+  .demo-ribbon{font-size:8px;letter-spacing:.1em}.site-header{padding:0 20px;gap:10px}
+  .brand{min-width:0}.brand-name{font-size:19px}.brand-mark{width:35px;height:35px;font-size:24px}
+  .header-cta{padding:11px;font-size:11px}.header-cta span{display:none}
+  .hero{min-height:620px;max-height:none;height:calc(100svh - 107px);align-items:end}
+  .hero-image{background-position:59% center}
+  .hero-shade{background:linear-gradient(0deg,rgba(13,21,20,.9) 0%,rgba(13,21,20,.55) 47%,rgba(13,21,20,.08) 100%)}
+  .hero-content{width:100%;max-width:100%;min-width:0;margin:0;padding:0 25px 74px}
+  .hero h1{font-size:clamp(54px,14vw,75px)}.hero-content p{font-size:14px}
+  .hero-actions{gap:18px;flex-wrap:wrap}.hero-side-note{display:none}
+  .intro-strip{gap:15px;font-size:8px;line-height:1.5}
+  .section-heading{display:block}.section-heading p{width:auto;max-width:400px;margin-top:18px}
+  .bake-grid,.visit-cards{grid-template-columns:1fr}.bake-card{min-height:280px}
+  .bake-illustration{height:110px;font-size:75px}.story-image{min-height:350px}
+  .visit-card{min-height:0}.footer-main{padding-bottom:40px}.footer-bottom{flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
