@@ -63,14 +63,9 @@
   $('#profile-form input[name="name"]').value=state.profileName;
   $('#preferences-form').addEventListener('submit',e=>{e.preventDefault();toast('Demo preferences saved for this session.');});
   $('#notification-button').addEventListener('click',()=>navigate('activity'));
-  const mobile=document.createElement('button');mobile.className='mobile-rose-button';mobile.id='mobile-rose-button';mobile.innerHTML='<img src="./wildrose.png" alt="">Ask Rose';document.body.append(mobile);
-  function openRose(){ $('.assistant-rail').classList.add('open');$('.wrc-tab[data-view="chat"]')?.click();setTimeout(()=>$('.wrc-input')?.focus(),100);}
-  mobile.addEventListener('click',openRose);
-  $('.assistant-rail-label').addEventListener('click',()=>{if(innerWidth<=900)$('.assistant-rail').classList.remove('open');});
-  $('#focus-rose').addEventListener('click',openRose);
-  $('#try-rose').addEventListener('click',()=>askRose('How do I find my API key?'));
-  function askRose(prompt){openRose();const input=$('.wrc-input');if(!input){toast('Rose is loading. Please try again in a moment.');return;}if($('.wrc-send').disabled){toast('Rose is finishing her response. Try again in a moment.');return;}input.value=prompt;$('.wrc-send').click();}
-  document.querySelectorAll('[data-prompt]').forEach(button=>button.addEventListener('click',()=>askRose(button.dataset.prompt)));
+  $('#create-workflow').addEventListener('click',()=>{openDialog('Create workflow','<p class="dialog-subtitle">Start with a trigger, then connect the tools your team uses.</p><form id="workflow-form" class="dialog-form"><label>Workflow name<input name="name" required placeholder="e.g. New customer onboarding" maxlength="60"></label><label>Trigger<select><option>When a customer is created</option><option>On a schedule</option><option>When a payment is received</option></select></label><div class="dialog-actions">'+cancel+'<button class="primary-button">Create workflow</button></div></form>');$('#workflow-form').addEventListener('submit',e=>{e.preventDefault();const name=new FormData(e.target).get('name').trim();event('Workflow created',name+' · Sample workspace','activity');closeDialog();toast('Workflow saved in this sample workspace.');});});
+  document.querySelectorAll('[data-workflow]').forEach(button=>button.addEventListener('click',()=>openDialog(escape(button.dataset.workflow),'<p class="dialog-subtitle">Workflow details</p><div class="dialog-result">Status: Active<br>Last run: 2 minutes ago<br>Environment: Sample workspace</div>','<button class="secondary-button" id="workflow-integrations">View integrations</button><button class="primary-button" data-close-dialog>Done</button>')||null));
+  dialog.addEventListener('click',e=>{if(e.target.closest('#workflow-integrations')){closeDialog();navigate('integrations');}});
   $('#reset-demo').addEventListener('click',()=>{try{localStorage.removeItem(storageKey);}catch{}location.replace(location.pathname);});
   renderActivity();renderKeys();stripeRender();navigate(location.hash.slice(1)||'overview');
 })();
