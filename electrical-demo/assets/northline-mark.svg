@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Northline Electrical">
+  <rect width="64" height="64" rx="4" fill="#fff"/>
+  <path d="M10 12h40v42H10z" fill="none" stroke="#10243a" stroke-width="2.5"/>
+  <path d="M21 44V23h4l13 16V23h5v21h-4L26 28v16z" fill="#10243a"/>
+  <path d="M44 6h14v14H44z" fill="#fff"/>
+  <path d="M46 18 57 7m-10 0h10v10" fill="none" stroke="#a95b34" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter"/>
+</svg>
