@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "tools": [
+    {
+      "id": "atlas-api-key",
+      "title": "Find my API key",
+      "url": "./#developers/api-keys",
+      "target": "#reveal-demo-key",
+      "enabled": true,
+      "pinned": true
+    },
+    {
+      "id": "atlas-password",
+      "title": "Reset password",
+      "url": "./#settings/security",
+      "target": "#reset-password",
+      "enabled": true,
+      "pinned": true
+    },
+    {
+      "id": "atlas-stripe",
+      "title": "Connect Stripe integration",
+      "url": "./#integrations",
+      "target": "#connect-stripe",
+      "enabled": true,
+      "pinned": true
+    },
+    {
+      "id": "atlas-create-key",
+      "title": "Create API key",
+      "url": "./#developers/api-keys/create",
+      "target": "#create-key",
+      "enabled": true
+    },
+    {
+      "id": "atlas-webhook",
+      "title": "Add webhook endpoint",
+      "url": "./#developers/webhooks",
+      "target": "#add-webhook",
+      "enabled": true
+    },
+    {
+      "id": "atlas-team",
+      "title": "Invite team member",
+      "url": "./#team",
+      "target": "#invite-member",
+      "enabled": true
+    },
+    {
+      "id": "atlas-workflow",
+      "title": "Create workflow",
+      "url": "./#overview",
+      "target": "#create-workflow",
+      "enabled": true
+    },
+    {
+      "id": "atlas-api-keys",
+      "title": "Find API keys",
+      "url": "./#developers/api-keys/list",
+      "target": "#reveal-demo-key",
+      "enabled": true
+    },
+    {
+      "id": "atlas-stripe-setup",
+      "title": "Set up Stripe",
+      "url": "./#integrations/setup",
+      "target": "#connect-stripe",
+      "enabled": true
+    }
+  ]
+}

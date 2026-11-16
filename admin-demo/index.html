@@ -3,16 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#f6f5f2">
+  <meta name="theme-color" content="#3d5848">
+  <link rel="icon" type="image/svg+xml" href="./atlas-logo.svg">
   <title>Atlas — Workspace overview</title>
   <meta name="description" content="Atlas brings your workflows, team, and integrations together in one workspace.">
-  <link rel="stylesheet" href="./style.css">
-  <script src="./app.js" defer></script>
+  <link rel="stylesheet" href="./style.css?v=atlas-3">
+  <script src="./app.js?v=atlas-3" defer></script>
 </head>
 <body>
   <div class="workspace-shell">
     <aside class="sidebar" aria-label="Workspace navigation">
-      <div class="workspace-brand"><div class="atlas-mark" aria-hidden="true">a</div><div>atlas<span>AUTOMATION PLATFORM</span></div></div>
+      <div class="workspace-brand"><img class="atlas-mark" src="./atlas-logo.svg" alt="Atlas logo" width="38" height="38"><div>atlas<span>AUTOMATION PLATFORM</span></div></div>
       <div class="workspace-switch"><span class="workspace-avatar">S</span><div>Studio workspace<small>Pro plan</small></div><span class="chevrons" aria-hidden="true">⌃<br>⌄</span></div>
       <div class="nav-caption">WORKSPACE</div>
       <nav id="navigation">
@@ -66,7 +67,7 @@
   </div>
   <dialog id="action-dialog" aria-labelledby="dialog-title"><div id="dialog-content"></div></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="./rose-bridge.js?v=atlas-2"></script>
-  <script src="./rose-widget.js?v=atlas-2" data-api-base="https://rose-pilot.wildroseautomations.ca" data-business-id="atlas-workspace-preview" data-business-name="Atlas" data-website="https://jack108510.github.io/rose-agent-configurator/admin-demo/" data-title="Rose" data-logo="https://rose-pilot.wildroseautomations.ca/rose-mark.svg" data-accent="#667d5b" data-subtitle="How can I help you with Atlas?" data-default-view="chat" data-shopping="false" data-greeting="Hi, I’m Rose. What would you like to do in Atlas?" data-placeholder="Ask about your workspace…" data-services="Workspace automation software; workflow management; API keys; integrations; account settings; team management." data-business-context="Atlas is a fictional SaaS automation platform. The signed-in sample account is Studio workspace, owner Jordan Lee. Help the user navigate and use Atlas, not buy services. There are 18 active workflows, 12480 monthly events out of 50000 included, and a 99.8 percent success rate. Overview shows metrics, event volume, workflows and recent activity. Developers opens API keys, Webhooks and API reference. To find an API key: Developers, API keys, Reveal sample key. To reset the sample account password: Settings, Password and security, Reset password, Preview password reset. To connect Stripe: Integrations, Connect Stripe, Use sample credentials, Verify connection, Finish setup. Team members lists Jordan Lee, Alex Morgan, Sam Rivera and Taylor Kim. Slack is already connected to studio-updates. The Pro workspace has 4 team members. All keys, account records, workflows and integrations shown here are synthetic. Do not ask for real passwords, secret keys, contact details, bookings or owner follow-up. Guide the user through the visible interface. Never claim to have changed a real account or sent an email." async></script>
+  <script src="./rose-bridge.js?v=atlas-3"></script>
+  <script src="./rose-widget.js?v=atlas-3" data-api-base="https://rose-pilot.wildroseautomations.ca" data-business-id="atlas-workspace-preview" data-business-name="Atlas" data-website="https://jack108510.github.io/rose-agent-configurator/admin-demo/" data-title="Rose" data-logo="https://rose-pilot.wildroseautomations.ca/rose-mark.svg" data-accent="#667d5b" data-subtitle="How can I help you with Atlas?" data-default-view="chat" data-shopping="false" data-tools-config-url="./rose-tools.json?v=atlas-3" data-greeting="Hi, I’m Rose. What would you like to do in Atlas?" data-placeholder="Ask about your workspace…" data-services="Workspace automation software; workflow management; API keys; integrations; account settings; team management." data-business-context="Atlas is a fictional SaaS automation platform. The signed-in sample account is Studio workspace, owner Jordan Lee. Help the user navigate and use Atlas, not buy services. There are 18 active workflows, 12480 monthly events out of 50000 included, and a 99.8 percent success rate. Overview shows metrics, event volume, workflows and recent activity. Developers opens API keys, Webhooks and API reference. To find an API key: Developers, API keys, Reveal sample key. To reset the sample account password: Settings, Password and security, Reset password, Preview password reset. To connect Stripe: Integrations, Connect Stripe, Use sample credentials, Verify connection, Finish setup. Team members lists Jordan Lee, Alex Morgan, Sam Rivera and Taylor Kim. Slack is already connected to studio-updates. The Pro workspace has 4 team members. All keys, account records, workflows and integrations shown here are synthetic. Do not ask for real passwords, secret keys, contact details, bookings or owner follow-up. Guide the user through the visible interface. Never claim to have changed a real account or sent an email." async></script>
 </body>
 </html>

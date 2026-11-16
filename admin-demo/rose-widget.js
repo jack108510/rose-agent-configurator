@@ -2214,7 +2214,8 @@
   }
   let actionInFlight = false;
   function visitorTaskGoal(message) {
-    if (!cfg.desktopSidePanel || !widgetOptions.navigation) return null;
+    // A published site catalog works with the native corner widget too.
+    if ((!cfg.desktopSidePanel && !toolsConfigLocation) || !widgetOptions.navigation) return null;
     const text = String(message || "").trim();
     const match = /^(?:(?:how|where) (?:do|can) i|where (?:are|is) (?:my|the)|can you (?:help me|show me|find|open)|i (?:need|want|would like) to|i can'?t find|help me|show me|take me to|check|find|open|view|see|track|change|reset|update|manage|get)\s+(.+?)[?.!]*$/i.exec(text);
     if (match?.[1]) return match[1].trim().slice(0, 160);
