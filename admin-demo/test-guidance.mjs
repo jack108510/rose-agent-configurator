@@ -28,6 +28,11 @@ for(const [prompt,id] of [
  ['Help me invite a teammate','atlas-team'],
  ['Can you show me my API key?','atlas-api-key'],
  ['Please show me how to create a workflow','atlas-workflow'],
+ ['wheres the api reference','atlas-api-reference'],
+ ["where’s the api reference?",'atlas-api-reference'],
+ ["Where is API reference?",'atlas-api-reference'],
+ ['API docs','atlas-api-reference'],
+ ['Show me the API documentation','atlas-api-reference'],
 ])test(prompt,async()=>{
  const {context,calls}=matcher();
  context.prompt=prompt;

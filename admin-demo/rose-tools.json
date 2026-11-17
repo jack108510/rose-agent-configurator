@@ -83,6 +83,18 @@
       "url": "./#integrations/setup",
       "target": "#connect-stripe",
       "enabled": true
+    },
+    {
+      "id": "atlas-api-reference",
+      "title": "API reference",
+      "aliases": [
+        "API docs",
+        "API documentation",
+        "developer documentation"
+      ],
+      "url": "./#developers/reference",
+      "target": "#open-api-reference",
+      "enabled": true
     }
   ]
 }

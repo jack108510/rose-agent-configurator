@@ -1349,6 +1349,13 @@
   }
   function presentGuideTarget(target) {
     if (!pendingTaskGuide || pendingTaskGuide.paused) return;
+    // A requested tab can already be open after hash navigation. Do not ask
+    // the visitor to click it again or leave an unrelated guide resumable.
+    if (target.element.matches('[role="tab"][aria-selected="true"]')) {
+      finishGuideStep(`${target.label} is open.`);
+      showSpotlight(target.element, target.label);
+      return;
+    }
     if (target.workflow && !target.workflow.steps.some(step => step.kind === 'open')) {
       try { const scope = document.querySelector(target.workflow.scope); if (scope && visibleSiteControl(scope) && startFormGuide(scope)) return; } catch {}
     }
@@ -2251,10 +2258,11 @@
   function visitorTaskGoal(message) {
     // A published site catalog works with the native corner widget too.
     if ((!cfg.desktopSidePanel && !toolsConfigLocation) || !widgetOptions.navigation) return null;
-    const text = String(message || "").trim().replace(/^please\s+/i, "");
+    const text = String(message || "").trim().replace(/^please\s+/i, "").replace(/^where['’]?s\b/i, "where is");
+    if (publishedTools.some(item=>item.enabled !== false && [item.title,...(item.aliases || [])].some(title=>controlWords(title) === controlWords(text)))) return text.slice(0,160);
     const forgotten = /^i (?:forgot|have forgotten|lost) (?:my |the )?(.+?)[?.!]*$/i.exec(text);
     if (forgotten) return `reset ${forgotten[1]}`;
-    const match = /^(?:(?:how|where) (?:do|can) i|where (?:are|is) (?:my|the)|can you (?:help me|show me|find|open)|i (?:need|want|would like) to|i can'?t find|help me|show me|take me to|check|find|open|view|see|track|change|reset|update|manage|get)\s+(.+?)[?.!]*$/i.exec(text);
+    const match = /^(?:(?:how|where) (?:do|can) i|where (?:are|is)(?: (?:my|the))?|can you (?:help me|show me|find|open)|i (?:need|want|would like) to|i can'?t find|help me|show me|take me to|check|find|open|view|see|track|change|reset|update|manage|get)\s+(.+?)[?.!]*$/i.exec(text);
     if (match?.[1]) return match[1].trim().slice(0, 160);
     const outcome = /^i (?:need|want) (?!to\b)(.+?)[?.!]*$/i.exec(text);
     if (outcome?.[1]) return outcome[1].trim().slice(0, 160);

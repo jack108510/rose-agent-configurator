@@ -32,3 +32,5 @@ Run `node admin-demo/test-widget-overlap.cjs` with Playwright installed (`PLAYWR
 - `node admin-demo/test-experience.cjs` covers the first-use, recovery and complete desktop/mobile flows. Use `ATLAS_LOCAL=1` to serve local files at the canonical demo URL before deployment, and `TEST_FILTER` to run one named scenario.
 
 See `QA.md` for the verification scope.
+
+API Reference is a published guided destination. “wheres the api reference,” “where’s the API reference?” and “API docs” open the Reference tab directly and replace an earlier paused guide.

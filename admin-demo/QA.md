@@ -8,9 +8,9 @@ The demo uses the live Rose service with isolated prospect-preview sessions. Wor
 
 - 22 broad checks: navigation, reveal/hide, saved keys, permissions, Stripe validation/connect/disconnect, password previews, focus restoration, profile/workflow/webhook persistence, chat, five guided destinations, desktop/mobile layout, request destinations and browser exceptions.
 - Seven targeted regressions: complete password and Stripe dialog guides, key permissions, workflow details/counts, multiple webhooks, existing-storage migration and the live Pro-plan answer.
-- Fifteen experience cases: first-use task suggestions; natural password, Stripe and teammate requests; full key/workflow/Stripe flows on desktop and a touch-enabled 390×844 phone viewport; dialog cancellation/restart; saved preferences; unavailable-chat recovery; unsupported account deletion; and complete demo reset.
+- Seventeen experience cases: first-use task suggestions; natural password, Stripe and teammate requests; full key/workflow/Stripe flows on desktop and a touch-enabled 390×844 phone viewport; dialog cancellation/restart; saved preferences; unavailable-chat recovery; unsupported account deletion; complete demo reset; and API-reference navigation from a paused key guide on desktop/mobile.
 - Seven overlap cases: ordinary desktop, unobstructed control, wide control, upper/lower mobile targets, side-panel mode and full-width mode. Tests verify hit testing and then click the highlighted control.
-- Fourteen parser tests cover the published task catalog, including spoken requests.
+- Nineteen parser tests cover the published task catalog, including spoken requests.
 
 Commands (Playwright must be installed; `PLAYWRIGHT_MODULE` can identify an existing installation):
 
