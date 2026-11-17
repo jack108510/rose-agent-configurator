@@ -15,7 +15,11 @@
       "url": "./#settings/security",
       "target": "#reset-password",
       "enabled": true,
-      "pinned": true
+      "pinned": true,
+      "aliases": [
+        "forgot password",
+        "reset password"
+      ]
     },
     {
       "id": "atlas-stripe",
@@ -23,7 +27,12 @@
       "url": "./#integrations",
       "target": "#connect-stripe",
       "enabled": true,
-      "pinned": true
+      "pinned": true,
+      "aliases": [
+        "hook up Stripe",
+        "link Stripe",
+        "integrations"
+      ]
     },
     {
       "id": "atlas-create-key",
@@ -44,14 +53,22 @@
       "title": "Invite team member",
       "url": "./#team",
       "target": "#invite-member",
-      "enabled": true
+      "enabled": true,
+      "aliases": [
+        "invite teammate",
+        "add teammate"
+      ]
     },
     {
       "id": "atlas-workflow",
       "title": "Create workflow",
       "url": "./#overview",
       "target": "#create-workflow",
-      "enabled": true
+      "enabled": true,
+      "aliases": [
+        "make workflow",
+        "build workflow"
+      ]
     },
     {
       "id": "atlas-api-keys",

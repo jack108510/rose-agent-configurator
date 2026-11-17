@@ -8,6 +8,7 @@
       const payload=JSON.parse(init.body);
       delete payload.businessId;delete payload.clientId;delete payload.ownerEmail;
       payload.previewMode=true;payload.prospectPreview=true;
+      if(url.endsWith('/voice/start'))payload.greetingMessage="Hi, I'm Rose, your Atlas assistant. What would you like to do?";
       return originalFetch(input,{...init,body:JSON.stringify(payload)});
     }
     return originalFetch(input,init);

@@ -605,7 +605,7 @@
       seen.add(url.href);
       const selector = String(item?.target || "").trim().slice(0, 160);
       try { if (selector) document.createDocumentFragment().querySelector(selector); } catch { return []; }
-      return [{ id: String(item.id || `tool-${index}`).replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 48) || `tool-${index}`, kind: "published", title, url: url.href, target: selector, enabled: item.enabled !== false, pinned: item.pinned === true, score: 200 - index, health: item.health && ["ok", "error", "unknown"].includes(item.health.state) ? { state: item.health.state, text: String(item.health.text || "").slice(0, 120) } : null }];
+      return [{ aliases: Array.isArray(item.aliases) ? item.aliases.filter(value=>typeof value === "string").slice(0,8).map(value=>value.slice(0,100)) : [], id: String(item.id || `tool-${index}`).replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 48) || `tool-${index}`, kind: "published", title, url: url.href, target: selector, enabled: item.enabled !== false, pinned: item.pinned === true, score: 200 - index, health: item.health && ["ok", "error", "unknown"].includes(item.health.state) ? { state: item.health.state, text: String(item.health.text || "").slice(0, 120) } : null }];
     });
   }
   function toolMetric(id, event) {
@@ -813,7 +813,15 @@
   }
   function renderToolSuggestions() {
     const list = $(".wr-suggestions");
-    if (!list) return;
+    if (!list) {
+      if (!chatStarters || pendingTaskGuide || shoppingHistory.some(message=>message.role === 'user')) return;
+      chatStarters.replaceChildren();
+      for (const item of publishedTools.filter(item=>item.enabled !== false && item.pinned && toolUrl(item.url)).slice(0,3)) {
+        const button=document.createElement('button');button.type='button';button.textContent=item.title;
+        button.addEventListener('click',()=>launchSuggestedTool(item));chatStarters.append(button);
+      }
+      return;
+    }
     const current = new Map();
     const add = candidate => {
       const previous = current.get(candidate.key);
@@ -963,7 +971,7 @@
       }
     }
   }
-  function launchSuggestedTool(item) {
+  function launchSuggestedTool(item, view = "chat") {
     chatStarters?.replaceChildren();
     if (item.kind === "guide") {
       setView("chat"); input.value = `How do I ${item.title.charAt(0).toLowerCase()}${item.title.slice(1)}?`; submitChat(); return;
@@ -979,9 +987,9 @@
     const guideGoal = String(item.goal || item.title || "").trim().slice(0, 200);
     toolMetric(id, "starts");
     cancelGuideWork(); clearSpotlight(); guideForm = null;
-    pendingTaskGuide = { goal: guideGoal, destinationTitle: item.title, mappedPage: item.kind === "mapped-page", toolId: id, expectedUrl: destination.href, targetSelector: item.target || "", view: "chat", at: Date.now(), visited: [], phase: "seeking" };
+    pendingTaskGuide = { goal: guideGoal, destinationTitle: item.title, mappedPage: item.kind === "mapped-page", toolId: id, expectedUrl: destination.href, targetSelector: item.target || "", view, at: Date.now(), visited: [], phase: "seeking" };
     guideActivity = { goal: guideGoal, at: Date.now(), steps: [], current: "Opening the right page…", footer: "" };
-    setView("chat"); panel.classList.add("open"); fab.style.display = "none";
+    setView(view); panel.classList.add("open"); fab.style.display = "none";
     renderGuideActivity(); saveSiteSession();
     advanceTaskGuide();
   }
@@ -1358,7 +1366,7 @@
     guideStatus('');
     if (!pendingTaskGuide.presented) {
       pendingTaskGuide.presented = true;
-      if (pendingTaskGuide.view === 'voice') $(".wr-note").textContent = `Follow the highlighted steps in Chat. Start with ${target.label}.`;
+      if (pendingTaskGuide.view === 'voice') $(".wr-note").textContent = `Follow the highlighted control on the page. Start with ${target.label}.`;
     }
     saveSiteSession();
   }
@@ -1419,6 +1427,7 @@
     const wasControlledVisible = controlled && visibleSiteControl(controlled);
     const nextControlId = element.getAttribute('data-rose-guide-next');
     task.completionControl = element.hasAttribute('data-rose-guide-complete') ? element : null;
+    task.activatedControl = element;
     const beforeUrl = location.href;
     const beforeValue = element.matches('select,input') ? element.value : null;
     const beforeChecked = element.checked;
@@ -1480,9 +1489,17 @@
     guideTimer = setTimeout(check, 60);
   }
   document.addEventListener('rose:guide-complete', event => {
+    if (pendingTaskGuide?.phase === 'awaiting' && event.target.matches?.('dialog') && pendingTaskGuide.activatedControl?.getAttribute('aria-controls') === event.target.id) { finishGuideStep('All steps complete.'); return; }
     if (pendingTaskGuide?.phase === 'awaiting' && pendingTaskGuide.completionControl && event.detail?.control === pendingTaskGuide.completionControl) { finishGuideStep('All steps complete.'); return; }
-    if (guideForm && event.target === guideForm.scope && pendingTaskGuide?.phase === 'submitted') finishGuideStep('All steps complete.');
+    if (guideForm && event.target === guideForm.scope && ['submitted','form'].includes(pendingTaskGuide?.phase)) finishGuideStep('All steps complete.');
   });
+  document.addEventListener('close', event => {
+    if (!pendingTaskGuide || !event.target.matches?.('dialog')) return;
+    if (guideForm?.scope !== event.target && !event.target.contains(activeSpotlight?.element) && pendingTaskGuide.activatedControl?.getAttribute('aria-controls') !== event.target.id) return;
+    cancelGuideWork(); pendingTaskGuide = null;
+    guideForm?.observer?.disconnect(); guideForm = null; clearSpotlight();
+    guideStatus('Step closed. Ask Rose whenever you want to start again.'); saveSiteSession();
+  }, true);
   document.addEventListener('pointerdown', event => {
     if (root.contains(event.target) || activeSpotlight?.element.contains(event.target) || (guideForm && guideForm.scope.contains(event.target))) return;
     // Let the visitor finish in a dialog after activating the target.
@@ -2234,7 +2251,9 @@
   function visitorTaskGoal(message) {
     // A published site catalog works with the native corner widget too.
     if ((!cfg.desktopSidePanel && !toolsConfigLocation) || !widgetOptions.navigation) return null;
-    const text = String(message || "").trim();
+    const text = String(message || "").trim().replace(/^please\s+/i, "");
+    const forgotten = /^i (?:forgot|have forgotten|lost) (?:my |the )?(.+?)[?.!]*$/i.exec(text);
+    if (forgotten) return `reset ${forgotten[1]}`;
     const match = /^(?:(?:how|where) (?:do|can) i|where (?:are|is) (?:my|the)|can you (?:help me|show me|find|open)|i (?:need|want|would like) to|i can'?t find|help me|show me|take me to|check|find|open|view|see|track|change|reset|update|manage|get)\s+(.+?)[?.!]*$/i.exec(text);
     if (match?.[1]) return match[1].trim().slice(0, 160);
     const outcome = /^i (?:need|want) (?!to\b)(.+?)[?.!]*$/i.exec(text);
@@ -2312,7 +2331,7 @@
   }
   async function handleVisitorTaskRequest(message, view = "chat") {
     const goal = visitorTaskGoal(message);
-    if (!goal || view !== "chat") return false;
+    if (!goal) return false;
     await toolsReady;
     renderToolSuggestions();
     const words = visitorTaskWords(goal);
@@ -2324,7 +2343,7 @@
     const candidates = [...configured.filter(item => item.enabled !== false && toolUrl(item.url)), ...currentLinks, ...suggestedTools]
       .filter((item, index, all) => all.findIndex(other => (other.id && other.id === item.id) || (other.url && other.url === item.url)) === index);
     const rank = items => items.map(item => {
-      const titleWords = visitorTaskWords(item.title);
+      const titleWords = visitorTaskWords([item.title,...(item.aliases || [])].join(" "));
       const contextWords = visitorTaskWords(item.context || "");
       const pathWords = visitorTaskWords(item.url ? `${new URL(item.url).pathname} ${new URL(item.url).hash}` : "");
       const titleMatches = words.filter(word => titleWords.includes(word)).length;
@@ -2369,13 +2388,13 @@
           first.matchedTerms / Math.max(1, first.queryTerms) >= 0.5 &&
           (!second || first.matchScore - second.matchScore >= 5);
         if (clearMatch && widgetOptions.autoOpen && visitorAllowsAutoOpen()) {
-          launchSuggestedTool(first);
+          launchSuggestedTool(first, view);
         } else {
           addMsg("bot", mapped.length === 1 ? "I found a page that may help:" : "These pages may help. Which one do you want?");
           const actions = document.createElement("div"); actions.className = "wr-chat-recovery";
           for (const item of mapped) {
             const button = document.createElement("button"); button.type = "button"; button.textContent = item.title;
-            button.addEventListener("click", () => { actions.remove(); launchSuggestedTool(item); });
+            button.addEventListener("click", () => { actions.remove(); launchSuggestedTool(item, view); });
             actions.append(button);
           }
           log.append(actions);
@@ -2396,13 +2415,13 @@
       const actions = document.createElement("div"); actions.className = "wr-chat-recovery";
       for (const { item } of ranked.slice(0, 3)) {
         const button = document.createElement("button"); button.type = "button"; button.textContent = item.title;
-        button.addEventListener("click", () => { actions.remove(); launchSuggestedTool(item); });
+        button.addEventListener("click", () => { actions.remove(); launchSuggestedTool(item, view); });
         actions.append(button);
       }
       log.append(actions);
       return true;
     }
-    launchSuggestedTool(ranked[0].item);
+    launchSuggestedTool(ranked[0].item, view);
     return true;
   }
   async function executeRequestedAction(message, view = "chat") {
@@ -2625,7 +2644,7 @@
     await settingsReady;
     const normalized = String(text || "").trim().toLowerCase();
     const wantsNavigation = widgetOptions.voiceNavigation && navigationRequested(normalized);
-    if (((!cfg.shopping || !wantsProducts(normalized)) && !wantsNavigation && !siteControlIntent(normalized) && !taskGuideIntent(normalized) && !guidanceIntent(normalized) && !(pendingSiteControlChoices.length && siteControlOrdinal(normalized) != null)) || normalized === lastVoiceShoppingText) return;
+    if (((!cfg.shopping || !wantsProducts(normalized)) && !wantsNavigation && !siteControlIntent(normalized) && !taskGuideIntent(normalized) && !visitorTaskGoal(normalized) && !guidanceIntent(normalized) && !(pendingSiteControlChoices.length && siteControlOrdinal(normalized) != null)) || normalized === lastVoiceShoppingText) return;
     lastVoiceShoppingText = normalized;
     try {
       if ((await executeRequestedAction(text, "voice")).handled) return;
@@ -2674,8 +2693,8 @@
       }
       live.classList.toggle('has-lines', groups.length > 0);
     }
-    const last = groups[groups.length - 1];
-    if (last?.speaker === "user") handleVoiceRequest(last.parts.join(" "));
+    const last = [...groups].reverse().find(group=>group.speaker === "user");
+    if (last) handleVoiceRequest(last.parts.join(" "));
   }
   function appendVoiceTranscript(role, text, partial = false) {
     const clean = String(text || "").trim();
@@ -2828,7 +2847,7 @@
         renderSitePages(links);
         if (links.length === 1) navigateTo(links[0]);
       } else {
-        const alternatives = cfg.desktopSidePanel ? publishedTools.filter(item => item.enabled !== false && toolUrl(item.url)).slice(0, 3) : [];
+        const alternatives = (cfg.desktopSidePanel || toolsConfigLocation) ? publishedTools.filter(item => item.enabled !== false && toolUrl(item.url)).slice(0, 3) : [];
         if (alternatives.length) {
           pending.textContent = "I can't answer that right now. I can still guide you to:";
           const actions = document.createElement("div"); actions.className = "wr-chat-recovery";
@@ -2895,14 +2914,14 @@
       retellClient.on("user_stop_talking", () => { clearSpeechRelease(); panel.classList.remove("speaking"); status.textContent = "Thinking"; orb.classList.remove("listening", "speaking"); });
       retellClient.on("transcript_error", () => { note.textContent = "Live transcript is unavailable. Voice is still connected."; });
       retellClient.on("call_ended", () => { voiceBusy = false; startBtn.disabled = false; clearSpeechRelease(); panel.classList.remove("speaking"); status.textContent = "Call ended"; note.textContent = "Start another conversation anytime."; orb.classList.remove("live", "listening", "speaking"); startBtn.style.display = "inline-block"; endBtn.style.display = "none"; });
-      retellClient.on("error", err => { voiceBusy = false; startBtn.disabled = false; clearSpeechRelease(); panel.classList.remove("speaking"); console.error(err); status.textContent = "Voice connection failed"; showContactFallback(note, "Rose could not start a voice call."); orb.classList.remove("live", "listening", "speaking"); startBtn.style.display = "inline-block"; endBtn.style.display = "none"; });
+      retellClient.on("error", err => { voiceBusy = false; startBtn.disabled = false; clearSpeechRelease(); panel.classList.remove("speaking"); console.error(err); status.textContent = "Voice connection failed"; note.textContent = "Voice couldn’t connect. Check microphone access, try again, or switch to Chat."; orb.classList.remove("live", "listening", "speaking"); startBtn.style.display = "inline-block"; endBtn.style.display = "none"; });
       await retellClient.startCall({ accessToken: call.accessToken, callId: call.callId, transport: call.transport, iceServers: call.ice_servers, monitorToken: call.monitorToken });
     } catch (err) {
       voiceBusy = false;
       startBtn.disabled = false;
       console.error(err);
-      status.textContent = "Voice unavailable";
-      showContactFallback(note, "Rose is temporarily unavailable.");
+      status.textContent = /NotAllowedError|PermissionDeniedError/.test(err?.name || '') ? "Microphone access needed" : "Voice unavailable";
+      note.textContent = /NotAllowedError|PermissionDeniedError/.test(err?.name || '') ? "Allow microphone access in your browser, or switch to Chat for the same Atlas guidance." : "Voice couldn’t connect. Try again, or switch to Chat.";
       startBtn.style.display = "inline-block";
       endBtn.style.display = "none";
     }

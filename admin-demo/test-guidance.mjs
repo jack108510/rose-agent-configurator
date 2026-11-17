@@ -23,6 +23,11 @@ for(const [prompt,id] of [
  ['How do I set up Stripe?','atlas-stripe-setup'],
  ['I want to create an API key','atlas-create-key'],
  ['How do I add a webhook endpoint?','atlas-webhook'],
+ ['I forgot my password','atlas-password'],
+ ['I need to hook up Stripe','atlas-stripe'],
+ ['Help me invite a teammate','atlas-team'],
+ ['Can you show me my API key?','atlas-api-key'],
+ ['Please show me how to create a workflow','atlas-workflow'],
 ])test(prompt,async()=>{
  const {context,calls}=matcher();
  context.prompt=prompt;
@@ -36,3 +41,5 @@ test('floating widget uses its published catalog without enabling side-panel UI'
  assert.match(runtime,/!cfg\.desktopSidePanel && !toolsConfigLocation/);
  assert.equal(catalog.tools.length,new Set(catalog.tools.map(t=>new URL(t.url,base).href)).size);
 });
+
+test('spoken task uses the same published catalog',async()=>{const {context,calls}=matcher();assert.equal(await vm.runInContext('handleVisitorTaskRequest("Help me connect Stripe", "voice")',context),true);assert.equal(calls[0].id,'atlas-stripe');});
