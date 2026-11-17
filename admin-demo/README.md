@@ -16,3 +16,9 @@ Live: https://jack108510.github.io/rose-agent-configurator/admin-demo/
 - Workflow definitions, webhook endpoints and API-key permissions persist in this browser's demo storage. Existing saved workspaces migrate without losing their keys or profile.
 - Site-authored `data-rose-guide-next` steps continue guidance through the Stripe and password dialogs. Completion is confirmed by the app's success event, after the sample action succeeds.
 - Verified November 17, 2026: navigation, persistence, dialog guidance, live chat, mobile/desktop layout and preview isolation. Voice/audio was not tested.
+
+## Highlight overlap protection
+
+Rose moves its floating panel to the left when it covers the highlighted control. If that still overlaps, or on narrow screens, it collapses to a guidance bar at the opposite edge.
+
+Run `node admin-demo/test-widget-overlap.cjs` with Playwright installed (`PLAYWRIGHT_MODULE` may point to an existing installation). The seven browser cases load the real widget, force overlap, verify the target receives hit testing, and click it. Cases cover desktop, a wide target, mobile targets above and below the midpoint, side-panel mode and full-width mode.
