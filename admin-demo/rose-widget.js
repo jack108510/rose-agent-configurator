@@ -1417,6 +1417,8 @@
     const routeControl = task.phase === 'route-control';
     const controlled = document.getElementById(element.getAttribute('aria-controls') || '');
     const wasControlledVisible = controlled && visibleSiteControl(controlled);
+    const nextControlId = element.getAttribute('data-rose-guide-next');
+    task.completionControl = element.hasAttribute('data-rose-guide-complete') ? element : null;
     const beforeUrl = location.href;
     const beforeValue = element.matches('select,input') ? element.value : null;
     const beforeChecked = element.checked;
@@ -1431,6 +1433,21 @@
     const started = performance.now();
     const check = () => {
       if (pendingTaskGuide !== task || task.paused) return;
+      // Follow site-authored steps only after their control becomes visible.
+      // This also handles dialogs that replace their contents without opening a new element.
+      if (nextControlId) {
+        const next = document.getElementById(nextControlId);
+        if (next && !root.contains(next) && visibleSiteControl(next)) {
+          task.phase = 'target'; task.targetLabel = controlLabel(next);
+          task.completionControl = null;
+          planStep(`control:${nextControlId}`, `Choose ${task.targetLabel}`);
+          showSpotlight(next, task.targetLabel); guideStatus(''); saveSiteSession(); return;
+        }
+        if (performance.now() - started >= 3500) {
+          recoverGuide("The next step didn't appear. Check the dialog or resume the guide."); return;
+        }
+        guideTimer = setTimeout(check, 100); return;
+      }
       const dialog = [...document.querySelectorAll('dialog[open],[role="dialog"],[aria-modal="true"]')].find(item => visibleSiteControl(item) && !dialogs.has(item));
       if (dialog) {
         if (startFormGuide(dialog)) return;
@@ -1463,6 +1480,7 @@
     guideTimer = setTimeout(check, 60);
   }
   document.addEventListener('rose:guide-complete', event => {
+    if (pendingTaskGuide?.phase === 'awaiting' && pendingTaskGuide.completionControl && event.detail?.control === pendingTaskGuide.completionControl) { finishGuideStep('All steps complete.'); return; }
     if (guideForm && event.target === guideForm.scope && pendingTaskGuide?.phase === 'submitted') finishGuideStep('All steps complete.');
   });
   document.addEventListener('pointerdown', event => {

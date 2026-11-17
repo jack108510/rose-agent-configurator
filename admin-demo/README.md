@@ -12,4 +12,7 @@ Live: https://jack108510.github.io/rose-agent-configurator/admin-demo/
 - `rose-tools.json` maps natural requests to real Atlas routes and visible controls.
 - The app handles hash routes including `#developers/api-keys` and `#settings/security` and exposes control state via ARIA so Rose can confirm a step changed the page.
 - `node --test admin-demo/test-guidance.mjs` exercises the runtime’s actual request matcher for singular/plural API keys, password resets, Stripe setup, API-key creation and webhooks.
-- Live browser verification requires site permission for `jack108510.github.io`; a saved browser denial blocked the test in this session.
+- `node admin-demo/test-browser.cjs` runs browser regressions with Playwright installed. Set `PLAYWRIGHT_MODULE` to its module path if needed; `ATLAS_LOCAL=1` verifies local assets against the live service before deployment.
+- Workflow definitions, webhook endpoints and API-key permissions persist in this browser's demo storage. Existing saved workspaces migrate without losing their keys or profile.
+- Site-authored `data-rose-guide-next` steps continue guidance through the Stripe and password dialogs. Completion is confirmed by the app's success event, after the sample action succeeds.
+- Verified November 17, 2026: navigation, persistence, dialog guidance, live chat, mobile/desktop layout and preview isolation. Voice/audio was not tested.
