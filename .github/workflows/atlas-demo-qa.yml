@@ -1,0 +1,35 @@
+name: Atlas demo guidance QA
+on:
+  push:
+    paths: ['admin-demo/**', '.github/workflows/atlas-demo-qa.yml']
+  pull_request:
+    paths: ['admin-demo/**', '.github/workflows/atlas-demo-qa.yml']
+permissions:
+  contents: read
+jobs:
+  atlas-guidance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ATLAS_LOCAL: '1'
+      ATLAS_OFFLINE: '1'
+      SKIP_LIVE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser test runtime
+        run: |
+          npm install --prefix "$RUNNER_TEMP/atlas-qa" --no-package-lock playwright@1.63.0
+          "$RUNNER_TEMP/atlas-qa/node_modules/.bin/playwright" install --with-deps chromium
+          echo "PLAYWRIGHT_MODULE=$RUNNER_TEMP/atlas-qa/node_modules/playwright" >> "$GITHUB_ENV"
+      - name: Check language routing and catalog
+        run: node --test admin-demo/test-guidance.mjs admin-demo/test-catalog.cjs
+      - name: Audit every visible control and destination on desktop and mobile
+        run: node admin-demo/test-complete-guidance.cjs
+      - name: Check full journeys, persistence and recovery
+        run: |
+          node admin-demo/test-experience.cjs
+          node admin-demo/test-browser.cjs
+          node admin-demo/test-widget-overlap.cjs

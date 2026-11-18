@@ -355,6 +355,7 @@
   let guideActivity = null;
   let activeSpotlight = null;
   let guideForm = null;
+  let activatedGuideControl = null, completionGuideControl = null;
   let guideTimer = null;
   let guideObserver = null;
   let guideEpoch = 0;
@@ -450,6 +451,7 @@
   }
   try {
     const saved = JSON.parse(sessionStorage.getItem(siteSessionKey) || "{}");
+    if(globalThis.__roseSiteGuide && saved.siteGuideVersion!==globalThis.__roseSiteGuide.version){saved.pendingTaskGuide=null;saved.guideActivity=null;saved.pendingNavigation=null;}
     chatId = typeof saved.chatId === "string" ? saved.chatId : null;
     shoppingHistory = Array.isArray(saved.messages) ? saved.messages.slice(-12) : [];
     shoppingHistory.forEach(message => addMsg(message.role === "user" ? "user" : "bot", String(message.text || "").slice(0, 1600)));
@@ -502,7 +504,7 @@
     }
   } catch { /* Storage can be disabled. */ }
   function saveSiteSession() {
-    try { sessionStorage.setItem(siteSessionKey, JSON.stringify({ chatId, messages: shoppingHistory.slice(-12), products: lastProducts, sitePages: lastSitePages, navigationChoices: lastNavigationChoices, pendingNavigation, pendingTaskGuide, guideActivity })); } catch { /* Storage can be disabled. */ }
+    try { sessionStorage.setItem(siteSessionKey, JSON.stringify({ siteGuideVersion:globalThis.__roseSiteGuide?.version || null, chatId, messages: shoppingHistory.slice(-12), products: lastProducts, sitePages: lastSitePages, navigationChoices: lastNavigationChoices, pendingNavigation, pendingTaskGuide, guideActivity })); } catch { /* Storage can be disabled. */ }
   }
   function showContactFallback(target, message) {
     target.textContent = message;
@@ -601,11 +603,11 @@
     return config.tools.slice(0, 40).flatMap((item, index) => {
       const url = toolUrl(item?.url);
       const title = String(item?.title || "").replace(/\s+/g, " ").trim().slice(0, 60);
-      if (!url || !title || seen.has(url.href)) return [];
-      seen.add(url.href);
+      if (!url || !title) return [];
       const selector = String(item?.target || "").trim().slice(0, 160);
       try { if (selector) document.createDocumentFragment().querySelector(selector); } catch { return []; }
-      return [{ aliases: Array.isArray(item.aliases) ? item.aliases.filter(value=>typeof value === "string").slice(0,8).map(value=>value.slice(0,100)) : [], id: String(item.id || `tool-${index}`).replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 48) || `tool-${index}`, kind: "published", title, url: url.href, target: selector, enabled: item.enabled !== false, pinned: item.pinned === true, score: 200 - index, health: item.health && ["ok", "error", "unknown"].includes(item.health.state) ? { state: item.health.state, text: String(item.health.text || "").slice(0, 120) } : null }];
+      const identity=`${url.href}|${selector}|${item.id || title}`;if(seen.has(identity))return [];seen.add(identity);
+      return [{ completion:item.completion || "", field:item.field || "", steps:Array.isArray(item.steps)?item.steps:[], aliases: Array.isArray(item.aliases) ? item.aliases.filter(value=>typeof value === "string").slice(0,8).map(value=>value.slice(0,100)) : [], id: String(item.id || `tool-${index}`).replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 48) || `tool-${index}`, kind: "published", title, url: url.href, target: selector, enabled: item.enabled !== false, pinned: item.pinned === true, score: 200 - index, health: item.health && ["ok", "error", "unknown"].includes(item.health.state) ? { state: item.health.state, text: String(item.health.text || "").slice(0, 120) } : null }];
     });
   }
   function toolMetric(id, event) {
@@ -888,7 +890,7 @@
     const suggestions = [...published, ...links.values(), ...[...current.values()].filter(item => item.kind === "control" || item.kind === "guide")]
       .filter(item => item.kind !== "link" || item.url !== location.href)
       .filter(item => !hiddenUrls.has(item.url) || item.kind === "published")
-      .filter((item, index, all) => !item.url || all.findIndex(other => other.url === item.url) === index)
+      .filter((item, index, all) => !item.url || all.findIndex(other => other.url === item.url && other.target === item.target) === index)
       .filter((item, index, all) => all.findIndex(other => toolTitleKey(other.title) === toolTitleKey(item.title)) === index)
       .sort((a, b) => (toolRank(b) + Math.min(3, b.seenOn?.length || 0) * 4) - (toolRank(a) + Math.min(3, a.seenOn?.length || 0) * 4) || a.title.localeCompare(b.title))
       .slice(0, 5);
@@ -972,6 +974,7 @@
     }
   }
   function launchSuggestedTool(item, view = "chat") {
+    document.dispatchEvent(new CustomEvent("atlas:guide-navigation"));
     chatStarters?.replaceChildren();
     if (item.kind === "guide") {
       setView("chat"); input.value = `How do I ${item.title.charAt(0).toLowerCase()}${item.title.slice(1)}?`; submitChat(); return;
@@ -986,8 +989,8 @@
     const id = item.id || `page:${destination.pathname}${destination.hash}`;
     const guideGoal = String(item.goal || item.title || "").trim().slice(0, 200);
     toolMetric(id, "starts");
-    cancelGuideWork(); clearSpotlight(); guideForm = null;
-    pendingTaskGuide = { goal: guideGoal, destinationTitle: item.title, mappedPage: item.kind === "mapped-page", toolId: id, expectedUrl: destination.href, targetSelector: item.target || "", view, at: Date.now(), visited: [], phase: "seeking" };
+    cancelGuideWork(); clearSpotlight(); guideForm = null; activatedGuideControl = null; completionGuideControl = null;
+    pendingTaskGuide = { goal: guideGoal, destinationTitle: item.title, mappedPage: item.kind === "mapped-page", toolId: id, expectedUrl: destination.href, targetSelector: item.target || "", completion:item.completion || "", fieldSelector:item.field || "", steps:item.steps || [], view, at: Date.now(), visited: [], phase: "seeking" };
     guideActivity = { goal: guideGoal, at: Date.now(), steps: [], current: "Opening the right page…", footer: "" };
     setView(view); panel.classList.add("open"); fab.style.display = "none";
     renderGuideActivity(); saveSiteSession();
@@ -1251,7 +1254,8 @@
     const opening = ensureGuidePlan().items.find(item => item.key === 'open');
     if (opening) opening.state = 'done';
     pendingTaskGuide.phase = 'form';
-    showFormStep(0);
+    const preferred = pendingTaskGuide.fieldSelector ? guideForm.fields.findIndex(field=>field.matches(pendingTaskGuide.fieldSelector)) : 0;
+    showFormStep(Math.max(0,preferred));
     const form = guideForm;
     form.observer = new MutationObserver(() => {
       if (guideForm !== form || !pendingTaskGuide) { form.observer.disconnect(); return; }
@@ -1349,6 +1353,10 @@
   }
   function presentGuideTarget(target) {
     if (!pendingTaskGuide || pendingTaskGuide.paused) return;
+    if (target.element.matches('form') && startFormGuide(target.element)) return;
+    if (pendingTaskGuide.completion === 'page') {
+      finishGuideStep(`Opened ${pendingTaskGuide.destinationTitle || target.label}.`); showSpotlight(target.element,target.label); return;
+    }
     // A requested tab can already be open after hash navigation. Do not ask
     // the visitor to click it again or leave an unrelated guide resumable.
     if (target.element.matches('[role="tab"][aria-selected="true"]')) {
@@ -1378,6 +1386,7 @@
     saveSiteSession();
   }
   function finishGuideStep(text) {
+    activatedGuideControl = null; completionGuideControl = null;
     cancelGuideWork();
     if (pendingTaskGuide?.toolId && (!pendingTaskGuide.metricFinished || pendingTaskGuide.metricFinished === "unconfirmed")) toolMetric(pendingTaskGuide.toolId, "verified");
     if (guideActivity?.plan) for (const item of guideActivity.plan.items) if (item.state === 'current') item.state = 'done';
@@ -1432,9 +1441,10 @@
     const routeControl = task.phase === 'route-control';
     const controlled = document.getElementById(element.getAttribute('aria-controls') || '');
     const wasControlledVisible = controlled && visibleSiteControl(controlled);
-    const nextControlId = element.getAttribute('data-rose-guide-next');
-    task.completionControl = element.hasAttribute('data-rose-guide-complete') ? element : null;
-    task.activatedControl = element;
+    const sequenceIndex = task.steps?.indexOf(element.id) ?? -1;
+    const nextControlId = sequenceIndex >= 0 ? task.steps[sequenceIndex+1] : element.getAttribute('data-rose-guide-next');
+    completionGuideControl = element.hasAttribute('data-rose-guide-complete') ? element : null;
+    activatedGuideControl = element;
     const beforeUrl = location.href;
     const beforeValue = element.matches('select,input') ? element.value : null;
     const beforeChecked = element.checked;
@@ -1455,7 +1465,7 @@
         const next = document.getElementById(nextControlId);
         if (next && !root.contains(next) && visibleSiteControl(next)) {
           task.phase = 'target'; task.targetLabel = controlLabel(next);
-          task.completionControl = null;
+          completionGuideControl = null;
           planStep(`control:${nextControlId}`, `Choose ${task.targetLabel}`);
           showSpotlight(next, task.targetLabel); guideStatus(''); saveSiteSession(); return;
         }
@@ -1466,6 +1476,7 @@
       }
       const dialog = [...document.querySelectorAll('dialog[open],[role="dialog"],[aria-modal="true"]')].find(item => visibleSiteControl(item) && !dialogs.has(item));
       if (dialog) {
+        if (task.completion === "open") { finishGuideStep(`${task.targetLabel} is open.`); return; }
         if (startFormGuide(dialog)) return;
         finishGuideStep(`${task.targetLabel} opened. Continue in the dialog.`);
         // Respect the site's existing focus management and never focus a sensitive field.
@@ -1481,7 +1492,7 @@
         finishGuideStep(`${task.targetLabel} updated.`);
         return;
       }
-      if (location.href !== beforeUrl || (!wasControlledVisible && controlled && visibleSiteControl(controlled)) || (beforeExpanded !== 'true' && element.getAttribute('aria-expanded') === 'true') || (beforeSelected !== 'true' && element.getAttribute('aria-selected') === 'true') || (element.matches('summary') && element.parentElement?.open)) {
+      if (location.href !== beforeUrl || (!wasControlledVisible && controlled && visibleSiteControl(controlled)) || (beforeExpanded !== null && element.getAttribute('aria-expanded') !== beforeExpanded) || (beforeSelected !== 'true' && element.getAttribute('aria-selected') === 'true') || (element.matches('summary') && element.parentElement?.open)) {
         if (routeControl) { task.visited.push(task.nextRoute.key); task.phase = 'seeking'; task.scanWaited = false; task.nextRoute = null; saveSiteSession(); guideAfterLayout(advanceTaskGuide); return; }
         finishGuideStep(`${task.targetLabel} opened.`);
         return;
@@ -1496,13 +1507,13 @@
     guideTimer = setTimeout(check, 60);
   }
   document.addEventListener('rose:guide-complete', event => {
-    if (pendingTaskGuide?.phase === 'awaiting' && event.target.matches?.('dialog') && pendingTaskGuide.activatedControl?.getAttribute('aria-controls') === event.target.id) { finishGuideStep('All steps complete.'); return; }
-    if (pendingTaskGuide?.phase === 'awaiting' && pendingTaskGuide.completionControl && event.detail?.control === pendingTaskGuide.completionControl) { finishGuideStep('All steps complete.'); return; }
+    if (pendingTaskGuide?.phase === 'awaiting' && event.target.matches?.('dialog') && activatedGuideControl?.getAttribute?.('aria-controls') === event.target.id) { finishGuideStep('All steps complete.'); return; }
+    if (pendingTaskGuide?.phase === 'awaiting' && completionGuideControl && event.detail?.control === completionGuideControl) { finishGuideStep('All steps complete.'); return; }
     if (guideForm && event.target === guideForm.scope && ['submitted','form'].includes(pendingTaskGuide?.phase)) finishGuideStep('All steps complete.');
   });
   document.addEventListener('close', event => {
     if (!pendingTaskGuide || !event.target.matches?.('dialog')) return;
-    if (guideForm?.scope !== event.target && !event.target.contains(activeSpotlight?.element) && pendingTaskGuide.activatedControl?.getAttribute('aria-controls') !== event.target.id) return;
+    if (guideForm?.scope !== event.target && !event.target.contains(activeSpotlight?.element) && activatedGuideControl?.getAttribute?.('aria-controls') !== event.target.id) return;
     cancelGuideWork(); pendingTaskGuide = null;
     guideForm?.observer?.disconnect(); guideForm = null; clearSpotlight();
     guideStatus('Step closed. Ask Rose whenever you want to start again.'); saveSiteSession();
@@ -2349,7 +2360,7 @@
     const configured = cfg.toolsReview ? reviewTools : publishedTools;
     const currentLinks = visitorTaskLinks();
     const candidates = [...configured.filter(item => item.enabled !== false && toolUrl(item.url)), ...currentLinks, ...suggestedTools]
-      .filter((item, index, all) => all.findIndex(other => (other.id && other.id === item.id) || (other.url && other.url === item.url)) === index);
+      .filter((item, index, all) => all.findIndex(other => (other.id && other.id === item.id) || (other.url && other.url === item.url && other.target === item.target)) === index);
     const rank = items => items.map(item => {
       const titleWords = visitorTaskWords([item.title,...(item.aliases || [])].join(" "));
       const contextWords = visitorTaskWords(item.context || "");
@@ -2415,7 +2426,7 @@
       const discovered = await discoverVisitorTaskLinks(goal, currentLinks);
       status?.closest(".wr-row")?.remove();
       ranked = rank([...candidates, ...discovered].filter((item, index, all) =>
-        all.findIndex(other => (other.id && other.id === item.id) || (other.url && other.url === item.url)) === index));
+        all.findIndex(other => (other.id && other.id === item.id) || (other.url && other.url === item.url && other.target === item.target)) === index));
     }
     if (!ranked.length) return false;
     if (ranked[1] && ranked[0].score === ranked[1].score) {
@@ -2433,6 +2444,24 @@
     return true;
   }
   async function executeRequestedAction(message, view = "chat") {
+    if (globalThis.__roseSiteGuide) {
+      if (/^(?:resume|continue|pause|stop)(?: the)?(?: guide| guidance)?[.!]?$/i.test(String(message).trim()) && (pendingTaskGuide || activeSpotlight)) return {handled:handleTaskGuideRequest(message,view),type:'guide-control'};
+      try {
+        const result=await globalThis.__roseSiteGuide.resolve(message);
+        if(!result)return {handled:false};
+        if(result.type==='guide'){launchSuggestedTool(result.tool,view);return {handled:true,type:'site-task'};}
+        cancelGuideWork();pendingTaskGuide=null;guideForm?.observer?.disconnect();guideForm=null;clearSpotlight();guideActivity=null;
+        log.querySelectorAll('.wr-guide-plan-row,.wr-guide-status,.wr-guide-choices').forEach(el=>el.remove());saveSiteSession();
+        if(result.type==='back')document.dispatchEvent(new CustomEvent('atlas:guide-back'));
+        if(result.type==='dismiss')document.dispatchEvent(new CustomEvent('atlas:guide-navigation'));
+        if(result.type==='end-voice'){const active=voiceBusy;retellClient?.stopCall();result.message=active?'Voice conversation ended.':'No voice call is running.';}
+        addMsg('bot',result.message);
+        const choices=document.createElement('div');choices.className='wr-chat-recovery';
+        for(const tool of result.choices||[]){const button=document.createElement('button');button.type='button';button.textContent=tool.title;button.addEventListener('click',()=>{choices.remove();launchSuggestedTool(tool,view);});choices.append(button);}
+        if(choices.childElementCount)log.append(choices);
+        return {handled:true,type:result.type};
+      }catch(error){addMsg('bot','Atlas shortcuts could not load. Refresh to retry; the sidebar and page controls still work.');return {handled:true,type:'catalog-error'};}
+    }
     const actionable = (pendingTaskGuide && /^(?:resume|continue|pause|stop)(?: the)?(?: guide| guidance)?[.!]?$/i.test(String(message).trim())) || guidanceIntent(message) || taskGuideIntent(message) || visitorTaskGoal(message) || cartRequested(message) || siteControlIntent(message) || (pendingSiteControlChoices.length && siteControlOrdinal(message) != null) || priorNavigationChoice(message);
     if (!actionable) return { handled: false };
     if (actionInFlight) {
@@ -2652,7 +2681,8 @@
     await settingsReady;
     const normalized = String(text || "").trim().toLowerCase();
     const wantsNavigation = widgetOptions.voiceNavigation && navigationRequested(normalized);
-    if (((!cfg.shopping || !wantsProducts(normalized)) && !wantsNavigation && !siteControlIntent(normalized) && !taskGuideIntent(normalized) && !visitorTaskGoal(normalized) && !guidanceIntent(normalized) && !(pendingSiteControlChoices.length && siteControlOrdinal(normalized) != null)) || normalized === lastVoiceShoppingText) return;
+    if (!normalized || normalized === lastVoiceShoppingText) return;
+    if (!globalThis.__roseSiteGuide && (!cfg.shopping || !wantsProducts(normalized)) && !wantsNavigation && !siteControlIntent(normalized) && !taskGuideIntent(normalized) && !visitorTaskGoal(normalized) && !guidanceIntent(normalized) && !(pendingSiteControlChoices.length && siteControlOrdinal(normalized) != null)) return;
     lastVoiceShoppingText = normalized;
     try {
       if ((await executeRequestedAction(text, "voice")).handled) return;
@@ -2735,9 +2765,10 @@
     if (!r.ok) { const error = new Error(data.error || "Request failed"); error.status = r.status; throw error; }
     return data;
   }
+  function liveBusinessContext(){const current=globalThis.__atlasDemoContext?.();return current?`Current visible sample workspace state (takes precedence over starting values): ${JSON.stringify(current)}\nAvailable Atlas controls: ${(globalThis.__roseSiteGuide?.capabilities||[]).join("; ")}\n${cfg.businessContext}`:cfg.businessContext;}
   async function ensureChat() {
     if (chatId) return chatId;
-    const data = await api("/api/chat/start", { page: `${location.origin}${location.pathname}`, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: cfg.businessContext, services: cfg.services, partnerDelivery: cfg.partnerDelivery });
+    const data = await api("/api/chat/start", { page: `${location.origin}${location.pathname}`, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: liveBusinessContext(), services: cfg.services, partnerDelivery: cfg.partnerDelivery });
     chatId = data.chatId;
     saveSiteSession();
     return chatId;
@@ -2821,7 +2852,7 @@
     try {
       let products = [];
       try { products = await findProducts(content); } catch (error) { console.warn("Rose product search unavailable", error); }
-      const messageBody = { content, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: cfg.businessContext, services: cfg.services, pageContext: currentPageContext(), shoppingProducts: products };
+      const messageBody = { content, businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: liveBusinessContext(), services: cfg.services, pageContext: currentPageContext(), shoppingProducts: products };
       let id = await ensureChat();
       let data;
       try { data = await api("/api/chat/message", { ...messageBody, chatId: id }); }
@@ -2855,7 +2886,7 @@
         renderSitePages(links);
         if (links.length === 1) navigateTo(links[0]);
       } else {
-        const alternatives = (cfg.desktopSidePanel || toolsConfigLocation) ? publishedTools.filter(item => item.enabled !== false && toolUrl(item.url)).slice(0, 3) : [];
+        const alternatives = (cfg.desktopSidePanel || toolsConfigLocation) ? publishedTools.filter(item => item.enabled !== false && toolUrl(item.url)).sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned)).slice(0, 3) : [];
         if (alternatives.length) {
           pending.textContent = "I can't answer that right now. I can still guide you to:";
           const actions = document.createElement("div"); actions.className = "wr-chat-recovery";
@@ -2885,7 +2916,7 @@
       const [{ RetellClient }, { RoseV3VoiceClient }, call] = await Promise.all([
         import("https://esm.sh/retell-client-js-sdk@3.0.4"),
         import(`${String(cfg.apiBase || "").replace(/\/+$/, "")}/api/voice/start?module=voice`),
-        api("/api/voice/start", { page: `${location.origin}${location.pathname}`, pageContext: currentPageContext(), businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: cfg.businessContext, services: cfg.services, partnerDelivery: cfg.partnerDelivery })
+        api("/api/voice/start", { page: `${location.origin}${location.pathname}`, pageContext: currentPageContext(), businessId: cfg.businessId, ownerEmail: cfg.ownerEmail, businessName: cfg.businessName, website: cfg.website, businessContext: liveBusinessContext(), services: cfg.services, partnerDelivery: cfg.partnerDelivery })
       ]);
       retellClient = new RoseV3VoiceClient(RetellClient, cfg.apiBase);
       let speechReleaseTimer = null;

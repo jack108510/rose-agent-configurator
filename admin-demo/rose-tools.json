@@ -2,12 +2,442 @@
   "version": 1,
   "tools": [
     {
+      "id": "atlas-overview",
+      "title": "Workspace overview",
+      "url": "./#overview",
+      "target": "#overview-title",
+      "enabled": true,
+      "subjects": [
+        "overview",
+        "dashboard",
+        "home"
+      ],
+      "actions": [],
+      "default": true,
+      "completion": "page",
+      "coverage": [
+        "#nav-overview"
+      ],
+      "examples": [
+        "go home",
+        "take me to the dashboard"
+      ]
+    },
+    {
+      "id": "atlas-activity",
+      "title": "Workspace activity",
+      "url": "./#activity",
+      "target": "#activity-title",
+      "enabled": true,
+      "subjects": [
+        "activity",
+        "audit log",
+        "recent changes",
+        "notifications"
+      ],
+      "actions": [],
+      "default": true,
+      "completion": "page",
+      "coverage": [
+        "#nav-activity",
+        "#notification-button",
+        "[data-page=\"activity\"]"
+      ],
+      "examples": [
+        "wheres the audit log",
+        "show my notifications"
+      ]
+    },
+    {
+      "id": "atlas-members",
+      "title": "Team members",
+      "url": "./#team",
+      "target": "#team-title",
+      "enabled": true,
+      "subjects": [
+        "team",
+        "member",
+        "teammate",
+        "people",
+        "user"
+      ],
+      "actions": [],
+      "default": true,
+      "completion": "page",
+      "coverage": [
+        "#nav-team"
+      ],
+      "examples": [
+        "show my team",
+        "where are the team members"
+      ],
+      "category": "team"
+    },
+    {
+      "id": "atlas-developers",
+      "title": "Developers",
+      "url": "./#developers/api-keys",
+      "target": "#developers-title",
+      "enabled": true,
+      "subjects": [
+        "developer"
+      ],
+      "actions": [],
+      "default": true,
+      "completion": "page",
+      "coverage": [
+        "#nav-developers"
+      ],
+      "examples": [
+        "open developers"
+      ]
+    },
+    {
+      "id": "atlas-keys",
+      "title": "API keys",
+      "url": "./#developers/api-keys",
+      "target": "#keys-title",
+      "enabled": true,
+      "subjects": [
+        "api key",
+        "access token",
+        "credential",
+        "key",
+        "token"
+      ],
+      "actions": [],
+      "default": true,
+      "completion": "page",
+      "coverage": [
+        "#open-api-keys"
+      ],
+      "examples": [
+        "where are my API keys",
+        "API keys"
+      ],
+      "category": "keys"
+    },
+    {
+      "id": "atlas-webhooks",
+      "title": "Webhook endpoints",
+      "url": "./#developers/webhooks",
+      "target": "#webhooks-title",
+      "enabled": true,
+      "subjects": [
+        "webhook",
+        "endpoint"
+      ],
+      "actions": [],
+      "default": true,
+      "completion": "page",
+      "coverage": [
+        "[data-developer-tab=\"webhooks\"]"
+      ],
+      "examples": [
+        "show my webhooks"
+      ],
+      "category": "webhooks"
+    },
+    {
+      "id": "atlas-api-reference",
+      "title": "API reference",
+      "url": "./#developers/reference",
+      "target": "#open-api-reference",
+      "enabled": true,
+      "subjects": [
+        "api reference",
+        "api docs",
+        "api documentation",
+        "developer documentation",
+        "documentation"
+      ],
+      "actions": [],
+      "default": true,
+      "completion": "page",
+      "coverage": [
+        "#open-api-reference"
+      ],
+      "examples": [
+        "wheres the api reference",
+        "API docs",
+        "where is API reference"
+      ]
+    },
+    {
+      "id": "atlas-integrations",
+      "title": "Integrations",
+      "url": "./#integrations",
+      "target": "#integrations-title",
+      "enabled": true,
+      "subjects": [
+        "integration",
+        "connected app",
+        "connection"
+      ],
+      "actions": [],
+      "default": true,
+      "completion": "page",
+      "coverage": [
+        "#nav-integrations",
+        "#workflow-integrations"
+      ],
+      "examples": [
+        "show integrations",
+        "where are my connected apps"
+      ],
+      "category": "integrations"
+    },
+    {
+      "id": "atlas-settings",
+      "title": "Settings",
+      "url": "./#settings/profile",
+      "target": "#settings-title",
+      "enabled": true,
+      "subjects": [
+        "settings",
+        "account settings"
+      ],
+      "actions": [],
+      "default": true,
+      "completion": "page",
+      "coverage": [
+        "#nav-settings"
+      ],
+      "examples": [
+        "open settings"
+      ],
+      "category": "settings"
+    },
+    {
+      "id": "atlas-profile",
+      "title": "Profile",
+      "url": "./#settings/profile",
+      "target": "#profile-title",
+      "enabled": true,
+      "subjects": [
+        "profile",
+        "personal details",
+        "account details"
+      ],
+      "actions": [],
+      "default": true,
+      "completion": "page",
+      "coverage": [
+        "[data-settings-tab=\"profile\"]"
+      ],
+      "examples": [
+        "show my profile"
+      ],
+      "category": "settings"
+    },
+    {
+      "id": "atlas-security",
+      "title": "Password and security",
+      "url": "./#settings/security",
+      "target": "#security-title",
+      "enabled": true,
+      "subjects": [
+        "security",
+        "password",
+        "active session"
+      ],
+      "actions": [],
+      "default": true,
+      "completion": "page",
+      "coverage": [
+        "#open-security"
+      ],
+      "examples": [
+        "open security",
+        "where are my active sessions"
+      ],
+      "category": "security"
+    },
+    {
+      "id": "atlas-preferences",
+      "title": "Workspace preferences",
+      "url": "./#settings/preferences",
+      "target": "#preferences-title",
+      "enabled": true,
+      "subjects": [
+        "preferences",
+        "timezone",
+        "time zone",
+        "email updates",
+        "notification preferences",
+        "email notification"
+      ],
+      "actions": [],
+      "default": true,
+      "completion": "page",
+      "coverage": [
+        "[data-settings-tab=\"preferences\"]"
+      ],
+      "examples": [
+        "where are preferences",
+        "show my timezone"
+      ],
+      "category": "preferences"
+    },
+    {
+      "id": "atlas-workflows",
+      "title": "Your workflows",
+      "url": "./#overview",
+      "target": "#workflows-title",
+      "enabled": true,
+      "subjects": [
+        "workflow",
+        "automation"
+      ],
+      "actions": [],
+      "default": true,
+      "completion": "page",
+      "coverage": [],
+      "examples": [
+        "show my workflows"
+      ],
+      "category": "workflows"
+    },
+    {
+      "id": "atlas-usage",
+      "title": "Workspace usage",
+      "url": "./#overview",
+      "target": "#usage-card",
+      "enabled": true,
+      "subjects": [
+        "usage",
+        "event limit",
+        "monthly events",
+        "included events",
+        "remaining events"
+      ],
+      "actions": [],
+      "default": true,
+      "completion": "page",
+      "coverage": [],
+      "examples": [
+        "show my usage",
+        "where is the monthly event limit"
+      ]
+    },
+    {
+      "id": "atlas-volume",
+      "title": "Event volume",
+      "url": "./#overview",
+      "target": "#volume-title",
+      "enabled": true,
+      "subjects": [
+        "event volume",
+        "chart",
+        "event history"
+      ],
+      "actions": [],
+      "default": true,
+      "completion": "page",
+      "coverage": [],
+      "examples": [
+        "show the event volume chart"
+      ]
+    },
+    {
+      "id": "atlas-health",
+      "title": "Workspace health",
+      "url": "./#overview",
+      "target": "#health-title",
+      "enabled": true,
+      "subjects": [
+        "health",
+        "uptime",
+        "success rate",
+        "failed events",
+        "run time"
+      ],
+      "actions": [],
+      "default": true,
+      "completion": "page",
+      "coverage": [],
+      "examples": [
+        "show workspace health"
+      ]
+    },
+    {
       "id": "atlas-api-key",
       "title": "Find my API key",
       "url": "./#developers/api-keys",
       "target": "#reveal-demo-key",
       "enabled": true,
-      "pinned": true
+      "subjects": [
+        "api key",
+        "access token",
+        "credential",
+        "key",
+        "token"
+      ],
+      "actions": [
+        "reveal",
+        "find",
+        "copy",
+        "value"
+      ],
+      "default": false,
+      "pinned": true,
+      "examples": [
+        "reveal my API key",
+        "show my API key value"
+      ],
+      "category": "keys"
+    },
+    {
+      "id": "atlas-create-key",
+      "title": "Create API key",
+      "url": "./#developers/api-keys",
+      "target": "#create-key",
+      "enabled": true,
+      "subjects": [
+        "api key",
+        "access token",
+        "credential",
+        "key",
+        "token"
+      ],
+      "actions": [
+        "create",
+        "generate",
+        "make",
+        "new"
+      ],
+      "default": false,
+      "coverage": [
+        "#create-key"
+      ],
+      "examples": [
+        "generate a new API key",
+        "create an access token"
+      ],
+      "category": "keys"
+    },
+    {
+      "id": "atlas-hide-key",
+      "title": "Hide sample API key",
+      "url": "./#developers/api-keys",
+      "target": "#reveal-demo-key",
+      "enabled": true,
+      "subjects": [
+        "api key",
+        "access token",
+        "credential",
+        "key",
+        "token"
+      ],
+      "actions": [
+        "hide",
+        "mask"
+      ],
+      "default": false,
+      "examples": [
+        "hide my API key"
+      ],
+      "category": "keys"
     },
     {
       "id": "atlas-password",
@@ -15,49 +445,241 @@
       "url": "./#settings/security",
       "target": "#reset-password",
       "enabled": true,
+      "subjects": [
+        "password"
+      ],
+      "actions": [
+        "reset",
+        "change",
+        "forgot",
+        "lost"
+      ],
+      "default": false,
       "pinned": true,
-      "aliases": [
-        "forgot password",
-        "reset password"
-      ]
+      "coverage": [
+        "#reset-password"
+      ],
+      "examples": [
+        "I forgot my password",
+        "change my password"
+      ],
+      "category": "security"
+    },
+    {
+      "id": "atlas-2fa",
+      "title": "Preview two-factor setup",
+      "url": "./#settings/security",
+      "target": "#configure-2fa",
+      "enabled": true,
+      "subjects": [
+        "2fa",
+        "two factor",
+        "two step",
+        "authenticator"
+      ],
+      "actions": [
+        "enable",
+        "set up",
+        "configure",
+        "add",
+        "preview"
+      ],
+      "default": true,
+      "completion": "open",
+      "coverage": [
+        "#configure-2fa"
+      ],
+      "examples": [
+        "enable 2fa",
+        "set up two factor authentication"
+      ],
+      "category": "security"
     },
     {
       "id": "atlas-stripe",
-      "title": "Connect Stripe integration",
+      "title": "Connect Stripe",
       "url": "./#integrations",
       "target": "#connect-stripe",
       "enabled": true,
+      "subjects": [
+        "stripe"
+      ],
+      "actions": [
+        "connect",
+        "set up",
+        "link",
+        "hook up",
+        "add",
+        "configure"
+      ],
+      "default": false,
       "pinned": true,
-      "aliases": [
-        "hook up Stripe",
-        "link Stripe",
-        "integrations"
-      ]
+      "coverage": [
+        "#connect-stripe"
+      ],
+      "examples": [
+        "connect Stripe",
+        "I need to hook up Stripe"
+      ],
+      "category": "integrations"
     },
     {
-      "id": "atlas-create-key",
-      "title": "Create API key",
-      "url": "./#developers/api-keys/create",
-      "target": "#create-key",
-      "enabled": true
+      "id": "atlas-stripe-manage",
+      "title": "Manage Stripe",
+      "url": "./#integrations",
+      "target": "#connect-stripe",
+      "enabled": true,
+      "subjects": [
+        "stripe"
+      ],
+      "actions": [
+        "manage",
+        "view",
+        "check"
+      ],
+      "default": true,
+      "completion": "open",
+      "examples": [
+        "manage Stripe",
+        "show Stripe"
+      ],
+      "category": "integrations"
+    },
+    {
+      "id": "atlas-stripe-disconnect",
+      "title": "Disconnect sample Stripe",
+      "url": "./#integrations",
+      "target": "#connect-stripe",
+      "enabled": true,
+      "subjects": [
+        "stripe"
+      ],
+      "actions": [
+        "disconnect",
+        "unlink",
+        "remove"
+      ],
+      "default": false,
+      "steps": [
+        "connect-stripe",
+        "disconnect-stripe"
+      ],
+      "examples": [
+        "disconnect Stripe"
+      ],
+      "category": "integrations"
+    },
+    {
+      "id": "atlas-slack",
+      "title": "View Slack connection",
+      "url": "./#integrations",
+      "target": "#manage-slack",
+      "enabled": true,
+      "subjects": [
+        "slack"
+      ],
+      "actions": [
+        "manage",
+        "view",
+        "connect",
+        "set up",
+        "check"
+      ],
+      "default": true,
+      "completion": "open",
+      "coverage": [
+        "#manage-slack"
+      ],
+      "examples": [
+        "show Slack",
+        "manage the Slack connection"
+      ],
+      "category": "integrations"
+    },
+    {
+      "id": "atlas-github",
+      "title": "Preview GitHub setup",
+      "url": "./#integrations",
+      "target": "#connect-github",
+      "enabled": true,
+      "subjects": [
+        "github",
+        "git hub",
+        "repository"
+      ],
+      "actions": [
+        "connect",
+        "set up",
+        "link",
+        "view",
+        "add",
+        "configure"
+      ],
+      "default": true,
+      "completion": "open",
+      "coverage": [
+        "#connect-github"
+      ],
+      "examples": [
+        "connect GitHub",
+        "show repository setup"
+      ],
+      "category": "integrations"
+    },
+    {
+      "id": "atlas-team",
+      "title": "Preview team invitation",
+      "url": "./#team",
+      "target": "#invite-member",
+      "enabled": true,
+      "subjects": [
+        "member",
+        "team",
+        "teammate",
+        "people",
+        "user",
+        "invitation"
+      ],
+      "actions": [
+        "invite",
+        "add",
+        "new"
+      ],
+      "default": false,
+      "coverage": [
+        "#invite-member"
+      ],
+      "examples": [
+        "invite a teammate",
+        "add a team member"
+      ],
+      "category": "team"
     },
     {
       "id": "atlas-webhook",
       "title": "Add webhook endpoint",
       "url": "./#developers/webhooks",
       "target": "#add-webhook",
-      "enabled": true
-    },
-    {
-      "id": "atlas-team",
-      "title": "Invite team member",
-      "url": "./#team",
-      "target": "#invite-member",
       "enabled": true,
-      "aliases": [
-        "invite teammate",
-        "add teammate"
-      ]
+      "subjects": [
+        "webhook",
+        "endpoint"
+      ],
+      "actions": [
+        "create",
+        "add",
+        "configure",
+        "set up",
+        "new"
+      ],
+      "default": false,
+      "coverage": [
+        "#add-webhook"
+      ],
+      "examples": [
+        "add a webhook endpoint"
+      ],
+      "category": "webhooks"
     },
     {
       "id": "atlas-workflow",
@@ -65,36 +687,233 @@
       "url": "./#overview",
       "target": "#create-workflow",
       "enabled": true,
-      "aliases": [
-        "make workflow",
-        "build workflow"
+      "subjects": [
+        "workflow",
+        "automation"
+      ],
+      "actions": [
+        "create",
+        "build",
+        "make",
+        "set up",
+        "new"
+      ],
+      "default": false,
+      "coverage": [
+        "#create-workflow"
+      ],
+      "examples": [
+        "build a new workflow"
+      ],
+      "category": "workflows"
+    },
+    {
+      "id": "atlas-edit-profile",
+      "title": "Edit profile",
+      "url": "./#settings/profile",
+      "target": "#profile-form",
+      "enabled": true,
+      "subjects": [
+        "profile",
+        "name",
+        "personal details"
+      ],
+      "actions": [
+        "edit",
+        "change",
+        "update",
+        "save"
+      ],
+      "default": false,
+      "coverage": [
+        "#profile-form"
+      ],
+      "examples": [
+        "change my name",
+        "edit my profile"
+      ],
+      "category": "settings"
+    },
+    {
+      "id": "atlas-edit-preferences",
+      "title": "Edit preferences",
+      "url": "./#settings/preferences",
+      "target": "#preferences-form",
+      "enabled": true,
+      "subjects": [
+        "preferences"
+      ],
+      "actions": [
+        "edit",
+        "change",
+        "update",
+        "set",
+        "turn off",
+        "disable",
+        "save"
+      ],
+      "default": false,
+      "coverage": [
+        "#preferences-form"
+      ],
+      "examples": [
+        "edit preferences"
+      ],
+      "field": "#timezone",
+      "category": "preferences"
+    },
+    {
+      "id": "atlas-reset-demo",
+      "title": "Reset sample workspace",
+      "url": "./#settings/profile",
+      "target": "#reset-demo",
+      "enabled": true,
+      "subjects": [
+        "demo",
+        "sample workspace",
+        "start over",
+        "workspace"
+      ],
+      "actions": [
+        "reset",
+        "clear",
+        "restart",
+        "start over"
+      ],
+      "default": false,
+      "coverage": [
+        "#reset-demo"
+      ],
+      "examples": [
+        "reset the demo",
+        "start over"
       ]
     },
     {
-      "id": "atlas-api-keys",
-      "title": "Find API keys",
-      "url": "./#developers/api-keys/list",
-      "target": "#reveal-demo-key",
-      "enabled": true
-    },
-    {
-      "id": "atlas-stripe-setup",
-      "title": "Set up Stripe",
-      "url": "./#integrations/setup",
-      "target": "#connect-stripe",
-      "enabled": true
-    },
-    {
-      "id": "atlas-api-reference",
-      "title": "API reference",
-      "aliases": [
-        "API docs",
-        "API documentation",
-        "developer documentation"
+      "url": "./#settings/preferences",
+      "target": "#preferences-form",
+      "enabled": true,
+      "actions": [
+        "change",
+        "edit",
+        "update",
+        "set",
+        "turn off",
+        "disable",
+        "enable",
+        "save"
       ],
-      "url": "./#developers/reference",
-      "target": "#open-api-reference",
-      "enabled": true
+      "default": false,
+      "coverage": [],
+      "id": "atlas-timezone",
+      "title": "Change time zone",
+      "subjects": [
+        "timezone",
+        "time zone"
+      ],
+      "field": "#timezone",
+      "examples": [
+        "change my timezone"
+      ],
+      "category": "preferences"
+    },
+    {
+      "url": "./#settings/preferences",
+      "target": "#preferences-form",
+      "enabled": true,
+      "actions": [
+        "change",
+        "edit",
+        "update",
+        "set",
+        "turn off",
+        "disable",
+        "enable",
+        "save",
+        "turn on"
+      ],
+      "default": false,
+      "coverage": [],
+      "id": "atlas-email-updates",
+      "title": "Change email update preferences",
+      "subjects": [
+        "email updates",
+        "notification preferences",
+        "email notification",
+        "notification"
+      ],
+      "field": "#email-updates",
+      "examples": [
+        "turn off email updates"
+      ],
+      "category": "preferences"
+    },
+    {
+      "id": "atlas-workspace",
+      "title": "Workspace and plan details",
+      "url": "./#overview",
+      "target": "#workspace-details",
+      "subjects": [
+        "workspace",
+        "plan",
+        "subscription"
+      ],
+      "actions": [
+        "view",
+        "check",
+        "switch"
+      ],
+      "default": true,
+      "completion": "open",
+      "enabled": true,
+      "coverage": [
+        "#sidebar-workspace"
+      ],
+      "examples": [
+        "show workspace details",
+        "show my plan"
+      ]
+    },
+    {
+      "id": "atlas-account-email",
+      "title": "Account email address",
+      "url": "./#settings/profile",
+      "target": "#account-email",
+      "subjects": [
+        "email address",
+        "account email",
+        "email"
+      ],
+      "actions": [],
+      "default": true,
+      "readOnly": true,
+      "category": "settings",
+      "completion": "page",
+      "enabled": true,
+      "coverage": [],
+      "examples": [
+        "where is my email address"
+      ]
+    },
+    {
+      "id": "atlas-account-role",
+      "title": "Account role",
+      "url": "./#settings/profile",
+      "target": "#account-role",
+      "subjects": [
+        "account role",
+        "role"
+      ],
+      "actions": [],
+      "default": true,
+      "readOnly": true,
+      "category": "settings",
+      "completion": "page",
+      "enabled": true,
+      "coverage": [],
+      "examples": [
+        "show my account role"
+      ]
     }
   ]
 }

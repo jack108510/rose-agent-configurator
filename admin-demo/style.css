@@ -17,3 +17,6 @@
 
 .workspace-brand .atlas-mark{display:block;width:38px;height:38px;object-fit:contain;transform:none;flex:none;border-radius:11px}.workspace-brand{gap:10px}.workspace-brand>div:last-child{font-size:25px}.workspace-brand>div:last-child>span{font-size:7px;letter-spacing:1.05px}
 @media(max-width:640px){.workspace-brand .atlas-mark{width:34px;height:34px;border-radius:9px}}
+
+.workspace-switch{text-align:left;background:var(--paper);width:100%}.breadcrumb>button{border:0;background:none;padding:8px;margin:-8px;color:inherit;font:inherit}
+@media(max-width:800px){.workspace-health{display:block;padding:0 16px 18px}.workspace-health .health-ring{margin:16px auto}.workspace-health .health-summary{margin-top:16px}}

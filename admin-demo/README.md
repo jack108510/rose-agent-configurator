@@ -1,36 +1,29 @@
-# Atlas SaaS workspace
-
-A fictional automation SaaS dashboard with the actual Rose website widget in its normal bottom-right corner. The application itself contains no Rose marketing, assistant sidebar, demo banner or scripted chat. Metrics and workspace actions use synthetic data.
-
-`rose-widget.js` uses the live runtime retrieved from the existing Harbourlight Rose installation on November 16, 2026. A focused fix enables the existing published task catalog in the floating widget; it previously ran only in side-panel mode. It uses the live Rose pilot chat/voice service, native appearance and floating launcher. `rose-bridge.js` selects the service’s existing isolated prospect-preview mode. No backend software was rebuilt and no live account or external integration is changed.
+# Atlas SaaS workspace demo
 
 Live: https://jack108510.github.io/rose-agent-configurator/admin-demo/
 
-## Atlas integration
+Atlas is a fictional SaaS workspace using the real Rose chat and voice service. Workspace data, credentials and setup actions are synthetic.
 
-- `atlas-logo.svg` is the product logo and favicon.
-- `rose-tools.json` maps natural requests to real Atlas routes and visible controls.
-- The app handles hash routes including `#developers/api-keys` and `#settings/security` and exposes control state via ARIA so Rose can confirm a step changed the page.
-- `node --test admin-demo/test-guidance.mjs` exercises the runtime’s actual request matcher for singular/plural API keys, password resets, Stripe setup, API-key creation and webhooks.
-- `node admin-demo/test-browser.cjs` runs browser regressions with Playwright installed. Set `PLAYWRIGHT_MODULE` to its module path if needed; `ATLAS_LOCAL=1` verifies local assets against the live service before deployment.
-- Workflow definitions, webhook endpoints and API-key permissions persist in this browser's demo storage. Existing saved workspaces migrate without losing their keys or profile.
-- Site-authored `data-rose-guide-next` steps continue guidance through the Stripe and password dialogs. Completion is confirmed by the app's success event, after the sample action succeeds.
-- Verified November 17, 2026: navigation, persistence, dialog guidance, live chat, mobile/desktop layout and preview isolation. Live voice was checked with a synthetic microphone: speech recognition, the Pro-plan answer, nonzero returned audio, spoken-request visual guidance and clean call ending. Mobile checks use a touch-enabled phone viewport.
+## Complete UI guidance
 
-## Highlight overlap protection
+`rose-tools.json` declares every page, section and action currently exposed by Atlas. `atlas-guide.js` resolves requests against that catalog and current public workspace state. Viewing integrations, members or workflows is separate from connecting, inviting or creating. Ambiguous requests offer real choices; unavailable actions and read-only fields are identified explicitly. Requests about facts continue to the live assistant with current workspace state, not just the starting sample values.
 
-Rose moves its floating panel to the left when it covers the highlighted control. If that still overlaps, or on narrow screens, it collapses to a guidance bar at the opposite edge.
+The widget uses the same resolver for typed and spoken requests. Workflow details and additional keys are discovered from current demo state, so newly created items do not require hand-written catalog entries. Guidance continues through forms and dialogs, responds to saved connection state, and clears stale guidance when a task is changed or a dialog is closed. Actual DOM controls are never serialized into the saved guide session.
 
-Run `node admin-demo/test-widget-overlap.cjs` with Playwright installed (`PLAYWRIGHT_MODULE` may point to an existing installation). The seven browser cases load the real widget, force overlap, verify the target receives hit testing, and click it. Cases cover desktop, a wide target, mobile targets above and below the midpoint, side-panel mode and full-width mode.
+Every visible app button and editable field must be covered by a catalog target, a declared coverage selector, or a dynamic workflow/key mapping. The browser audit fails when a visible control is added without coverage. Read-only account fields are separately mapped. Tabs use canonical routes and survive refresh; browser Back stays functional.
 
-## Marketing demo polish (November 17, 2026)
+## Verification
 
-- Three real task starters appear inside Rose on first use; the dashboard remains a normal Atlas workspace.
-- Natural phrases such as “I forgot my password,” “hook up Stripe” and “invite a teammate” use the published task catalog. Voice uses that same catalog.
-- Key, workflow, webhook and invitation forms report completion after their actual sample action succeeds. Closing a dialog clears its old guide.
-- Chat outages still offer local guided tasks. Preferences persist, and Reset sample workspace clears both sample data and this demo’s Rose conversation.
-- `node admin-demo/test-experience.cjs` covers the first-use, recovery and complete desktop/mobile flows. Use `ATLAS_LOCAL=1` to serve local files at the canonical demo URL before deployment, and `TEST_FILTER` to run one named scenario.
+Install Playwright or point `PLAYWRIGHT_MODULE` at an existing installation. Set `ATLAS_LOCAL=1` on the browser suites to load local assets at the canonical URL. `ATLAS_OFFLINE=1` verifies that UI guidance works without any Rose service. Omit `ATLAS_LOCAL` to test the published demo. `TEST_FILTER` selects a named scenario in the complete/experience suites.
 
-See `QA.md` for the verification scope.
+```sh
+node --test admin-demo/test-guidance.mjs admin-demo/test-catalog.cjs
+node admin-demo/test-complete-guidance.cjs
+node admin-demo/test-experience.cjs
+node admin-demo/test-browser.cjs
+node admin-demo/test-widget-overlap.cjs
+```
 
-API Reference is a published guided destination. “wheres the api reference,” “where’s the API reference?” and “API docs” open the Reference tab directly and replace an earlier paused guide.
+`SKIP_LIVE=1` excludes the final live-service fact check in `test-browser.cjs`. `test-live-state.cjs` optionally checks that the live assistant answers from a changed profile and workflow count. The GitHub Actions workflow runs all offline UI, language, persistence and overlap checks on demo changes.
+
+See [QA.md](QA.md) for the audited scope and [CAPABILITIES.md](CAPABILITIES.md) for the current map. Voice checks use synthetic speech; mobile checks use touch-enabled phone viewports rather than physical iOS/Android hardware.
