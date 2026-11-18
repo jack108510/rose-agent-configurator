@@ -5,24 +5,31 @@
 <meta name="theme-color" content="#100e10">
 <meta name="description" content="Explore the routes, controls and capabilities Rose understands. An interactive map of the Atlas demo, with local site-map imports.">
 <title>Rose · Capability Atlas</title>
-<link rel="stylesheet" href="style.css">
-<script src="app.js" defer></script>
+<link rel="stylesheet" href="style.css?v=constellation-2">
+<script src="app.js?v=constellation-2" defer></script>
 </head>
 <body>
 <div class="app">
 <header><a class="brand" href="../"><span class="brand-orb"></span>rose<span class="brand-divider"></span><span class="brand-sub">Capability Atlas</span></a><div class="header-right"><span class="local-dot"></span><span>Explore what Rose understands</span><a class="github" href="https://github.com/jack108510/rose-agent-configurator/tree/main/capability-map" target="_blank" rel="noopener">GitHub ↗</a></div></header>
 <main>
 <aside class="sidebar">
-<div class="eyebrow">THE SHAPE OF A SITE</div><h1>Every route.<br>Every possibility.</h1><p class="intro">A living picture of what Rose can help people find and do.</p>
+<div class="eyebrow">THE ROSE ATLAS</div><h1>Intelligence,<br>illuminated.</h1><p class="intro">Explore the connections behind every guided experience.</p>
 <label class="search-label" for="search">Find a capability</label><div class="search-box"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Try “API key” or “password”" autocomplete="off"><kbd>/</kbd></div>
 <div class="source-box"><span class="eyebrow">MAP SOURCE</span><strong id="source-name">Atlas demo</strong><span id="source-note">Curated capability catalog · sample workspace</span></div>
 <div class="section-label"><span>SITE SECTIONS</span><button id="all-sections" class="text-button">View all</button></div><nav id="sections" aria-label="Site sections"></nav>
 <div class="sidebar-bottom"><label class="import-button" for="map-file"><span aria-hidden="true">↥</span> Open a site map <input id="map-file" type="file" accept=".json,application/json"></label><p>Import a Rose scan JSON. Your file stays in this browser.</p><button id="reset-source" class="text-button" hidden>Return to Atlas demo</button><p id="import-error" role="alert"></p></div>
 </aside>
 <section class="workspace" aria-label="Interactive capability map">
-<div class="workspace-head"><div><div class="eyebrow">ROSE INTELLIGENCE / SITE TOPOLOGY</div><h2 id="map-title">One site. Connected.</h2></div><div class="segmented" role="group" aria-label="Display mode"><button id="map-view" aria-pressed="true">◉ Map</button><button id="list-view" aria-pressed="false">☷ List</button></div></div>
+<div class="workspace-head"><div><div class="eyebrow">CAPABILITY CONSTELLATION / 01</div><h2 id="map-title">A universe of possibilities.</h2></div><button id="expand" class="expand-button" aria-pressed="false">⛶ Expand</button><div class="segmented" role="group" aria-label="Display mode"><button id="map-view" aria-pressed="true">◉ Map</button><button id="list-view" aria-pressed="false">☷ List</button></div></div>
 <div class="metrics"><span><strong id="cap-count">—</strong> capabilities</span><span><strong id="route-count">—</strong> routes</span><span class="metric-proof" id="proof-label">Catalogued · not a live scan</span></div>
-<div class="map-area" id="map-area"><div class="map-aura"></div><svg id="graph" viewBox="0 0 1480 1100" role="group" aria-label="Capability constellation. Select a section or capability."><defs><filter id="glow"><feGaussianBlur stdDeviation="5"/></filter><radialGradient id="orb-fill" cx="35%" cy="25%"><stop offset="0" stop-color="#fff2d9"/><stop offset=".22" stop-color="#ffc18b"/><stop offset=".62" stop-color="#fa784d"/><stop offset="1" stop-color="#8f3d3a"/></radialGradient><radialGradient id="halo"><stop stop-color="#ff975d" stop-opacity=".3"/><stop offset="1" stop-color="#ff975d" stop-opacity="0"/></radialGradient></defs><g id="scene"></g></svg><p id="empty" hidden>No capabilities match. Try another search or section.</p><div class="map-controls"><button id="zoom-out" aria-label="Zoom out">−</button><button id="fit" aria-label="Fit map">Fit</button><button id="zoom-in" aria-label="Zoom in">+</button><button id="motion" aria-pressed="true">Motion on</button></div><div class="map-caption"><span class="live-dot"></span><span id="map-hint">Select a node to trace its route</span></div></div>
+<div class="map-area" id="map-area"><div class="map-aura"></div><div class="ambient ambient-one"></div><div class="ambient ambient-two"></div><div class="coordinate coordinate-top">R / 01<span>CAPABILITY FIELD</span></div><div class="coordinate coordinate-bottom">◇<span>TRACE A CONNECTION</span></div><svg id="graph" viewBox="0 0 1480 1100" role="group" aria-label="Capability constellation. Select a section or capability."><defs>
+<radialGradient id="orb-depth" cx="31%" cy="22%" r="85%"><stop stop-color="#fff9e9"/><stop offset=".18" stop-color="#ffd2ad"/><stop offset=".39" stop-color="#ff9d79"/><stop offset=".67" stop-color="#da5d69"/><stop offset=".87" stop-color="#7a314f"/><stop offset="1" stop-color="#2b183c"/></radialGradient>
+<radialGradient id="orb-light" cx="33%" cy="22%"><stop stop-color="#fffbe8" stop-opacity=".95"/><stop offset=".43" stop-color="#ffc1a5" stop-opacity=".35"/><stop offset="1" stop-color="#e66f94" stop-opacity="0"/></radialGradient>
+<linearGradient id="orb-silk" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffeccc"/><stop offset=".45" stop-color="#ffb69c"/><stop offset="1" stop-color="#b86bc0"/></linearGradient>
+<filter id="orb-soft"><feGaussianBlur stdDeviation="7"/></filter>
+<filter id="bloom" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation="12"/></filter>
+<clipPath id="orb-clip"><circle cx="740" cy="550" r="74"/></clipPath>
+<filter id="glow"><feGaussianBlur stdDeviation="5"/></filter><radialGradient id="orb-fill" cx="35%" cy="25%"><stop offset="0" stop-color="#fff2d9"/><stop offset=".22" stop-color="#ffc18b"/><stop offset=".62" stop-color="#fa784d"/><stop offset="1" stop-color="#8f3d3a"/></radialGradient><radialGradient id="halo"><stop stop-color="#ff975d" stop-opacity=".3"/><stop offset="1" stop-color="#ff975d" stop-opacity="0"/></radialGradient></defs><g id="scene"></g></svg><p id="empty" hidden>No capabilities match. Try another search or section.</p><div class="map-controls"><button id="zoom-out" aria-label="Zoom out">−</button><button id="fit" aria-label="Fit map">Fit</button><button id="zoom-in" aria-label="Zoom in">+</button><button id="motion" aria-pressed="true">Motion on</button></div><div class="map-caption"><span class="live-dot"></span><span id="map-hint">Select a node to trace its route</span></div></div>
 <div id="list" class="list" hidden></div>
 <footer class="workspace-foot"><div class="legend"><span><i class="legend-root"></i>Rose</span><span><i class="legend-route"></i>Route</span><span><i class="legend-cap"></i>Capability</span><span id="legend-gap" hidden><i class="legend-gap"></i>Needs review</span></div><span id="result-count" aria-live="polite"></span></footer>
 </section>

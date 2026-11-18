@@ -2,7 +2,7 @@
 
 Live: https://jack108510.github.io/rose-agent-configurator/capability-map/
 
-An interactive constellation of site capabilities, with Rose's warm orb, glowing route traces, search, section filters, keyboard-accessible nodes, zoom/pan, a list view, reduced-motion support and responsive detail panels.
+An interactive constellation of site capabilities, with a layered Rose orb, illuminated branch colors, flowing connection particles, orbital guides and a subtle star field. Selecting a capability lights its route and dims unrelated connections. Details open on selection; Expand provides an immersive map view and Escape exits it. Search, section filters, keyboard-accessible nodes, zoom/pan, a list view, reduced-motion support and responsive detail panels remain available. Motion off removes connection particles and pauses decorative CSS animations.
 
 The default view reads `../admin-demo/rose-tools.json` directly. It visualizes the actual curated Atlas catalog rather than maintaining a second set of demo capabilities. Catalogued nodes are explicitly distinguished from scanner-verified targets; this page does not run a site scan or execute an action. Opening a capability opens its actual Atlas page in a separate tab.
 
