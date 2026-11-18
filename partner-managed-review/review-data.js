@@ -9,6 +9,14 @@ const snippet=client=>`<script src="https://widget.example.test/rose-widget.js?p
 if(!sessionStorage.getItem(key)){
 const client={clientId:'trial_1234567890abcdef12345678',businessName:'Coastal Bakehouse · sample client',website:'https://coastal.example.test/',notificationEmail:'leads@example.test',management:'agency',deliveryApproved:true,editingApproved:true,published:false,installed:false,mapping:{status:'waiting'},grantedAt:new Date().toISOString()};state.clients.push(client);state.workspace.clients.push({clientLeadId:client.clientId,deliveryApproved:true,editingApproved:true,management:'agency'});persist();
 }
+// A review email can open a fresh browser session without carrying a real token.
+if(location.pathname.endsWith('/client-invite.html')&&new URLSearchParams(location.search).get('demo')==='1'){
+ const clientId='trial_invitation_email_preview_123456',token='synthetic-email-invitation-preview';
+ let client=state.clients.find(item=>item.clientId===clientId);
+ if(!client){client={clientId,businessName:'Your client · invitation preview',website:'https://client.example.test/',notificationEmail:'leads@example.test',management:'agency',deliveryApproved:true,editingApproved:true,published:false,installed:false,mapping:{status:'waiting'},grantedAt:new Date().toISOString()};state.clients.push(client);state.workspace.clients.push({clientLeadId:clientId,deliveryApproved:true,editingApproved:true,management:'agency'})}
+ state.invitations=(state.invitations||[]).filter(item=>item.token!==token);state.invitations.push({id:'sample-email-invitation',clientId,email:'client@example.test',status:'pending',expiresAt:new Date(Date.now()+48*3600000).toISOString(),token});client.workgroundAccess={status:'pending',email:'client@example.test',invitationId:'sample-email-invitation'};persist();
+ const url=new URL(location.href);url.searchParams.set('token',token);history.replaceState(null,'',url);
+}
 localStorage.setItem('roseManagedReviewToken','synthetic-review-token');
 window.fetch=async(input,options={})=>{
 const url=new URL(typeof input==='string'?input:input.url,location.href),route=url.pathname.slice(url.pathname.indexOf('/api/'));let body={};try{body=JSON.parse(options.body||'{}')}catch{}
