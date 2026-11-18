@@ -1,6 +1,6 @@
 // Entirely synthetic, browser-local review data. No production API is contacted.
 (()=>{
-const key='roseManagedClientsReviewStateV2';
+const key='roseManagedClientsReviewStateV3';
 const empty=()=>({workspace:{id:'ptn_synthetic_review_agency_123456',ownerLeadId:'synthetic-owner',brand:{name:'Your agency',accent:'#315a65',theme:'warm',workgroundTitle:'Your agency Workground',logoData:''},deliveryOrigin:'https://widget.example.test',deliveryReady:true,clients:[],trial:{status:'active',endsAt:new Date(Date.now()+30*86400000).toISOString()},billing:{status:'trial'}},clients:[],drafts:{}});
 let state;try{state=JSON.parse(sessionStorage.getItem(key))||empty()}catch{state=empty()}
 const persist=()=>sessionStorage.setItem(key,JSON.stringify(state));
@@ -37,7 +37,23 @@ if(body.action==='add_note'){draft.notes.push({id:crypto.randomUUID(),text:body.
 if(body.action==='remove_note'){draft.notes=draft.notes.filter(item=>item.id!==body.noteId);state.drafts[id]=draft;persist();return reply(200,{ok:true})}
 return reply(200,{client,draft,notes:draft.notes,published:client.published});
 }
-if(route==='/api/rose-partner-invitations')return reply(200,{invitations:[]});
+state.invitations||=[];
+if(route==='/api/rose-partner-invitations'){
+ if(body.action==='revoke'){const invite=state.invitations.find(item=>item.id===body.invitationId);if(!invite)return reply(404,{error:'Invitation not found'});invite.status='revoked';const client=clients.find(item=>item.clientId===invite.clientId);if(client)client.workgroundAccess={status:'revoked',email:invite.email};persist();return reply(200,{ok:true})}
+ if(body.action==='create'){
+  const client=clients.find(item=>item.clientId===body.clientId);if(!client)return reply(404,{error:'Client not found'});
+  if(client.workgroundAccess?.status==='active')return reply(409,{error:'This client already has Workground access'});
+  for(const old of state.invitations.filter(item=>item.clientId===client.clientId))old.status='revoked';
+  const token=crypto.randomUUID(),invitation={id:'sample_'+crypto.randomUUID(),clientId:client.clientId,email:body.email,status:'pending',expiresAt:new Date(Date.now()+48*3600000).toISOString(),token};state.invitations.push(invitation);client.workgroundAccess={status:'pending',email:body.email,invitationId:invitation.id,expiresAt:invitation.expiresAt};persist();
+  const link=new URL('client-invite.html',location.href);link.searchParams.set('token',token);return reply(201,{ok:true,invitation,delivery:'preview',link:String(link)});
+ }return reply(200,{invitations:state.invitations});
+}
+if(route==='/api/rose-partner-invitation'){
+ const invite=state.invitations.find(item=>item.token===url.searchParams.get('token')&&item.status==='pending');if(!invite)return reply(410,{error:'Sample invitation expired or replaced'});const client=clients.find(item=>item.clientId===invite.clientId);return reply(200,{email:invite.email,managedClient:true,client,agency:workspace.brand,expiresAt:invite.expiresAt});
+}
+if(route==='/api/rose-partner-invitation-accept'){
+ const invite=state.invitations.find(item=>item.token===body.token&&item.status==='pending');if(!invite)return reply(410,{error:'Sample invitation expired or replaced'});const client=clients.find(item=>item.clientId===invite.clientId);invite.status='accepted';client.workgroundAccess={status:'active',email:invite.email,url:'./design-preview.html'};persist();return reply(200,{token:'synthetic-client-review-hint',workgroundUrl:'./design-preview.html?clientPreview=1'});
+}
 if(route==='/api/rose-partner-domains')return reply(200,{domain:null,fallbackUrl:'https://workground.example.test'});
 if(route==='/api/rose-partner-sender')return reply(200,{available:false,deliveryAvailable:false,sender:null});
 if(route==='/api/rose-partner-billing')return reply(200,{configured:false,status:'trial',quote:{count:clients.filter(item=>item.published).length,totalCents:0,lines:[],rates:[]},invoices:[]});
